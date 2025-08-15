@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { ArrowRight, CheckCircle, Clock, Send, Package, Shield, Database, Zap } from 'lucide-react';
+import PageContainer from '@/components/ui/PageContainer';
 
 interface TransactionStage {
   id: string;
@@ -115,7 +116,7 @@ export default function TransactionJourneyPage() {
   };
 
   return (
-    <div className="min-h-screen p-8">
+    <PageContainer>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -297,6 +298,6 @@ export default function TransactionJourneyPage() {
           </div>
         </motion.div>
       </motion.div>
-    </div>
+    </PageContainer>
   );
 }

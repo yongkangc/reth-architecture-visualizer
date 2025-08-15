@@ -55,10 +55,10 @@ const navItems = [
     gradient: "from-indigo-500 to-purple-500"
   },
   { 
-    href: "/chapters/evm", 
-    label: "EVM Configuration", 
+    href: "/chapters/overview",
+    label: "Architecture Overview",
     icon: Settings,
-    description: "Execution environment",
+    description: "System design",
     gradient: "from-pink-500 to-rose-500"
   }
 ]
@@ -69,22 +69,21 @@ export default function Navigation() {
 
   return (
     <>
-      {/* Mobile Header */}
-      <div className="lg:hidden fixed top-0 left-0 right-0 z-50 bg-gradient-to-b from-[#1a1a1a]/95 to-[#141414]/95 backdrop-blur-2xl border-b border-white/5">
-        <div className="flex items-center justify-between p-4">
+      {/* Mobile Header - Fixed at top */}
+      <header className="lg:hidden fixed top-0 left-0 right-0 h-16 z-50 bg-[#1a1a1a]/95 backdrop-blur-xl border-b border-white/5">
+        <div className="flex items-center justify-between h-full px-4">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#627eea] to-[#a16ae8] flex items-center justify-center shadow-lg shadow-[#627eea]/20">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#627eea] to-[#a16ae8] flex items-center justify-center">
               <Sparkles className="w-4 h-4 text-white" />
             </div>
             <div>
               <h2 className="text-sm font-bold text-white">Reth Architecture</h2>
-              <p className="text-xs text-zinc-400 hidden sm:block">Interactive Learning</p>
             </div>
           </div>
           
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="p-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors"
+            className="p-2 rounded-lg hover:bg-white/10 transition-colors"
             aria-label="Toggle menu"
           >
             {mobileMenuOpen ? (
@@ -94,152 +93,117 @@ export default function Navigation() {
             )}
           </button>
         </div>
-      </div>
+      </header>
 
       {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {mobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="lg:hidden fixed inset-0 z-40 bg-black/50 backdrop-blur-sm"
-            onClick={() => setMobileMenuOpen(false)}
-          />
-        )}
-      </AnimatePresence>
-
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {mobileMenuOpen && (
-          <motion.nav
-            initial={{ x: "-100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "-100%" }}
-            transition={{ type: "spring", damping: 20 }}
-            className="lg:hidden fixed left-0 top-0 h-screen w-[280px] sm:w-[320px] bg-gradient-to-b from-[#1a1a1a]/95 to-[#141414]/95 backdrop-blur-2xl border-r border-white/5 overflow-y-auto z-45"
-          >
-            <MobileNavigationContent 
-              pathname={pathname} 
-              onClose={() => setMobileMenuOpen(false)} 
+          <>
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="lg:hidden fixed inset-0 z-40 bg-black/50 backdrop-blur-sm"
+              onClick={() => setMobileMenuOpen(false)}
             />
-          </motion.nav>
+            <motion.nav
+              initial={{ x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ type: "spring", damping: 20 }}
+              className="lg:hidden fixed left-0 top-0 bottom-0 w-80 z-50 bg-[#1a1a1a]/95 backdrop-blur-xl border-r border-white/5 overflow-y-auto"
+            >
+              <div className="p-6 border-b border-white/5">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#627eea] to-[#a16ae8] flex items-center justify-center">
+                      <Sparkles className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <h2 className="font-bold text-white">Reth Architecture</h2>
+                      <p className="text-xs text-zinc-400">Interactive Learning</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="p-2 rounded-lg hover:bg-white/10 transition-colors"
+                  >
+                    <X className="w-4 h-4 text-zinc-400" />
+                  </button>
+                </div>
+              </div>
+              <div className="p-4">
+                <NavigationItems 
+                  pathname={pathname} 
+                  onItemClick={() => setMobileMenuOpen(false)} 
+                />
+              </div>
+            </motion.nav>
+          </>
         )}
       </AnimatePresence>
 
-      {/* Desktop Navigation */}
-      <nav className="hidden lg:block fixed left-0 top-0 h-screen w-72 bg-gradient-to-b from-[#1a1a1a]/95 to-[#141414]/95 backdrop-blur-2xl border-r border-white/5 overflow-y-auto z-50">
-        <DesktopNavigationContent pathname={pathname} />
-      </nav>
-    </>
-  )
-}
-
-function DesktopNavigationContent({ pathname }: { pathname: string }) {
-  return (
-    <>
-      {/* Header */}
-      <div className="p-6 border-b border-white/5">
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex items-center gap-3 mb-3"
-        >
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#627eea] to-[#a16ae8] flex items-center justify-center shadow-lg shadow-[#627eea]/20">
-            <Sparkles className="w-5 h-5 text-white" />
-          </div>
-          <div>
-            <h2 className="text-lg font-bold text-white">Reth Architecture</h2>
-            <p className="text-xs text-zinc-400">Interactive Learning Platform</p>
-          </div>
-        </motion.div>
-      </div>
-
-      {/* Navigation Items */}
-      <NavigationItems pathname={pathname} />
-
-      {/* Progress indicator */}
-      <div className="px-6 py-4">
-        <div className="flex items-center justify-between text-xs text-zinc-500 mb-2">
-          <span>Progress</span>
-          <span>3/6 Chapters</span>
-        </div>
-        <div className="w-full h-1 bg-zinc-800 rounded-full overflow-hidden">
-          <motion.div 
-            className="h-full bg-gradient-to-r from-[#627eea] to-[#a16ae8]"
-            initial={{ width: 0 }}
-            animate={{ width: "50%" }}
-            transition={{ duration: 1, ease: "easeOut" }}
-          />
-        </div>
-      </div>
-
-      {/* Footer */}
-      <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-white/5">
-        <div className="flex items-center gap-2 text-xs text-zinc-500 mb-2">
-          <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-          <span>System Online</span>
-        </div>
-        <p className="text-xs text-zinc-600">
-          Built with ❤️ for the Reth community
-        </p>
-      </div>
-    </>
-  )
-}
-
-function MobileNavigationContent({ pathname, onClose }: { pathname: string; onClose: () => void }) {
-  return (
-    <>
-      {/* Header with close button */}
-      <div className="p-4 border-b border-white/5">
-        <div className="flex items-center justify-between mb-3">
+      {/* Desktop Sidebar - Fixed on left */}
+      <aside className="hidden lg:block fixed left-0 top-0 bottom-0 w-72 bg-[#1a1a1a]/95 backdrop-blur-xl border-r border-white/5 overflow-y-auto">
+        <div className="p-6 border-b border-white/5">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#627eea] to-[#a16ae8] flex items-center justify-center shadow-lg shadow-[#627eea]/20">
-              <Sparkles className="w-4 h-4 text-white" />
+            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#627eea] to-[#a16ae8] flex items-center justify-center shadow-lg shadow-[#627eea]/20">
+              <Sparkles className="w-5 h-5 text-white" />
             </div>
             <div>
-              <h2 className="text-sm font-bold text-white">Reth Architecture</h2>
-              <p className="text-xs text-zinc-400">Interactive Learning</p>
+              <h2 className="text-lg font-bold text-white">Reth Architecture</h2>
+              <p className="text-xs text-zinc-400">Interactive Learning Platform</p>
             </div>
           </div>
-          <button
-            onClick={onClose}
-            className="p-1.5 rounded-lg hover:bg-white/10 transition-colors"
-            aria-label="Close menu"
-          >
-            <X className="w-4 h-4 text-zinc-400" />
-          </button>
         </div>
-      </div>
 
-      {/* Navigation Items */}
-      <NavigationItems pathname={pathname} onItemClick={onClose} />
+        <div className="p-4">
+          <NavigationItems pathname={pathname} />
+        </div>
 
-      {/* Progress indicator */}
-      <div className="px-4 py-3 border-t border-white/5">
-        <div className="flex items-center justify-between text-xs text-zinc-500 mb-2">
-          <span>Progress</span>
-          <span>3/6 Chapters</span>
+        {/* Progress indicator */}
+        <div className="px-6 py-4">
+          <div className="flex items-center justify-between text-xs text-zinc-500 mb-2">
+            <span>Progress</span>
+            <span>4/6 Chapters</span>
+          </div>
+          <div className="w-full h-1 bg-zinc-800 rounded-full overflow-hidden">
+            <motion.div 
+              className="h-full bg-gradient-to-r from-[#627eea] to-[#a16ae8]"
+              initial={{ width: 0 }}
+              animate={{ width: "66%" }}
+              transition={{ duration: 1, ease: "easeOut" }}
+            />
+          </div>
         </div>
-        <div className="w-full h-1 bg-zinc-800 rounded-full overflow-hidden">
-          <motion.div 
-            className="h-full bg-gradient-to-r from-[#627eea] to-[#a16ae8]"
-            initial={{ width: 0 }}
-            animate={{ width: "50%" }}
-            transition={{ duration: 1, ease: "easeOut" }}
-          />
+
+        {/* Footer */}
+        <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-white/5">
+          <div className="flex items-center gap-2 text-xs text-zinc-500 mb-2">
+            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+            <span>System Online</span>
+          </div>
+          <p className="text-xs text-zinc-600">
+            Built with ❤️ for the Reth community
+          </p>
         </div>
-      </div>
+      </aside>
     </>
   )
 }
 
-function NavigationItems({ pathname, onItemClick }: { pathname: string; onItemClick?: () => void }) {
+function NavigationItems({ 
+  pathname, 
+  onItemClick 
+}: { 
+  pathname: string
+  onItemClick?: () => void 
+}) {
   return (
-    <div className="p-4 space-y-2">
+    <div className="space-y-2">
       {navItems.map((item, index) => {
-        const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href))
+        const isActive = pathname === item.href || 
+          (item.href !== "/" && pathname.startsWith(item.href))
         const Icon = item.icon
 
         return (
@@ -253,13 +217,12 @@ function NavigationItems({ pathname, onItemClick }: { pathname: string; onItemCl
               href={item.href}
               onClick={onItemClick}
               className={cn(
-                "group relative flex items-center gap-3 px-3 py-2.5 lg:px-4 lg:py-3 rounded-xl transition-all duration-300",
+                "group relative flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300",
                 isActive 
-                  ? "bg-gradient-to-r from-[#627eea]/20 to-[#a16ae8]/20 backdrop-blur-sm" 
+                  ? "bg-gradient-to-r from-[#627eea]/20 to-[#a16ae8]/20" 
                   : "hover:bg-white/5"
               )}
             >
-              {/* Active indicator */}
               {isActive && (
                 <motion.div
                   layoutId="activeNav"
@@ -268,26 +231,17 @@ function NavigationItems({ pathname, onItemClick }: { pathname: string; onItemCl
                 />
               )}
 
-              {/* Icon with gradient background */}
               <div className={cn(
-                "relative w-8 h-8 lg:w-10 lg:h-10 rounded-lg bg-gradient-to-br flex items-center justify-center transition-transform duration-300",
+                "relative w-10 h-10 rounded-lg bg-gradient-to-br flex items-center justify-center transition-transform duration-300",
                 item.gradient,
                 isActive ? "scale-110 shadow-lg" : "group-hover:scale-105 opacity-80 group-hover:opacity-100"
               )}>
-                <Icon className="w-4 h-4 lg:w-5 lg:h-5 text-white" />
-                {isActive && (
-                  <motion.div
-                    className="absolute inset-0 rounded-lg bg-white/20"
-                    animate={{ scale: [1, 1.2, 1] }}
-                    transition={{ duration: 2, repeat: Infinity }}
-                  />
-                )}
+                <Icon className="w-5 h-5 text-white" />
               </div>
 
-              {/* Text content */}
               <div className="flex-1 relative z-10">
                 <div className={cn(
-                  "text-sm lg:text-base font-medium transition-colors",
+                  "font-medium transition-colors",
                   isActive ? "text-white" : "text-zinc-300 group-hover:text-white"
                 )}>
                   {item.label}
@@ -300,7 +254,6 @@ function NavigationItems({ pathname, onItemClick }: { pathname: string; onItemCl
                 </div>
               </div>
 
-              {/* Arrow indicator */}
               <ChevronRight className={cn(
                 "w-4 h-4 transition-all duration-300",
                 isActive 

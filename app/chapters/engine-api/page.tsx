@@ -4,6 +4,7 @@ import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Play, Pause, RotateCcw, CheckCircle, XCircle, AlertCircle, Zap, Clock, Activity, Cpu, type LucideIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
+import PageContainer from "@/components/ui/PageContainer"
 
 type PayloadStatus = "idle" | "validating" | "executing" | "computing" | "success" | "invalid"
 
@@ -89,8 +90,7 @@ export default function EngineAPIPage() {
   }
 
   return (
-    <div className="min-h-screen relative p-8">
-      <div className="max-w-7xl mx-auto">
+    <PageContainer>
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -333,7 +333,6 @@ export default function EngineAPIPage() {
             </div>
           </motion.div>
         </div>
-      </div>
-    </div>
+    </PageContainer>
   )
 }
