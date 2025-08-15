@@ -26,6 +26,7 @@ interface TraitInterface {
   icon: LucideIcon
   color: string
   dependencies: string[]
+  githubLink?: string
 }
 
 interface ExecutionStage {
@@ -57,6 +58,7 @@ const traitInterfaces: TraitInterface[] = [
     icon: Settings,
     color: "from-purple-500 to-pink-500",
     dependencies: [],
+    githubLink: "https://github.com/paradigmxyz/reth/blob/main/crates/evm/evm/src/lib.rs#L184-L410",
     methods: [
       "fn block_executor_factory() -> BlockExecutorFactory",
       "fn block_assembler() -> BlockAssembler",
@@ -73,6 +75,7 @@ const traitInterfaces: TraitInterface[] = [
     icon: Factory,
     color: "from-blue-500 to-cyan-500",
     dependencies: ["configure-evm"],
+    githubLink: "https://github.com/paradigmxyz/reth/blob/main/crates/evm/evm/src/lib.rs#L57",
     methods: [
       "fn create_executor(evm, ctx) -> BlockExecutor",
       "fn evm_factory() -> EvmFactory",
@@ -89,6 +92,7 @@ const traitInterfaces: TraitInterface[] = [
     icon: Hammer,
     color: "from-green-500 to-emerald-500",
     dependencies: ["block-executor-factory"],
+    githubLink: "https://github.com/paradigmxyz/reth/blob/main/crates/evm/evm/src/lib.rs#L57",
     methods: [
       "fn create_evm(db, env) -> Evm",
       "fn create_evm_with_inspector(db, env, inspector) -> Evm",
@@ -104,6 +108,7 @@ const traitInterfaces: TraitInterface[] = [
     icon: Cpu,
     color: "from-orange-500 to-red-500",
     dependencies: ["evm-factory"],
+    githubLink: "https://github.com/bluealloy/revm",
     methods: [
       "fn transact() -> ExecutionResult",
       "fn transact_with_commit() -> ExecutionResult",
@@ -402,14 +407,26 @@ export default function EVMPage() {
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-[#ff8867]/10 to-[#627eea]/10 rounded-2xl blur-xl" />
                 <div className="relative bg-zinc-900/90 backdrop-blur-sm rounded-2xl border border-zinc-800 p-6">
-                  <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                    <FileCode className="w-5 h-5 text-[#ff8867]" />
-                    ConfigureEvm Implementation
-                  </h2>
+                  <div className="flex items-center justify-between mb-4">
+                    <h2 className="text-lg font-semibold flex items-center gap-2">
+                      <FileCode className="w-5 h-5 text-[#ff8867]" />
+                      ConfigureEvm Implementation
+                    </h2>
+                    <a
+                      href="https://github.com/paradigmxyz/reth/blob/main/crates/ethereum/evm/src/lib.rs#L88-L120"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-xs px-3 py-1 rounded-lg bg-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-700 transition-colors flex items-center gap-1"
+                    >
+                      <Code2 className="w-3 h-3" />
+                      View on GitHub
+                    </a>
+                  </div>
                   
                   <div className="bg-black/50 rounded-xl border border-zinc-800 p-4 overflow-x-auto">
                     <pre className="text-xs font-mono text-zinc-300">
-{`impl ConfigureEvm for EthEvmConfig {
+{`// crates/ethereum/evm/src/lib.rs:88-120
+impl ConfigureEvm for EthEvmConfig {
     type Primitives = EthPrimitives;
     type BlockExecutorFactory = EthBlockExecutorFactory;
     type BlockAssembler = EthBlockAssembler;
@@ -689,7 +706,20 @@ export default function EVMPage() {
                             exit={{ opacity: 0, height: 0 }}
                             className="mt-4 pt-4 border-t border-zinc-800"
                           >
-                            <h4 className="text-sm font-semibold text-zinc-400 mb-3">Key Methods</h4>
+                            <div className="flex items-center justify-between mb-3">
+                              <h4 className="text-sm font-semibold text-zinc-400">Key Methods</h4>
+                              {trait.githubLink && (
+                                <a
+                                  href={trait.githubLink}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="text-xs px-2 py-1 rounded-lg bg-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-700 transition-colors flex items-center gap-1"
+                                >
+                                  <Code2 className="w-3 h-3" />
+                                  View Source
+                                </a>
+                              )}
+                            </div>
                             <div className="space-y-2">
                               {trait.methods.map((method, i) => (
                                 <div key={i} className="flex items-start gap-2">
@@ -912,13 +942,25 @@ async fn build_mev_block(builder: &mut BlockBuilder) -> Result<Block> {
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 to-cyan-500/5 rounded-2xl blur-xl" />
             <div className="relative bg-zinc-900/90 backdrop-blur-sm rounded-2xl border border-zinc-800 p-6">
-              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                <Hammer className="w-5 h-5 text-blue-500" />
-                BlockExecutor Implementation
-              </h3>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold flex items-center gap-2">
+                  <Hammer className="w-5 h-5 text-blue-500" />
+                  BlockExecutor Implementation
+                </h3>
+                <a
+                  href="https://github.com/paradigmxyz/reth/blob/main/crates/evm/evm/src/execute.rs#L31-L132"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs px-3 py-1 rounded-lg bg-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-700 transition-colors flex items-center gap-1"
+                >
+                  <Code2 className="w-3 h-3" />
+                  View on GitHub
+                </a>
+              </div>
               <div className="bg-black/50 rounded-xl border border-zinc-800 p-4 overflow-x-auto">
                 <pre className="text-xs font-mono text-zinc-300">
-{`impl<DB: Database> BlockExecutor for BasicBlockExecutor<DB> {
+{`// crates/evm/evm/src/execute.rs:31-132
+impl<DB: Database> BlockExecutor for BasicBlockExecutor<DB> {
     fn apply_pre_execution_changes(&mut self) -> Result<()> {
         // System calls before transactions
         self.apply_beacon_root_contract_call()?;
@@ -962,13 +1004,25 @@ async fn build_mev_block(builder: &mut BlockBuilder) -> Result<Block> {
           <div className="relative">
             <div className="absolute inset-0 bg-gradient-to-br from-purple-500/5 to-pink-500/5 rounded-2xl blur-xl" />
             <div className="relative bg-zinc-900/90 backdrop-blur-sm rounded-2xl border border-zinc-800 p-6">
-              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                <CircuitBoard className="w-5 h-5 text-purple-500" />
-                System Calls (EIP-4788)
-              </h3>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-semibold flex items-center gap-2">
+                  <CircuitBoard className="w-5 h-5 text-purple-500" />
+                  System Calls (EIP-4788)
+                </h3>
+                <a
+                  href="https://github.com/paradigmxyz/reth/blob/main/crates/evm/evm/src/lib.rs#L58"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xs px-3 py-1 rounded-lg bg-zinc-800 text-zinc-400 hover:text-white hover:bg-zinc-700 transition-colors flex items-center gap-1"
+                >
+                  <Code2 className="w-3 h-3" />
+                  View system_calls module
+                </a>
+              </div>
               <div className="bg-black/50 rounded-xl border border-zinc-800 p-4 overflow-x-auto">
                 <pre className="text-xs font-mono text-zinc-300">
-{`// EIP-4788: Beacon block root in EVM
+{`// System calls are imported from alloy_evm::block::system_calls
+// EIP-4788: Beacon block root in EVM
 fn apply_beacon_root_contract_call(
     &mut self,
     parent_beacon_block_root: B256,
