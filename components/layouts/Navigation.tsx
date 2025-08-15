@@ -14,23 +14,39 @@ import {
   ChevronRight,
   Sparkles,
   Menu,
-  X
+  X,
+  Blocks,
+  Layers
 } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
 const navItems = [
   { 
     href: "/", 
-    label: "Overview", 
+    label: "Home", 
     icon: Home,
-    description: "The big picture",
+    description: "Start here",
+    gradient: "from-zinc-500 to-zinc-600"
+  },
+  { 
+    href: "/chapters/architecture", 
+    label: "Architecture", 
+    icon: Blocks,
+    description: "High-level overview",
     gradient: "from-blue-500 to-cyan-500"
+  },
+  { 
+    href: "/chapters/staged-sync", 
+    label: "Staged Sync", 
+    icon: Layers,
+    description: "Sync pipeline",
+    gradient: "from-orange-500 to-red-500"
   },
   { 
     href: "/chapters/engine-api", 
     label: "Engine API", 
     icon: Cpu,
-    description: "Block processing flow",
+    description: "Block processing",
     gradient: "from-purple-500 to-pink-500"
   },
   { 
@@ -42,24 +58,24 @@ const navItems = [
   },
   { 
     href: "/chapters/trie", 
-    label: "Trie Architecture", 
+    label: "Trie Walker", 
     icon: TreePine,
-    description: "Storage & optimization",
-    gradient: "from-orange-500 to-red-500"
-  },
-  { 
-    href: "/chapters/transaction", 
-    label: "Transaction Journey", 
-    icon: Activity,
-    description: "From mempool to block",
-    gradient: "from-indigo-500 to-purple-500"
+    description: "Navigation & caching",
+    gradient: "from-teal-500 to-cyan-500"
   },
   { 
     href: "/chapters/evm", 
-    label: "EVM Configuration", 
+    label: "EVM Stack", 
     icon: Settings,
-    description: "Execution environment",
+    description: "Revm & Alloy",
     gradient: "from-pink-500 to-rose-500"
+  },
+  { 
+    href: "/chapters/transaction", 
+    label: "Transactions", 
+    icon: Activity,
+    description: "Mempool to block",
+    gradient: "from-indigo-500 to-purple-500"
   }
 ]
 
@@ -162,13 +178,13 @@ function DesktopNavigationContent({ pathname }: { pathname: string }) {
       <div className="px-6 py-4">
         <div className="flex items-center justify-between text-xs text-zinc-500 mb-2">
           <span>Progress</span>
-          <span>3/6 Chapters</span>
+          <span>7/8 Chapters</span>
         </div>
         <div className="w-full h-1 bg-zinc-800 rounded-full overflow-hidden">
           <motion.div 
             className="h-full bg-gradient-to-r from-[#627eea] to-[#a16ae8]"
             initial={{ width: 0 }}
-            animate={{ width: "50%" }}
+            animate={{ width: "87.5%" }}
             transition={{ duration: 1, ease: "easeOut" }}
           />
         </div>
@@ -226,7 +242,7 @@ function MobileNavigationContent({ pathname, onClose }: { pathname: string; onCl
           <motion.div 
             className="h-full bg-gradient-to-r from-[#627eea] to-[#a16ae8]"
             initial={{ width: 0 }}
-            animate={{ width: "50%" }}
+            animate={{ width: "87.5%" }}
             transition={{ duration: 1, ease: "easeOut" }}
           />
         </div>
