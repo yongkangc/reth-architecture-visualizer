@@ -733,27 +733,43 @@ export default function P2PNetworkPage() {
       return { x: 50, y: 50 }
     }
     
-    // Create rings based on node type and connection state
+    // Filter nodes by type for better ring distribution
+    const trustedNodes = nodes.filter(n => n.type === "trusted" && n.id !== "self")
+    const establishedNodes = nodes.filter(n => n.connectionState === "established" && n.type !== "trusted" && n.id !== "self")
+    const connectedNodes = nodes.filter(n => (n.connectionState === "connected" || n.connectionState === "handshaking") && n.type !== "trusted" && n.id !== "self")
+    const discoveredNodes = nodes.filter(n => n.connectionState === "disconnected" && n.type !== "trusted" && n.id !== "self")
+    
     let radius: number
+    let ringIndex: number
+    let ringTotal: number
     let angleOffset = 0
     
     if (node.type === "trusted") {
-      radius = 15
+      radius = 18
+      ringIndex = trustedNodes.findIndex(n => n.id === node.id)
+      ringTotal = Math.max(trustedNodes.length, 1)
       angleOffset = 0
     } else if (node.connectionState === "established") {
-      radius = 25
-      angleOffset = Math.PI / 6
+      radius = 28
+      ringIndex = establishedNodes.findIndex(n => n.id === node.id)
+      ringTotal = Math.max(establishedNodes.length, 1)
+      angleOffset = Math.PI / 8
     } else if (node.connectionState === "connected" || node.connectionState === "handshaking") {
-      radius = 35
-      angleOffset = Math.PI / 4
+      radius = 38
+      ringIndex = connectedNodes.findIndex(n => n.id === node.id)
+      ringTotal = Math.max(connectedNodes.length, 1)
+      angleOffset = Math.PI / 6
     } else {
-      radius = 42
-      angleOffset = Math.PI / 3
+      radius = 45
+      ringIndex = discoveredNodes.findIndex(n => n.id === node.id)
+      ringTotal = Math.max(discoveredNodes.length, 1)
+      angleOffset = Math.PI / 4
     }
     
-    const angle = (index / total) * 2 * Math.PI + angleOffset
-    const x = 50 + radius * Math.cos(angle)
-    const y = 50 + radius * Math.sin(angle)
+    // Ensure we don't divide by zero and properly distribute nodes
+    const angle = (ringIndex / ringTotal) * 2 * Math.PI + angleOffset
+    const x = Math.max(5, Math.min(95, 50 + radius * Math.cos(angle)))
+    const y = Math.max(5, Math.min(95, 50 + radius * Math.sin(angle)))
     
     return { x, y }
   }
@@ -1002,40 +1018,71 @@ export default function P2PNetworkPage() {
                     </div>
 
                     {/* Connection lines */}
-                    <svg className="absolute inset-0 w-full h-full">
+                    <svg className="absolute inset-0 w-full h-full" style={{ zIndex: 1 }}>
                       {nodes.filter(n => n.id !== "self" && n.connectionState !== "disconnected").map((node, i) => {
                         const nodePos = getNodePosition(node, i, nodes.length - 1)
                         const selfPos = { x: 50, y: 50 }
+                        const connectionKey = `connection-${node.id}`
                         
                         return (
-                          <g key={node.id}>
+                          <g key={connectionKey}>
                             <motion.line
                               x1={`${selfPos.x}%`}
                               y1={`${selfPos.y}%`}
                               x2={`${nodePos.x}%`}
                               y2={`${nodePos.y}%`}
                               stroke={getConnectionColor(node.connectionState)}
-                              strokeWidth={node.connectionState === "established" ? 2 : 1}
-                              strokeDasharray={node.connectionState === "connecting" ? "5,5" : "0"}
+                              strokeWidth={node.connectionState === "established" ? 2.5 : 1.5}
+                              strokeDasharray={node.connectionState === "connecting" ? "8,4" : "0"}
+                              strokeOpacity={0.7}
                               initial={{ pathLength: 0, opacity: 0 }}
-                              animate={{ pathLength: 1, opacity: 0.6 }}
-                              transition={{ duration: 1 }}
+                              animate={{ 
+                                pathLength: 1, 
+                                opacity: node.connectionState === "established" ? 0.8 : 0.5 
+                              }}
+                              transition={{ duration: 1.2, ease: "easeInOut" }}
                             />
+                            {/* Data flow animation */}
                             {node.connectionState === "established" && showMessages && (
-                              <motion.circle
-                                r="3"
-                                fill={getConnectionColor(node.connectionState)}
-                                initial={{ x: `${selfPos.x}%`, y: `${selfPos.y}%` }}
-                                animate={{ 
-                                  x: [`${selfPos.x}%`, `${nodePos.x}%`, `${selfPos.x}%`],
-                                  y: [`${selfPos.y}%`, `${nodePos.y}%`, `${selfPos.y}%`]
-                                }}
-                                transition={{
-                                  duration: 3,
-                                  repeat: Infinity,
-                                  ease: "linear"
-                                }}
-                              />
+                              <>
+                                <motion.circle
+                                  r="2.5"
+                                  fill={getConnectionColor(node.connectionState)}
+                                  fillOpacity={0.9}
+                                  cx={`${selfPos.x}%`}
+                                  cy={`${selfPos.y}%`}
+                                  animate={{
+                                    cx: [`${selfPos.x}%`, `${nodePos.x}%`, `${selfPos.x}%`],
+                                    cy: [`${selfPos.y}%`, `${nodePos.y}%`, `${selfPos.y}%`],
+                                    scale: [0.8, 1.2, 0.8]
+                                  }}
+                                  transition={{
+                                    duration: 2.5,
+                                    repeat: Infinity,
+                                    ease: "easeInOut",
+                                    delay: i * 0.3
+                                  }}
+                                />
+                                {/* Return data flow */}
+                                <motion.circle
+                                  r="2"
+                                  fill={getConnectionColor(node.connectionState)}
+                                  fillOpacity={0.6}
+                                  cx={`${nodePos.x}%`}
+                                  cy={`${nodePos.y}%`}
+                                  animate={{
+                                    cx: [`${nodePos.x}%`, `${selfPos.x}%`, `${nodePos.x}%`],
+                                    cy: [`${nodePos.y}%`, `${selfPos.y}%`, `${nodePos.y}%`],
+                                    scale: [0.6, 1, 0.6]
+                                  }}
+                                  transition={{
+                                    duration: 2.5,
+                                    repeat: Infinity,
+                                    ease: "easeInOut",
+                                    delay: i * 0.3 + 1.25
+                                  }}
+                                />
+                              </>
                             )}
                           </g>
                         )
@@ -1046,19 +1093,25 @@ export default function P2PNetworkPage() {
                     {nodes.map((node, i) => {
                       const pos = getNodePosition(node, i, nodes.length - 1)
                       const isSelected = selectedNode?.id === node.id
+                      const nodeKey = `node-${node.id}`
                       
                       return (
                         <motion.div
-                          key={node.id}
+                          key={nodeKey}
                           className="absolute"
                           style={{
                             left: `${pos.x}%`,
                             top: `${pos.y}%`,
-                            transform: "translate(-50%, -50%)"
+                            transform: "translate(-50%, -50%)",
+                            zIndex: node.id === "self" ? 20 : isSelected ? 15 : 10
                           }}
-                          initial={{ scale: 0 }}
-                          animate={{ scale: isSelected ? 1.2 : 1 }}
-                          whileHover={{ scale: 1.1 }}
+                          initial={{ scale: 0, opacity: 0 }}
+                          animate={{ 
+                            scale: isSelected ? 1.3 : 1,
+                            opacity: 1
+                          }}
+                          whileHover={{ scale: isSelected ? 1.35 : 1.15 }}
+                          transition={{ type: "spring", stiffness: 300, damping: 30 }}
                           onClick={() => setSelectedNode(node)}
                         >
                           <div className={cn(
@@ -1068,38 +1121,49 @@ export default function P2PNetworkPage() {
                             {/* Node glow */}
                             {(node.connectionState === "established" || node.id === "self") && (
                               <motion.div
-                                className="absolute inset-0 rounded-full blur-xl"
+                                className="absolute inset-0 rounded-full blur-lg"
                                 style={{
-                                  background: node.type === "trusted" 
-                                    ? "radial-gradient(circle, rgba(34,197,94,0.4) 0%, transparent 70%)"
+                                  background: node.id === "self"
+                                    ? "radial-gradient(circle, rgba(98,126,234,0.6) 0%, rgba(161,106,232,0.3) 50%, transparent 80%)"
+                                    : node.type === "trusted" 
+                                    ? "radial-gradient(circle, rgba(34,197,94,0.5) 0%, transparent 70%)"
                                     : node.type === "banned"
-                                    ? "radial-gradient(circle, rgba(239,68,68,0.4) 0%, transparent 70%)"
-                                    : "radial-gradient(circle, rgba(59,130,246,0.4) 0%, transparent 70%)"
+                                    ? "radial-gradient(circle, rgba(239,68,68,0.5) 0%, transparent 70%)"
+                                    : "radial-gradient(circle, rgba(59,130,246,0.4) 0%, transparent 70%)",
+                                  width: node.id === "self" ? "150%" : "120%",
+                                  height: node.id === "self" ? "150%" : "120%",
+                                  left: "50%",
+                                  top: "50%",
+                                  transform: "translate(-50%, -50%)"
                                 }}
                                 animate={{
-                                  scale: [1, 1.5, 1],
-                                  opacity: [0.5, 0.8, 0.5]
+                                  scale: node.id === "self" ? [1, 1.2, 1] : [1, 1.3, 1],
+                                  opacity: node.id === "self" ? [0.6, 0.9, 0.6] : [0.4, 0.7, 0.4]
                                 }}
                                 transition={{
-                                  duration: 2,
-                                  repeat: Infinity
+                                  duration: node.id === "self" ? 3 : 2.5,
+                                  repeat: Infinity,
+                                  ease: "easeInOut"
                                 }}
                               />
                             )}
                             
                             {/* Node circle */}
                             <div className={cn(
-                              "relative w-12 h-12 rounded-full border-2 flex items-center justify-center transition-all",
+                              "relative rounded-full border-2 flex items-center justify-center transition-all duration-300",
                               node.id === "self" 
-                                ? "bg-gradient-to-br from-[#627eea] to-[#a16ae8] border-white shadow-lg"
-                                : node.type === "trusted"
-                                ? "bg-green-500/20 border-green-500"
+                                ? "w-16 h-16 bg-gradient-to-br from-[#627eea] to-[#a16ae8] border-white shadow-xl shadow-[#627eea]/30"
+                                : "w-12 h-12",
+                              node.type === "trusted" && node.id !== "self"
+                                ? "bg-green-500/30 border-green-400 shadow-lg shadow-green-500/20"
                                 : node.type === "banned"
-                                ? "bg-red-500/20 border-red-500"
+                                ? "bg-red-500/30 border-red-400 shadow-lg shadow-red-500/20"
                                 : node.type === "basic"
-                                ? "bg-blue-500/20 border-blue-500"
-                                : "bg-zinc-700/50 border-zinc-600",
-                              isSelected && "ring-2 ring-white ring-offset-2 ring-offset-zinc-900"
+                                ? "bg-blue-500/30 border-blue-400 shadow-lg shadow-blue-500/20"
+                                : node.id !== "self" && "bg-zinc-700/50 border-zinc-500",
+                              isSelected && "ring-2 ring-white ring-offset-2 ring-offset-zinc-900",
+                              node.connectionState === "established" && "border-opacity-100",
+                              node.connectionState === "connecting" && "border-opacity-60 animate-pulse"
                             )}>
                               {node.id === "self" ? (
                                 <Server className="w-6 h-6 text-white" />
@@ -1145,8 +1209,55 @@ export default function P2PNetworkPage() {
                     })}
                   </div>
 
+                  {/* Controls */}
+                  <div className="mt-4 flex items-center justify-between">
+                    <div className="flex items-center gap-3">
+                      <button
+                        onClick={() => setShowMessages(!showMessages)}
+                        className={cn(
+                          "flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium transition-all",
+                          showMessages 
+                            ? "bg-green-500/20 text-green-400 border border-green-500/30" 
+                            : "bg-zinc-800 text-zinc-400 hover:text-white"
+                        )}
+                      >
+                        {showMessages ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
+                        Data Flow
+                      </button>
+                      
+                      <button
+                        onClick={simulateConnection}
+                        disabled={isDiscoveryRunning}
+                        className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium bg-blue-500/20 text-blue-400 border border-blue-500/30 hover:bg-blue-500/30 transition-all disabled:opacity-50"
+                      >
+                        <UserPlus className="w-4 h-4" />
+                        Add Peer
+                      </button>
+                      
+                      <button
+                        onClick={() => {
+                          setNodes(prev => prev.map(n => 
+                            n.id === "self" ? n : { ...n, connectionState: "disconnected" as ConnectionState }
+                          ))
+                        }}
+                        className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium bg-red-500/20 text-red-400 border border-red-500/30 hover:bg-red-500/30 transition-all"
+                      >
+                        <WifiOff className="w-4 h-4" />
+                        Disconnect All
+                      </button>
+                    </div>
+
+                    <div className="text-xs text-zinc-500">
+                      {nodes.filter(n => n.connectionState === "established").length} established connections
+                    </div>
+                  </div>
+
                   {/* Legend */}
                   <div className="mt-4 flex flex-wrap gap-4 text-xs">
+                    <div className="flex items-center gap-2">
+                      <div className="w-3 h-3 rounded-full bg-gradient-to-r from-[#627eea] to-[#a16ae8]" />
+                      <span className="text-zinc-400">Your Node</span>
+                    </div>
                     <div className="flex items-center gap-2">
                       <div className="w-3 h-3 rounded-full bg-green-500" />
                       <span className="text-zinc-400">Trusted/Bootstrap</span>
