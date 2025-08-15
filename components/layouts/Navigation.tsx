@@ -18,7 +18,8 @@ import {
   Blocks,
   Layers,
   Code2,
-  Network
+  Network,
+  Package
 } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
@@ -57,6 +58,13 @@ const navItems = [
     icon: Cpu,
     description: "Block processing",
     gradient: "from-purple-500 to-pink-500"
+  },
+  { 
+    href: "/chapters/block-lifecycle", 
+    label: "Block Lifecycle", 
+    icon: Package,
+    description: "End-to-end flow",
+    gradient: "from-amber-500 to-orange-500"
   },
   { 
     href: "/chapters/state-root", 
