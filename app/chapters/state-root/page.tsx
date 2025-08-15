@@ -8,6 +8,7 @@ import {
   Layers, Play, Pause, RotateCcw
 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import PageContainer from "@/components/ui/PageContainer"
 
 type Strategy = "sparse" | "parallel" | "sequential"
 type ScenarioType = "small-block" | "large-block" | "cache-hot" | "cache-cold"
@@ -150,8 +151,7 @@ export default function StateRootPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#141414] via-[#1a1a2e] to-[#141414] p-8">
-      <div className="max-w-7xl mx-auto">
+    <PageContainer>
         {/* Header with gradient */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -381,7 +381,6 @@ export default function StateRootPage() {
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
-    </div>
+    </PageContainer>
   )
 }

@@ -8,6 +8,7 @@ import {
   Database, Cpu, Zap, Info
 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import PageContainer from "@/components/ui/PageContainer"
 
 interface TrieNode {
   id: string
@@ -288,8 +289,7 @@ export default function TriePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#141414] via-[#1a1a2e] to-[#141414] p-8">
-      <div className="max-w-7xl mx-auto">
+    <PageContainer>
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
@@ -461,7 +461,6 @@ export default function TriePage() {
             </div>
           </motion.div>
         </div>
-      </div>
-    </div>
+    </PageContainer>
   )
 }

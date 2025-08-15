@@ -38,12 +38,10 @@ export default function RootLayout({
         className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased bg-[#141414] text-white`}
       >
         <AnimatedBackground />
-        <div className="relative flex h-screen overflow-hidden">
-          <Navigation />
-          <main className="flex-1 overflow-y-auto lg:ml-72 pt-16 lg:pt-0">
-            {children}
-          </main>
-        </div>
+        <Navigation />
+        <main className="min-h-screen pt-16 lg:pt-0 lg:pl-72">
+          {children}
+        </main>
       </body>
     </html>
   );

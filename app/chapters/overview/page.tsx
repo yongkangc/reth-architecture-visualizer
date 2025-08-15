@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, Layers, Cpu, Database, Network, Zap, Shield } from 'lucide-react';
 import Link from 'next/link';
+import PageContainer from '@/components/ui/PageContainer';
 
 export default function OverviewPage() {
   const features = [
@@ -62,7 +63,7 @@ export default function OverviewPage() {
   ];
 
   return (
-    <div className="min-h-screen p-8">
+    <PageContainer>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -196,6 +197,6 @@ export default function OverviewPage() {
           <p>Ready to dive deeper? Choose a chapter above to start exploring!</p>
         </motion.div>
       </motion.div>
-    </div>
+    </PageContainer>
   );
 }
