@@ -40,7 +40,7 @@ export default function RootLayout({
         <AnimatedBackground />
         <div className="relative flex h-screen overflow-hidden">
           <Navigation />
-          <main className="flex-1 overflow-y-auto ml-72">
+          <main className="flex-1 overflow-y-auto lg:ml-72 pt-16 lg:pt-0">
             {children}
           </main>
         </div>
