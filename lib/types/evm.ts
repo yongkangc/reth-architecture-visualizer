@@ -23,7 +23,7 @@ export interface Opcode {
   category: OpcodeCategory
   description: string
   gasBase: number
-  gasDynamic?: (args: any[]) => number
+  gasDynamic?: (args: unknown[]) => number
   inputs: number
   outputs: number
   examples: string[]

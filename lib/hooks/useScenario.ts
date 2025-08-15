@@ -1,15 +1,15 @@
 import { useState, useRef, useCallback } from 'react'
 
-export interface ScenarioStep<T = any> {
+export interface ScenarioStep<T = unknown> {
   id: string
   component: T
   action: string
   duration: number
   highlight?: T[]
-  data?: any
+  data?: unknown
 }
 
-export interface Scenario<T = any> {
+export interface Scenario<T = unknown> {
   id: string
   name: string
   description: string
@@ -18,7 +18,7 @@ export interface Scenario<T = any> {
   icon?: React.ComponentType<{ className?: string }>
 }
 
-export interface ScenarioState<T = any> {
+export interface ScenarioState<T = unknown> {
   currentScenario: string | null
   currentStep: number
   isRunning: boolean
@@ -27,7 +27,7 @@ export interface ScenarioState<T = any> {
   highlightedComponents: T[]
 }
 
-export interface ScenarioControls<T = any> {
+export interface ScenarioControls<T = unknown> {
   runScenario: (scenarioId: string) => void
   stopScenario: () => void
   pauseScenario: () => void
@@ -37,7 +37,7 @@ export interface ScenarioControls<T = any> {
   goToStep: (step: number) => void
 }
 
-export interface UseScenarioOptions<T = any> {
+export interface UseScenarioOptions<T = unknown> {
   scenarios: Scenario<T>[]
   onStepChange?: (step: ScenarioStep<T>, stepIndex: number) => void
   onScenarioComplete?: (scenario: Scenario<T>) => void
@@ -46,7 +46,7 @@ export interface UseScenarioOptions<T = any> {
   autoHighlight?: boolean
 }
 
-export function useScenario<T = any>(options: UseScenarioOptions<T>) {
+export function useScenario<T = unknown>(options: UseScenarioOptions<T>) {
   const {
     scenarios,
     onStepChange,

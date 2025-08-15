@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
 
-export interface SelectionState<T = any> {
+export interface SelectionState<T = unknown> {
   activeItem: T | null
   persistentItem: T | null
   hoveredItem: T | null
@@ -9,7 +9,7 @@ export interface SelectionState<T = any> {
   isItemHovered: (item: T) => boolean
 }
 
-export interface SelectionControls<T = any> {
+export interface SelectionControls<T = unknown> {
   selectItem: (item: T) => void
   clearSelection: () => void
   togglePersistent: (item: T) => void
@@ -19,7 +19,7 @@ export interface SelectionControls<T = any> {
   handleItemLeave: () => void
 }
 
-export interface UsePersistentSelectionOptions<T = any> {
+export interface UsePersistentSelectionOptions<T = unknown> {
   allowHover?: boolean
   autoSelectOnHover?: boolean
   onSelectionChange?: (item: T | null) => void
@@ -28,7 +28,7 @@ export interface UsePersistentSelectionOptions<T = any> {
   isEqual?: (a: T, b: T) => boolean
 }
 
-export function usePersistentSelection<T = any>(
+export function usePersistentSelection<T = unknown>(
   options: UsePersistentSelectionOptions<T> = {}
 ) {
   const {

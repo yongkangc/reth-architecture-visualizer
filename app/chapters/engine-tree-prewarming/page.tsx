@@ -3,11 +3,11 @@
 import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { 
-  Cpu, Zap, GitBranch, Package, Clock, Activity,
-  Play, Pause, RotateCcw, Info, AlertTriangle, Database,
-  ArrowRight, ChevronRight, Layers, Binary, Hash,
-  Network, Shield, CheckCircle, XCircle, Gauge,
-  TreePine, FlameIcon, MemoryStick, type LucideIcon
+  Cpu, Zap, Package, Clock,
+  Play, Pause, RotateCcw, Database,
+  Binary, Hash,
+  Shield, CheckCircle, Gauge,
+  TreePine, FlameIcon, type LucideIcon
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import PageContainer from "@/components/ui/PageContainer"

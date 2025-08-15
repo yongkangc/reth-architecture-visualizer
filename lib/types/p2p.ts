@@ -64,7 +64,7 @@ export interface NetworkMessage {
   to: NodeId
   timestamp: number
   size: number
-  payload?: any
+  payload?: unknown
   response?: NetworkMessage
   status: "pending" | "sent" | "received" | "failed"
   latency?: number
