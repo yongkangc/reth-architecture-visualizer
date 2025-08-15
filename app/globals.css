@@ -3,11 +3,30 @@
 :root {
   --font-inter: 'Inter', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+  
+  /* Ethereum.org inspired colors */
+  --eth-purple: #627eea;
+  --eth-purple-light: #8198ee;
+  --eth-purple-dark: #4c5eb8;
+  --eth-pink: #cf4a7a;
+  --eth-orange: #f6851b;
+  --eth-green: #28a745;
+  --eth-blue: #1c75bc;
+  --eth-teal: #37cdbe;
+  --eth-yellow: #ffd33d;
+  
+  /* Background gradients */
+  --gradient-purple: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-warm: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --gradient-cool: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  --gradient-eth: linear-gradient(135deg, #627eea 0%, #cf4a7a 50%, #f6851b 100%);
 }
 
 .dark {
-  --background: #000000;
+  --background: #141414;
   --foreground: #ffffff;
+  --surface: #1b1b1b;
+  --surface-light: #242424;
 }
 
 * {
@@ -44,27 +63,87 @@ body {
 
 /* Animation classes */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; transform: translateY(20px) scale(0.95); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-@keyframes pulse {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.5; }
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
+}
+
+@keyframes gradient-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(98, 126, 234, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(98, 126, 234, 0.6); }
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 
 .animate-fade-in {
-  animation: fadeIn 0.5s ease-out;
+  animation: fadeIn 0.6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.animate-pulse-slow {
-  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+.animate-gradient {
+  background-size: 200% 200%;
+  animation: gradient-shift 4s ease infinite;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+.animate-rotate {
+  animation: rotate 20s linear infinite;
+}
+
+/* Glassmorphism effect */
+.glass {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Gradient text */
+.gradient-text {
+  background: var(--gradient-eth);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Card hover effects */
+.card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.card-hover:hover {
+  transform: translateY(-5px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(98, 126, 234, 0.2);
+}
+
+/* Neon glow effect */
+.neon-purple {
+  color: var(--eth-purple);
+  text-shadow: 0 0 10px var(--eth-purple), 0 0 20px var(--eth-purple), 0 0 30px var(--eth-purple);
 }
 
 /* Code highlighting */
 .code-highlight {
-  background: linear-gradient(90deg, transparent, rgba(251, 146, 60, 0.1), transparent);
-  animation: slide 2s linear infinite;
+  background: linear-gradient(90deg, transparent, rgba(98, 126, 234, 0.2), transparent);
+  animation: slide 3s linear infinite;
 }
 
 @keyframes slide {
