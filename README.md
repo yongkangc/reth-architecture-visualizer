@@ -1,22 +1,27 @@
-# Reth Architecture Interactive Visualization
+# Reth Architecture Interactive Visualizer
 
-An interactive learning platform for understanding Reth's architecture and internal systems. Built with Next.js, TypeScript, and Framer Motion.
+An interactive learning platform for understanding [Reth](https://github.com/paradigmxyz/reth)'s architecture and internal systems. Built with Next.js, TypeScript, and Framer Motion with an Ethereum.org-inspired design.
 
 ![Reth Architecture](https://img.shields.io/badge/Reth-Architecture-orange)
 ![Next.js](https://img.shields.io/badge/Next.js-14-black)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)
 
-## 🚀 Overview
+## 🚀 Live Demo
 
-This visualization tool helps engineers understand Reth's complex architecture through interactive simulations, animations, and step-by-step explanations of core systems.
+🌐 **[View Live Demo](https://visualizations-hltxwcm38-chiayongtcac-gmailcoms-projects.vercel.app)**
 
-### Features
+## 🎯 Overview
 
-- **Interactive Simulations**: Visualize Engine API flow, state root computation, and transaction processing
-- **Step-by-Step Learning**: Progressive chapters that build understanding from fundamentals to advanced concepts
-- **Real-time Animations**: See how data flows through Reth's systems in real-time
-- **Code Examples**: Actual Rust code snippets showing implementation details
-- **Performance Metrics**: Understand timing and optimization strategies
+This visualization tool helps engineers understand Reth's complex architecture through interactive simulations, animations, and step-by-step explanations of core systems. Based on deep analysis of Reth's codebase and comprehensive gists documenting internal architectures.
+
+### ✨ Features
+
+- **🎮 Interactive Simulations**: Real-time visualization of Engine API flow, state root computation strategies, and trie navigation
+- **📚 Progressive Learning**: Five chapters covering everything from basics to advanced optimization strategies
+- **🎨 Beautiful UI**: Ethereum.org-inspired design with gradients, glassmorphism, and smooth animations
+- **💻 Code Examples**: Actual Rust implementation snippets with syntax highlighting
+- **📊 Performance Metrics**: Live metrics showing execution times, cache hits, and resource usage
+- **🔄 Real-time State**: Watch how Reth processes blocks and manages state in real-time
 
 ## 📚 Chapters
 
@@ -42,26 +47,43 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000) to view the application.
 
-## 🏗️ Architecture
+## 🏗️ Project Structure (Refactored)
 
 ```
 visualizations/
-├── app/                    # Next.js app directory
-│   ├── chapters/          # Chapter pages
-│   │   ├── engine-api/    # Engine API visualization
-│   │   ├── state-root/    # State root computation
-│   │   ├── trie/          # Trie architecture
-│   │   └── transaction/   # Transaction flow
-│   └── page.tsx           # Home page
-├── components/            # React components
-│   ├── visualizations/    # Interactive visualizations
-│   ├── ui/               # UI components
-│   └── layouts/          # Layout components
-└── lib/                   # Utilities and helpers
-    ├── animations/        # Animation configs
-    ├── simulations/       # Simulation logic
-    └── data/             # Static data
+├── app/                        # Next.js app directory
+│   ├── chapters/              # Chapter pages
+│   │   ├── engine-api/        # Engine API visualization
+│   │   ├── state-root/        # State root computation
+│   │   ├── trie/              # Trie architecture
+│   │   └── transaction/       # Transaction flow
+│   └── page.tsx               # Home page
+├── components/                # Modular React components
+│   ├── visualizations/        # Feature-specific components
+│   │   ├── engine-api/       # Engine API components
+│   │   ├── state-root/       # State root components
+│   │   └── trie/             # Trie visualization components
+│   ├── ui/                   # Reusable UI components
+│   │   ├── buttons/          # Button components
+│   │   ├── cards/            # Card components
+│   │   └── metrics/          # Metric display components
+│   └── layouts/              # Layout components
+└── lib/                       # Core utilities
+    ├── types/                # TypeScript type definitions
+    ├── constants/            # Shared constants
+    ├── hooks/                # Custom React hooks
+    └── utils.ts              # Utility functions
 ```
+
+### 📦 Component Architecture
+
+The codebase has been refactored for maintainability:
+
+- **Small, focused components**: Each component has a single responsibility
+- **Shared types and constants**: Centralized in `/lib` for consistency
+- **Reusable UI components**: Common UI patterns extracted for reuse
+- **Custom hooks**: Simulation logic abstracted into hooks
+- **Feature-based organization**: Components grouped by feature area
 
 ## 🎨 Technology Stack
 
