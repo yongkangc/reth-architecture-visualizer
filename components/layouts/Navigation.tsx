@@ -19,7 +19,8 @@ import {
   Layers,
   Code2,
   Network,
-  Package
+  Package,
+  Shield
 } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
@@ -65,6 +66,13 @@ const navItems = [
     icon: Package,
     description: "End-to-end flow",
     gradient: "from-amber-500 to-orange-500"
+  },
+  { 
+    href: "/chapters/payload-validation", 
+    label: "Payload Validation", 
+    icon: Shield,
+    description: "Deep validation flow",
+    gradient: "from-rose-500 to-pink-500"
   },
   { 
     href: "/chapters/state-root", 

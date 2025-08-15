@@ -5,8 +5,10 @@ import { motion, AnimatePresence } from "framer-motion"
 import { 
   Play, Pause, RotateCcw, ChevronRight, Clock, Activity, 
   Package, Check, AlertCircle, Zap, Network, Database,
-  GitBranch, Upload, Download, Shield, Cpu, HardDrive
+  GitBranch, Upload, Download, Shield, Cpu, HardDrive,
+  ArrowRight, ExternalLink
 } from "lucide-react"
+import Link from "next/link"
 import { cn } from "@/lib/utils"
 import PageContainer from "@/components/ui/PageContainer"
 
@@ -453,6 +455,37 @@ export default function BlockLifecyclePage() {
           <div>
             <h1 className="text-3xl font-bold text-white">Block Lifecycle</h1>
             <p className="text-zinc-400 mt-1">Complete journey of a block through Reth</p>
+          </div>
+        </div>
+
+        {/* Related Sections */}
+        <div className="mt-6 p-4 rounded-lg bg-blue-500/10 border border-blue-500/30">
+          <h3 className="text-blue-400 font-semibold mb-3">Related Deep Dives</h3>
+          <div className="flex flex-wrap gap-3">
+            <Link 
+              href="/chapters/engine-api"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 transition-colors text-white"
+            >
+              <Cpu className="w-4 h-4" />
+              <span>Engine API Details</span>
+              <ArrowRight className="w-3 h-3 text-zinc-400" />
+            </Link>
+            <Link 
+              href="/chapters/payload-validation"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 transition-colors text-white"
+            >
+              <Shield className="w-4 h-4" />
+              <span>Payload Validation Deep Dive</span>
+              <ArrowRight className="w-3 h-3 text-zinc-400" />
+            </Link>
+            <Link 
+              href="/chapters/state-root"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-zinc-800 hover:bg-zinc-700 transition-colors text-white"
+            >
+              <GitBranch className="w-4 h-4" />
+              <span>State Root Computation</span>
+              <ArrowRight className="w-3 h-3 text-zinc-400" />
+            </Link>
           </div>
         </div>
 
