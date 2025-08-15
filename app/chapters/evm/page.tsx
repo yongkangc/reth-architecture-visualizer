@@ -185,11 +185,13 @@ export default function EVMPage() {
       else if (step.id === "apply-state") setExecutionPhase("applying")
       
       // Update metrics
-      if (step.gasUsed) {
-        setTotalGasUsed(prev => prev + step.gasUsed)
+      if (step.gasUsed !== undefined) {
+        const gas = step.gasUsed
+        setTotalGasUsed(prev => prev + gas)
       }
-      if (step.stateChanges) {
-        setTotalStateChanges(prev => prev + step.stateChanges)
+      if (step.stateChanges !== undefined) {
+        const changes = step.stateChanges
+        setTotalStateChanges(prev => prev + changes)
       }
 
       setTimeout(() => {
@@ -399,7 +401,7 @@ export default function EVMPage() {
                       <div className="flex-1">
                         <div className="flex items-center gap-2">
                           <h4 className="font-medium text-sm">{step.name}</h4>
-                          {step.gasUsed > 0 && currentStep >= index && (
+                          {step.gasUsed && step.gasUsed > 0 && currentStep >= index && (
                             <span className="text-xs px-2 py-0.5 rounded-full bg-blue-500/20 text-blue-400">
                               {step.gasUsed.toLocaleString()} gas
                             </span>
