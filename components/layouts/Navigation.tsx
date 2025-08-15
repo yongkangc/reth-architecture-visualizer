@@ -17,7 +17,8 @@ import {
   X,
   Blocks,
   Layers,
-  Code2
+  Code2,
+  Network
 } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
@@ -77,6 +78,13 @@ const navItems = [
     icon: Code2,
     description: "Revm & Alloy",
     gradient: "from-pink-500 to-rose-500"
+  },
+  { 
+    href: "/chapters/p2p-network", 
+    label: "P2P Network", 
+    icon: Network,
+    description: "DevP2P & Discovery",
+    gradient: "from-blue-500 to-indigo-500"
   },
   { 
     href: "/chapters/transaction", 
@@ -189,13 +197,13 @@ export default function Navigation() {
         <div className="px-6 py-4">
           <div className="flex items-center justify-between text-xs text-zinc-500 mb-2">
             <span>Progress</span>
-            <span>7/9 Chapters</span>
+            <span>8/10 Chapters</span>
           </div>
           <div className="w-full h-1 bg-zinc-800 rounded-full overflow-hidden">
             <motion.div 
               className="h-full bg-gradient-to-r from-[#627eea] to-[#a16ae8]"
               initial={{ width: 0 }}
-              animate={{ width: "77%" }}
+              animate={{ width: "80%" }}
               transition={{ duration: 1, ease: "easeOut" }}
             />
           </div>
