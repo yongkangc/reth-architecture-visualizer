@@ -16,7 +16,8 @@ import {
   Menu,
   X,
   Blocks,
-  Layers
+  Layers,
+  Code2
 } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
@@ -29,18 +30,25 @@ const navItems = [
     gradient: "from-zinc-500 to-zinc-600"
   },
   { 
-    href: "/chapters/architecture", 
-    label: "Architecture", 
+    href: "/chapters/overview",
+    label: "Architecture Overview",
     icon: Blocks,
-    description: "High-level overview",
+    description: "System design",
     gradient: "from-blue-500 to-cyan-500"
+  },
+  { 
+    href: "/chapters/architecture", 
+    label: "High-Level Architecture", 
+    icon: Layers,
+    description: "Components overview",
+    gradient: "from-orange-500 to-red-500"
   },
   { 
     href: "/chapters/staged-sync", 
     label: "Staged Sync", 
-    icon: Layers,
+    icon: Activity,
     description: "Sync pipeline",
-    gradient: "from-orange-500 to-red-500"
+    gradient: "from-yellow-500 to-orange-500"
   },
   { 
     href: "/chapters/engine-api", 
@@ -64,23 +72,16 @@ const navItems = [
     gradient: "from-teal-500 to-cyan-500"
   },
   { 
-<<<<<<< HEAD
     href: "/chapters/evm", 
     label: "EVM Stack", 
-    icon: Settings,
+    icon: Code2,
     description: "Revm & Alloy",
-=======
-    href: "/chapters/overview",
-    label: "Architecture Overview",
-    icon: Settings,
-    description: "System design",
->>>>>>> origin/fix-responsiveness
     gradient: "from-pink-500 to-rose-500"
   },
   { 
     href: "/chapters/transaction", 
     label: "Transactions", 
-    icon: Activity,
+    icon: Settings,
     description: "Mempool to block",
     gradient: "from-indigo-500 to-purple-500"
   }
@@ -166,79 +167,9 @@ export default function Navigation() {
         )}
       </AnimatePresence>
 
-<<<<<<< HEAD
-      {/* Desktop Navigation */}
-      <nav className="hidden lg:block fixed left-0 top-0 h-screen w-72 bg-gradient-to-b from-[#1a1a1a]/95 to-[#141414]/95 backdrop-blur-2xl border-r border-white/5 overflow-y-auto z-50">
-        <DesktopNavigationContent pathname={pathname} />
-      </nav>
-    </>
-  )
-}
-
-function DesktopNavigationContent({ pathname }: { pathname: string }) {
-  return (
-    <>
-      {/* Header */}
-      <div className="p-6 border-b border-white/5">
-        <motion.div
-          initial={{ opacity: 0, y: -10 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="flex items-center gap-3 mb-3"
-        >
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#627eea] to-[#a16ae8] flex items-center justify-center shadow-lg shadow-[#627eea]/20">
-            <Sparkles className="w-5 h-5 text-white" />
-          </div>
-          <div>
-            <h2 className="text-lg font-bold text-white">Reth Architecture</h2>
-            <p className="text-xs text-zinc-400">Interactive Learning Platform</p>
-          </div>
-        </motion.div>
-      </div>
-
-      {/* Navigation Items */}
-      <NavigationItems pathname={pathname} />
-
-      {/* Progress indicator */}
-      <div className="px-6 py-4">
-        <div className="flex items-center justify-between text-xs text-zinc-500 mb-2">
-          <span>Progress</span>
-          <span>7/8 Chapters</span>
-        </div>
-        <div className="w-full h-1 bg-zinc-800 rounded-full overflow-hidden">
-          <motion.div 
-            className="h-full bg-gradient-to-r from-[#627eea] to-[#a16ae8]"
-            initial={{ width: 0 }}
-            animate={{ width: "87.5%" }}
-            transition={{ duration: 1, ease: "easeOut" }}
-          />
-        </div>
-      </div>
-
-      {/* Footer */}
-      <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-white/5">
-        <div className="flex items-center gap-2 text-xs text-zinc-500 mb-2">
-          <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-          <span>System Online</span>
-        </div>
-        <p className="text-xs text-zinc-600">
-          Built with ❤️ for the Reth community
-        </p>
-      </div>
-    </>
-  )
-}
-
-function MobileNavigationContent({ pathname, onClose }: { pathname: string; onClose: () => void }) {
-  return (
-    <>
-      {/* Header with close button */}
-      <div className="p-4 border-b border-white/5">
-        <div className="flex items-center justify-between mb-3">
-=======
       {/* Desktop Sidebar - Fixed on left */}
       <aside className="hidden lg:block fixed left-0 top-0 bottom-0 w-72 bg-[#1a1a1a]/95 backdrop-blur-xl border-r border-white/5 overflow-y-auto">
         <div className="p-6 border-b border-white/5">
->>>>>>> origin/fix-responsiveness
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#627eea] to-[#a16ae8] flex items-center justify-center shadow-lg shadow-[#627eea]/20">
               <Sparkles className="w-5 h-5 text-white" />
@@ -258,26 +189,17 @@ function MobileNavigationContent({ pathname, onClose }: { pathname: string; onCl
         <div className="px-6 py-4">
           <div className="flex items-center justify-between text-xs text-zinc-500 mb-2">
             <span>Progress</span>
-            <span>4/6 Chapters</span>
+            <span>7/9 Chapters</span>
           </div>
           <div className="w-full h-1 bg-zinc-800 rounded-full overflow-hidden">
             <motion.div 
               className="h-full bg-gradient-to-r from-[#627eea] to-[#a16ae8]"
               initial={{ width: 0 }}
-              animate={{ width: "66%" }}
+              animate={{ width: "77%" }}
               transition={{ duration: 1, ease: "easeOut" }}
             />
           </div>
         </div>
-<<<<<<< HEAD
-        <div className="w-full h-1 bg-zinc-800 rounded-full overflow-hidden">
-          <motion.div 
-            className="h-full bg-gradient-to-r from-[#627eea] to-[#a16ae8]"
-            initial={{ width: 0 }}
-            animate={{ width: "87.5%" }}
-            transition={{ duration: 1, ease: "easeOut" }}
-          />
-=======
 
         {/* Footer */}
         <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-white/5">
@@ -288,7 +210,6 @@ function MobileNavigationContent({ pathname, onClose }: { pathname: string; onCl
           <p className="text-xs text-zinc-600">
             Built with ❤️ for the Reth community
           </p>
->>>>>>> origin/fix-responsiveness
         </div>
       </aside>
     </>
