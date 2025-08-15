@@ -1226,8 +1226,8 @@ export default function P2PNetworkPage() {
                       </button>
                       
                       <button
-                        onClick={simulateConnection}
-                        disabled={isDiscoveryRunning}
+                        onClick={simulateNewNodeDiscovery}
+                        disabled={isDiscovering}
                         className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-sm font-medium bg-blue-500/20 text-blue-400 border border-blue-500/30 hover:bg-blue-500/30 transition-all disabled:opacity-50"
                       >
                         <UserPlus className="w-4 h-4" />

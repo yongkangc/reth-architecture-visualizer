@@ -101,7 +101,7 @@ export const EXECUTION_STAGES: ExecutionStage[] = [
   {
     id: "execute-txs",
     name: "Execute All Transactions",
-    phase: "executing",
+    phase: "execution",
     description: "Process all transactions sequentially, updating state after each",
     icon: Activity,
     systemCalls: [
@@ -305,7 +305,7 @@ export const EVM_OPCODES: Record<string, Opcode> = {
     category: "memory",
     description: "Load 32 bytes from memory at offset",
     gasBase: 3,
-    gasDynamic: (args) => Math.floor((args[0] + 31) / 32) * 3, // Memory expansion cost
+    gasDynamic: (args: unknown[]) => Math.floor(((args[0] as number) + 31) / 32) * 3, // Memory expansion cost
     inputs: 1,
     outputs: 1,
     examples: ["MLOAD(0x40) - Load from free memory pointer"],
@@ -318,7 +318,7 @@ export const EVM_OPCODES: Record<string, Opcode> = {
     category: "memory",
     description: "Store 32 bytes to memory at offset",
     gasBase: 3,
-    gasDynamic: (args) => Math.floor((args[0] + 31) / 32) * 3,
+    gasDynamic: (args: unknown[]) => Math.floor(((args[0] as number) + 31) / 32) * 3,
     inputs: 2,
     outputs: 0,
     examples: ["MSTORE(0x40, value) - Store to free memory pointer"],
@@ -345,7 +345,7 @@ export const EVM_OPCODES: Record<string, Opcode> = {
     category: "storage",
     description: "Store value to storage slot",
     gasBase: 20000, // Setting storage slot costs
-    gasDynamic: (args) => args[1] !== 0 ? 20000 : 5000, // Different costs for setting vs clearing
+    gasDynamic: (args: unknown[]) => (args[1] as number) !== 0 ? 20000 : 5000, // Different costs for setting vs clearing
     inputs: 2,
     outputs: 0,
     examples: ["SSTORE(0, value) - Store to slot 0"],
@@ -412,7 +412,7 @@ export const EVM_OPCODES: Record<string, Opcode> = {
     category: "system",
     description: "Call another contract",
     gasBase: 700,
-    gasDynamic: (args) => args[2] > 0 ? 9000 : 0, // Transfer value cost
+    gasDynamic: (args: unknown[]) => (args[2] as number) > 0 ? 9000 : 0, // Transfer value cost
     inputs: 7,
     outputs: 1,
     examples: ["CALL(gas, address, value, argsOffset, argsSize, retOffset, retSize)"],

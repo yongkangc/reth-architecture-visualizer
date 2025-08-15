@@ -1064,7 +1064,7 @@ export default function PayloadValidationPage() {
                 <div className="p-4 rounded-lg bg-zinc-800/50">
                   <h4 className="text-red-400 font-medium mb-2">State Root Mismatch</h4>
                   <p className="text-zinc-400 text-sm mb-2">
-                    Most common validation failure. Occurs when computed state root doesn't match header.
+                    Most common validation failure. Occurs when computed state root doesn&apos;t match header.
                   </p>
                   <p className="text-zinc-500 text-xs">
                     <strong>Causes:</strong> Missing transactions, incorrect execution, state corruption
@@ -1149,7 +1149,7 @@ export default function PayloadValidationPage() {
                 <div className="p-4 rounded-lg bg-zinc-800/50">
                   <h4 className="text-blue-400 font-medium mb-2">Parallel Transaction Execution</h4>
                   <p className="text-zinc-400 text-sm">
-                    Execute independent transactions concurrently using REVM's parallel mode. 
+                    Execute independent transactions concurrently using REVM&apos;s parallel mode. 
                     Can reduce execution time by 40-60% for large blocks.
                   </p>
                 </div>

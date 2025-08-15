@@ -242,6 +242,8 @@ export interface GasProfileEntry {
 // Additional types for EVM constants
 export type TraitLayer = "ConfigureEvm" | "BlockExecutorFactory" | "EvmFactory" | "Evm"
 
+export type ExecutionPhase = "setup" | "validation" | "pre-execution" | "execution" | "post-execution" | "cleanup"
+
 export interface TraitInterface {
   id: string
   name: string
