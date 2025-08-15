@@ -1,8 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { Play, Pause, RotateCcw, CheckCircle, XCircle, AlertCircle, ChevronRight } from "lucide-react"
+import { motion } from "framer-motion"
+import { Play, Pause, RotateCcw, CheckCircle, XCircle, AlertCircle } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 type PayloadStatus = "idle" | "validating" | "executing" | "computing" | "success" | "invalid"
@@ -226,7 +226,7 @@ export default function EngineAPIPage() {
             <div className="space-y-4">
               {/* Code Example */}
               <div className="bg-black rounded-lg border border-zinc-800 p-4">
-                <div className="text-xs font-mono text-zinc-500 mb-2">// Engine API Handler</div>
+                <div className="text-xs font-mono text-zinc-500 mb-2">{`// Engine API Handler`}</div>
                 <pre className="text-xs font-mono text-zinc-300 overflow-x-auto">
 {`impl EngineApi {
     async fn new_payload_v4(
