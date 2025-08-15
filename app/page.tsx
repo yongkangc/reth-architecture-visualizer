@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { useState, useEffect } from "react"
+import { useState } from "react"
 import Link from "next/link"
 import { ArrowRight, Layers, Cpu, Database, Network, Shield, Zap, GitBranch, TreePine, Activity, Sparkles, Code2, Rocket } from "lucide-react"
 
@@ -46,7 +46,7 @@ const chapters = [
     icon: Activity,
     gradient: "from-blue-500 to-cyan-500",
     href: "/chapters/transaction",
-    status: "coming-soon"
+    status: "available"
   }
 ]
 
@@ -74,7 +74,7 @@ export default function HomePage() {
   return (
     <div className="min-h-screen relative">
       {/* Hero Section */}
-      <section className="relative min-h-[90vh] flex items-center justify-center px-8 py-20 overflow-hidden">
+      <section className="relative min-h-[90vh] flex items-center justify-center px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20 overflow-hidden">
         {/* Background gradient effect */}
         <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#141414] to-[#141414]" />
         
@@ -90,210 +90,182 @@ export default function HomePage() {
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2 }}
-            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[#627eea]/20 to-[#a16ae8]/20 border border-[#627eea]/30 mb-8"
+            className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-gradient-to-r from-[#627eea]/20 to-[#a16ae8]/20 border border-[#627eea]/30 mb-6 sm:mb-8"
           >
-            <Sparkles className="w-4 h-4 text-[#a16ae8]" />
-            <span className="text-sm font-medium text-zinc-300">Interactive Learning Platform</span>
+            <Sparkles className="w-3 h-3 sm:w-4 sm:h-4 text-[#a16ae8]" />
+            <span className="text-xs sm:text-sm font-medium text-zinc-300">Interactive Learning Platform</span>
           </motion.div>
 
           {/* Main title */}
-          <h1 className="text-6xl md:text-7xl font-bold mb-6">
-            <span className="block gradient-text">Understanding Reth</span>
-            <span className="block text-3xl md:text-4xl text-zinc-400 mt-4">
-              The Next-Generation Ethereum Client
+          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold mb-4 sm:mb-6">
+            <span className="bg-gradient-to-r from-white via-zinc-200 to-zinc-400 bg-clip-text text-transparent">
+              Understand
+            </span>
+            <br />
+            <span className="bg-gradient-to-r from-[#627eea] to-[#a16ae8] bg-clip-text text-transparent">
+              Reth Architecture
             </span>
           </h1>
 
-          {/* Description */}
-          <p className="text-xl text-zinc-400 mb-10 max-w-3xl mx-auto leading-relaxed">
-            Dive deep into Reth&apos;s architecture through interactive visualizations, 
-            real-time simulations, and comprehensive explanations of core systems.
-          </p>
+          {/* Subtitle */}
+          <motion.p 
+            className="text-base sm:text-lg md:text-xl text-zinc-400 max-w-2xl mx-auto mb-8 sm:mb-12 px-4"
+            {...fadeIn}
+            transition={{ delay: 0.3 }}
+          >
+            Dive deep into the internals of Ethereum&apos;s fastest execution client through interactive visualizations and real-world examples
+          </motion.p>
 
           {/* CTA Buttons */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/chapters/engine-api"
-              className="group relative inline-flex items-center gap-2 px-8 py-4 rounded-xl font-semibold text-white overflow-hidden transition-all duration-300 hover:scale-105"
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-[#627eea] to-[#a16ae8]" />
-              <div className="absolute inset-0 bg-gradient-to-r from-[#a16ae8] to-[#ff8867] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-              <span className="relative">Start Learning</span>
-              <ArrowRight className="relative w-5 h-5 group-hover:translate-x-1 transition-transform" />
+          <motion.div 
+            className="flex flex-col sm:flex-row gap-4 justify-center px-4"
+            {...fadeIn}
+            transition={{ delay: 0.4 }}
+          >
+            <Link href="/chapters/overview">
+              <button className="w-full sm:w-auto group px-6 sm:px-8 py-3 sm:py-4 rounded-xl bg-gradient-to-r from-[#627eea] to-[#a16ae8] text-white font-semibold transition-all duration-300 hover:shadow-lg hover:shadow-[#627eea]/25 hover:scale-105">
+                <span className="flex items-center justify-center gap-2">
+                  Start Learning
+                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                </span>
+              </button>
             </Link>
-            
-            <a
+            <a 
               href="https://github.com/paradigmxyz/reth"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-8 py-4 rounded-xl font-semibold border border-zinc-700 text-zinc-300 hover:bg-white/5 hover:border-zinc-600 transition-all duration-300"
+              className="w-full sm:w-auto px-6 sm:px-8 py-3 sm:py-4 rounded-xl border border-zinc-700 hover:border-zinc-600 text-zinc-300 hover:text-white font-semibold transition-all duration-300 hover:bg-white/5 text-center"
             >
               View on GitHub
             </a>
-          </div>
+          </motion.div>
         </motion.div>
-
-        {/* Floating elements */}
-        <motion.div
-          className="absolute top-20 left-10 w-20 h-20 rounded-full bg-gradient-to-br from-[#627eea] to-[#a16ae8] opacity-20 blur-xl"
-          animate={{
-            y: [0, -20, 0],
-            scale: [1, 1.1, 1],
-          }}
-          transition={{
-            duration: 4,
-            repeat: Infinity,
-            ease: "easeInOut"
-          }}
-        />
-        <motion.div
-          className="absolute bottom-20 right-10 w-32 h-32 rounded-full bg-gradient-to-br from-[#ff8867] to-[#a16ae8] opacity-20 blur-xl"
-          animate={{
-            y: [0, 20, 0],
-            scale: [1, 1.2, 1],
-          }}
-          transition={{
-            duration: 5,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: 1
-          }}
-        />
       </section>
 
       {/* Features Section */}
-      <section className="relative py-20 px-8">
-        <div className="max-w-6xl mx-auto">
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
+      <section className="py-12 sm:py-16 lg:py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <motion.div 
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8 mb-12 sm:mb-16 lg:mb-20"
+            initial="initial"
+            whileInView="animate"
             viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20"
           >
-            {features.map((feature, index) => (
-              <motion.div
-                key={feature.title}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="relative group"
-              >
-                <div className="absolute inset-0 bg-gradient-to-r from-[#627eea]/10 to-[#a16ae8]/10 rounded-2xl blur-xl group-hover:blur-2xl transition-all duration-300 opacity-0 group-hover:opacity-100" />
-                <div className="relative p-6 rounded-2xl bg-gradient-to-b from-zinc-900/50 to-zinc-900/30 border border-zinc-800 backdrop-blur-sm hover:border-zinc-700 transition-all duration-300">
-                  <feature.icon className="w-10 h-10 mb-4 text-[#627eea]" />
-                  <h3 className="text-lg font-semibold mb-2 text-white">{feature.title}</h3>
-                  <p className="text-sm text-zinc-400">{feature.description}</p>
-                </div>
-              </motion.div>
-            ))}
+            {features.map((feature, index) => {
+              const Icon = feature.icon
+              return (
+                <motion.div
+                  key={index}
+                  className="p-4 sm:p-6 rounded-2xl bg-gradient-to-br from-zinc-900/50 to-zinc-800/30 border border-zinc-800 hover:border-zinc-700 transition-all duration-300"
+                  variants={fadeIn}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-br from-[#627eea]/20 to-[#a16ae8]/20 flex items-center justify-center mb-3 sm:mb-4">
+                    <Icon className="w-5 h-5 sm:w-6 sm:h-6 text-[#a16ae8]" />
+                  </div>
+                  <h3 className="text-lg sm:text-xl font-semibold text-white mb-2">{feature.title}</h3>
+                  <p className="text-sm sm:text-base text-zinc-400">{feature.description}</p>
+                </motion.div>
+              )
+            })}
           </motion.div>
-        </div>
-      </section>
 
-      {/* Chapters Grid */}
-      <section className="relative py-20 px-8">
-        <div className="max-w-6xl mx-auto">
+          {/* Chapters Grid */}
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="text-center mb-12"
+            className="text-center mb-8 sm:mb-12"
           >
-            <h2 className="text-4xl font-bold mb-4 gradient-text">Learning Chapters</h2>
-            <p className="text-lg text-zinc-400">
-              Master Reth&apos;s architecture step by step
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-3 sm:mb-4">
+              <span className="bg-gradient-to-r from-white to-zinc-400 bg-clip-text text-transparent">
+                Choose Your Path
+              </span>
+            </h2>
+            <p className="text-sm sm:text-base lg:text-lg text-zinc-500 max-w-2xl mx-auto px-4">
+              Each chapter builds on the previous one, but feel free to jump to any topic that interests you
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {chapters.map((chapter, index) => (
-              <motion.div
-                key={chapter.id}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                onMouseEnter={() => setHoveredChapter(chapter.id)}
-                onMouseLeave={() => setHoveredChapter(null)}
-                className="relative group"
-              >
-                <Link 
-                  href={chapter.status === "available" ? chapter.href : "#"}
-                  className={cn(
-                    "block relative p-6 rounded-2xl transition-all duration-300",
-                    chapter.status === "available" 
-                      ? "cursor-pointer" 
-                      : "cursor-not-allowed opacity-60"
-                  )}
+          <motion.div 
+            className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 lg:gap-8"
+            initial="initial"
+            whileInView="animate"
+            viewport={{ once: true }}
+          >
+            {chapters.map((chapter, index) => {
+              const Icon = chapter.icon
+              const isHovered = hoveredChapter === chapter.id
+              
+              return (
+                <motion.div
+                  key={chapter.id}
+                  variants={fadeIn}
+                  transition={{ delay: index * 0.1 }}
+                  onMouseEnter={() => setHoveredChapter(chapter.id)}
+                  onMouseLeave={() => setHoveredChapter(null)}
                 >
-                  {/* Background gradient on hover */}
-                  <div className={cn(
-                    "absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-300",
-                    `bg-gradient-to-br ${chapter.gradient}`
-                  )} style={{ filter: "blur(40px)" }} />
-                  
-                  {/* Card content */}
-                  <div className="relative bg-zinc-900/90 backdrop-blur-sm rounded-2xl border border-zinc-800 group-hover:border-zinc-700 p-6 transition-all duration-300 group-hover:transform group-hover:scale-[1.02]">
-                    <div className="flex items-start gap-4">
-                      <div className={cn(
-                        "w-12 h-12 rounded-xl bg-gradient-to-br flex items-center justify-center",
-                        chapter.gradient
-                      )}>
-                        <chapter.icon className="w-6 h-6 text-white" />
-                      </div>
+                  <Link href={chapter.href}>
+                    <div className="group relative h-full p-4 sm:p-6 lg:p-8 rounded-2xl bg-gradient-to-br from-zinc-900/50 to-zinc-800/30 border border-zinc-800 hover:border-zinc-700 transition-all duration-500 hover:shadow-2xl hover:shadow-black/50 overflow-hidden">
+                      {/* Background gradient on hover */}
+                      <div className={`absolute inset-0 bg-gradient-to-br ${chapter.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-500`} />
                       
-                      <div className="flex-1">
-                        <div className="flex items-center gap-2 mb-2">
-                          <h3 className="text-xl font-semibold text-white">
-                            {chapter.title}
-                          </h3>
-                          {chapter.status === "coming-soon" && (
-                            <span className="px-2 py-1 text-xs rounded-full bg-zinc-800 text-zinc-400">
-                              Coming Soon
-                            </span>
-                          )}
+                      {/* Content */}
+                      <div className="relative z-10">
+                        <div className="flex items-start justify-between mb-4">
+                          <div className={`w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br ${chapter.gradient} flex items-center justify-center transition-transform duration-500 ${isHovered ? 'scale-110 rotate-3' : ''}`}>
+                            <Icon className="w-6 h-6 sm:w-7 sm:h-7 text-white" />
+                          </div>
+                          <ArrowRight className={`w-5 h-5 text-zinc-600 transition-all duration-300 ${isHovered ? 'translate-x-2 text-zinc-400' : ''}`} />
                         </div>
-                        <p className="text-zinc-400">
+                        
+                        <h3 className="text-xl sm:text-2xl font-bold text-white mb-2 sm:mb-3 group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-white group-hover:to-zinc-300 group-hover:bg-clip-text transition-all duration-500">
+                          {chapter.title}
+                        </h3>
+                        
+                        <p className="text-sm sm:text-base text-zinc-400 group-hover:text-zinc-300 transition-colors duration-300">
                           {chapter.description}
                         </p>
+
+                        {/* Status indicator */}
+                        <div className="mt-4 sm:mt-6">
+                          <span className={`inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full text-xs sm:text-sm font-medium ${
+                            chapter.status === 'available' 
+                              ? 'bg-green-500/10 text-green-400 border border-green-500/20' 
+                              : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
+                          }`}>
+                            <span className={`w-1.5 h-1.5 rounded-full ${
+                              chapter.status === 'available' ? 'bg-green-400' : 'bg-amber-400'
+                            } animate-pulse`} />
+                            {chapter.status === 'available' ? 'Ready to explore' : 'Coming soon'}
+                          </span>
+                        </div>
                       </div>
-                      
-                      {chapter.status === "available" && (
-                        <ArrowRight className={cn(
-                          "w-5 h-5 text-zinc-600 transition-all duration-300",
-                          hoveredChapter === chapter.id && "text-white translate-x-1"
-                        )} />
-                      )}
                     </div>
-                  </div>
-                </Link>
-              </motion.div>
-            ))}
-          </div>
+                  </Link>
+                </motion.div>
+              )
+            })}
+          </motion.div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="relative py-12 px-8 border-t border-zinc-800">
-        <div className="max-w-6xl mx-auto text-center">
-          <p className="text-zinc-500 text-sm">
-            Built with ❤️ for the Reth community • Learn more at{" "}
-            <a 
-              href="https://paradigmxyz.github.io/reth/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-[#627eea] hover:text-[#a16ae8] transition-colors"
-            >
-              reth.rs
-            </a>
+      <footer className="mt-16 sm:mt-20 lg:mt-32 py-6 sm:py-8 px-4 sm:px-6 lg:px-8 border-t border-zinc-800">
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-xs sm:text-sm text-zinc-500 text-center sm:text-left">
+            Built for the Reth community • Open source on GitHub
           </p>
+          <div className="flex items-center gap-4 sm:gap-6">
+            <a href="https://paradigm.xyz" target="_blank" rel="noopener noreferrer" className="text-xs sm:text-sm text-zinc-500 hover:text-zinc-300 transition-colors">
+              Paradigm
+            </a>
+            <a href="https://reth.rs" target="_blank" rel="noopener noreferrer" className="text-xs sm:text-sm text-zinc-500 hover:text-zinc-300 transition-colors">
+              Reth Docs
+            </a>
+          </div>
         </div>
       </footer>
     </div>
   )
-}
-
-function cn(...classes: (string | boolean | undefined)[]) {
-  return classes.filter(Boolean).join(" ")
 }
