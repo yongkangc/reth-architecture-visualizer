@@ -20,7 +20,8 @@ import {
   Code2,
   Network,
   Package,
-  Shield
+  Shield,
+  Zap
 } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
@@ -80,6 +81,13 @@ const navItems = [
     icon: GitBranch,
     description: "Computation strategies",
     gradient: "from-green-500 to-emerald-500"
+  },
+  {
+    href: "/chapters/engine-tree-prewarming",
+    label: "Engine Tree Prewarming",
+    icon: Zap,
+    description: "Parallel optimization",
+    gradient: "from-orange-500 to-red-500"
   },
   { 
     href: "/chapters/trie", 
