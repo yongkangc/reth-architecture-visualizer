@@ -8,7 +8,7 @@ import {
   HardDrive, Terminal, Blocks,
   Eye, EyeOff, HelpCircle, BookOpen, Route,
   CheckCircle, Circle, Users,
-  Settings, Sparkles
+  Settings, Sparkles, X
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -783,7 +783,7 @@ export default function ArchitecturePage() {
                 <div className="relative h-full">
                   {visibleComponents.map((component) => {
                     const Icon = component.icon
-                    const isActive = activeComponent === component.id
+                    const isActive = activeComponent === component.id || persistentActiveComponent === component.id
                     const isHighlighted = currentScenario && scenarios
                       .find(s => s.id === currentScenario)
                       ?.steps[scenarioStep]?.highlight?.includes(component.id)
@@ -881,13 +881,26 @@ export default function ArchitecturePage() {
                           </motion.div>
 
                           {/* Hover tooltip with details */}
-                          {activeComponent === component.id && !isAnimating && (
+                          {(activeComponent === component.id || persistentActiveComponent === component.id) && !isAnimating && (
                             <motion.div
                               initial={{ opacity: 0, y: 10 }}
                               animate={{ opacity: 1, y: 0 }}
                               className="absolute top-full mt-2 left-1/2 -translate-x-1/2 z-30 w-64"
                             >
                               <div className="bg-zinc-800 rounded-lg p-3 border border-zinc-700 shadow-xl">
+                                {persistentActiveComponent === component.id && (
+                                  <button
+                                    onClick={(e) => {
+                                      e.stopPropagation()
+                                      setPersistentActiveComponent(null)
+                                      setShowExitButton(false)
+                                      setActiveComponent(null)
+                                    }}
+                                    className="absolute top-2 right-2 text-zinc-400 hover:text-white transition-colors"
+                                  >
+                                    <X className="w-4 h-4" />
+                                  </button>
+                                )}
                                 <p className="text-xs text-zinc-300 mb-2">{component.description}</p>
                                 <div className="space-y-1">
                                   {component.details.slice(0, 3).map((detail, i) => (
@@ -1203,7 +1216,7 @@ export default function ArchitecturePage() {
 
             {/* Component Details */}
             <AnimatePresence mode="wait">
-              {activeComponent && !isAnimating && (
+              {(activeComponent || persistentActiveComponent) && !isAnimating && (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -1211,7 +1224,8 @@ export default function ArchitecturePage() {
                   className="bg-zinc-900/90 backdrop-blur-sm rounded-2xl border border-zinc-800 p-4"
                 >
                   {(() => {
-                    const component = systemComponents.find(c => c.id === activeComponent)
+                    const componentId = persistentActiveComponent || activeComponent
+                    const component = systemComponents.find(c => c.id === componentId)
                     if (!component) return null
                     const Icon = component.icon
 
@@ -1228,6 +1242,19 @@ export default function ArchitecturePage() {
                             <h3 className="font-semibold">{component.name}</h3>
                             <p className="text-xs text-zinc-400">{component.layer} layer</p>
                           </div>
+                          {persistentActiveComponent && (
+                            <button
+                              onClick={() => {
+                                setPersistentActiveComponent(null)
+                                setShowExitButton(false)
+                                setActiveComponent(null)
+                              }}
+                              className="text-zinc-400 hover:text-white transition-colors"
+                              title="Close"
+                            >
+                              <X className="w-5 h-5" />
+                            </button>
+                          )}
                         </div>
 
                         <p className="text-sm text-zinc-300 mb-3">
@@ -1289,9 +1316,9 @@ export default function ArchitecturePage() {
                           <h4 className="text-xs font-semibold text-zinc-400 uppercase mb-2">Connections</h4>
                           <div className="space-y-1">
                             {connections
-                              .filter(c => c.from === activeComponent || c.to === activeComponent)
+                              .filter(c => c.from === componentId || c.to === componentId)
                               .map((conn) => {
-                                const isFrom = conn.from === activeComponent
+                                const isFrom = conn.from === componentId
                                 const otherId = isFrom ? conn.to : conn.from
                                 const other = systemComponents.find(c => c.id === otherId)
                                 
