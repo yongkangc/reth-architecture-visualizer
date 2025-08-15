@@ -8,7 +8,7 @@ interface TransactionStage {
   id: string;
   title: string;
   description: string;
-  icon: JSX.Element;
+  icon: React.ReactElement;
   details: string[];
   status: 'pending' | 'active' | 'completed';
 }

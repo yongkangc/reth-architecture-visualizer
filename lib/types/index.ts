@@ -1,4 +1,6 @@
 // Shared types across all visualizations
+import type { ComponentType } from 'react'
+import type { LucideIcon } from 'lucide-react'
 
 // Engine API types
 export interface ValidationStep {
@@ -36,7 +38,7 @@ export interface Scenario {
 export interface StrategyInfo {
   name: string
   color: string
-  icon: any
+  icon: LucideIcon
   description: string
   pros: string[]
   cons: string[]
@@ -85,5 +87,5 @@ export interface MetricCardData {
   value: string | number
   unit?: string
   color?: string
-  icon?: any
+  icon?: LucideIcon | ComponentType
 }

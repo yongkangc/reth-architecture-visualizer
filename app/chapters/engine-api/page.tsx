@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Play, Pause, RotateCcw, CheckCircle, XCircle, AlertCircle, Zap, Clock, Activity, Cpu } from "lucide-react"
+import { Play, Pause, RotateCcw, CheckCircle, XCircle, AlertCircle, Zap, Clock, Activity, Cpu, type LucideIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 type PayloadStatus = "idle" | "validating" | "executing" | "computing" | "success" | "invalid"
@@ -13,7 +13,7 @@ interface ValidationStep {
   description: string
   status: "pending" | "active" | "success" | "error"
   duration: number
-  icon: React.ComponentType
+  icon: LucideIcon
 }
 
 const initialSteps: ValidationStep[] = [
@@ -187,11 +187,11 @@ export default function EngineAPIPage() {
                                 animate={{ rotate: 360 }}
                                 transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
                               >
-                                <Icon className="w-4 h-4 text-white" />
+                                {Icon && <Icon className="w-4 h-4 text-white" />}
                               </motion.div>
                             ) : (
                               <div className="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center">
-                                <Icon className="w-4 h-4 text-zinc-600" />
+                                {Icon && <Icon className="w-4 h-4 text-zinc-600" />}
                               </div>
                             )}
                           </div>
