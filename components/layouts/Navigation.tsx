@@ -4,55 +4,59 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { 
-  Home, 
-  Cpu, 
-  GitBranch, 
-  TreePine, 
-  ArrowRightLeft,
-  BookOpen,
-  ChevronRight
+  Home,
+  Cpu,
+  GitBranch,
+  TreePine,
+  Activity,
+  Settings,
+  ChevronRight,
+  Sparkles
 } from "lucide-react"
+import { motion } from "framer-motion"
 
-const chapters = [
-  {
-    id: "overview",
-    title: "Overview",
-    subtitle: "The Big Picture",
+const navItems = [
+  { 
+    href: "/", 
+    label: "Overview", 
     icon: Home,
-    description: "Understanding Ethereum Execution",
-    href: "/"
+    description: "The big picture",
+    gradient: "from-blue-500 to-cyan-500"
   },
-  {
-    id: "engine-api",
-    title: "Engine API",
-    subtitle: "Consensus Integration",
+  { 
+    href: "/chapters/engine-api", 
+    label: "Engine API", 
     icon: Cpu,
-    description: "newPayload & forkchoiceUpdated",
-    href: "/chapters/engine-api"
+    description: "Block processing flow",
+    gradient: "from-purple-500 to-pink-500"
   },
-  {
-    id: "state-root",
-    title: "State Root",
-    subtitle: "Computation Strategies",
+  { 
+    href: "/chapters/state-root", 
+    label: "State Root", 
     icon: GitBranch,
-    description: "Sparse, Parallel & Sequential",
-    href: "/chapters/state-root"
+    description: "Computation strategies",
+    gradient: "from-green-500 to-emerald-500"
   },
-  {
-    id: "trie",
-    title: "Trie Architecture",
-    subtitle: "Data Structures",
+  { 
+    href: "/chapters/trie", 
+    label: "Trie Architecture", 
     icon: TreePine,
-    description: "TrieWalker & Optimization",
-    href: "/chapters/trie"
+    description: "Storage & optimization",
+    gradient: "from-orange-500 to-red-500"
   },
-  {
-    id: "transaction",
-    title: "Transaction Journey",
-    subtitle: "End-to-End Flow",
-    icon: ArrowRightLeft,
-    description: "From Mempool to Block",
-    href: "/chapters/transaction"
+  { 
+    href: "/chapters/transaction", 
+    label: "Transaction Journey", 
+    icon: Activity,
+    description: "From mempool to block",
+    gradient: "from-indigo-500 to-purple-500"
+  },
+  { 
+    href: "/chapters/evm", 
+    label: "EVM Configuration", 
+    icon: Settings,
+    description: "Execution environment",
+    gradient: "from-pink-500 to-rose-500"
   }
 ]
 
@@ -60,81 +64,125 @@ export default function Navigation() {
   const pathname = usePathname()
 
   return (
-    <nav className="w-80 bg-zinc-950 border-r border-zinc-800 flex flex-col">
-      <div className="p-6 border-b border-zinc-800">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center">
-            <BookOpen className="w-6 h-6 text-white" />
+    <nav className="fixed left-0 top-0 h-screen w-72 bg-gradient-to-b from-[#1a1a1a]/95 to-[#141414]/95 backdrop-blur-2xl border-r border-white/5 overflow-y-auto z-50">
+      {/* Header */}
+      <div className="p-6 border-b border-white/5">
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex items-center gap-3 mb-3"
+        >
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#627eea] to-[#a16ae8] flex items-center justify-center shadow-lg shadow-[#627eea]/20">
+            <Sparkles className="w-5 h-5 text-white" />
           </div>
           <div>
-            <h1 className="text-lg font-semibold">Reth Architecture</h1>
-            <p className="text-xs text-zinc-400">Interactive Learning Guide</p>
+            <h2 className="text-lg font-bold text-white">Reth Architecture</h2>
+            <p className="text-xs text-zinc-400">Interactive Learning Platform</p>
           </div>
-        </div>
+        </motion.div>
       </div>
 
-      <div className="flex-1 overflow-y-auto p-4">
-        <div className="space-y-2">
-          {chapters.map((chapter, index) => {
-            const Icon = chapter.icon
-            const isActive = pathname === chapter.href || 
-                           (chapter.href !== "/" && pathname.startsWith(chapter.href))
-            
-            return (
+      {/* Navigation Items */}
+      <div className="p-4 space-y-2">
+        {navItems.map((item, index) => {
+          const isActive = pathname === item.href || (item.href !== "/" && pathname.startsWith(item.href))
+          const Icon = item.icon
+
+          return (
+            <motion.div
+              key={item.href}
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: index * 0.05 }}
+            >
               <Link
-                key={chapter.id}
-                href={chapter.href}
+                href={item.href}
                 className={cn(
-                  "group block rounded-lg border transition-all duration-200",
+                  "group relative flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300",
                   isActive 
-                    ? "bg-zinc-900 border-zinc-700 shadow-lg shadow-orange-500/10" 
-                    : "bg-zinc-950/50 border-zinc-800 hover:bg-zinc-900/50 hover:border-zinc-700"
+                    ? "bg-gradient-to-r from-[#627eea]/20 to-[#a16ae8]/20 backdrop-blur-sm" 
+                    : "hover:bg-white/5"
                 )}
               >
-                <div className="p-4">
-                  <div className="flex items-start gap-3">
-                    <div className={cn(
-                      "w-10 h-10 rounded-lg flex items-center justify-center transition-colors",
-                      isActive 
-                        ? "bg-gradient-to-br from-orange-500 to-red-600" 
-                        : "bg-zinc-800 group-hover:bg-zinc-700"
-                    )}>
-                      <Icon className="w-5 h-5 text-white" />
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2">
-                        <span className="text-xs font-mono text-zinc-500">
-                          {String(index + 1).padStart(2, '0')}
-                        </span>
-                        <h3 className={cn(
-                          "font-medium transition-colors",
-                          isActive ? "text-white" : "text-zinc-300 group-hover:text-white"
-                        )}>
-                          {chapter.title}
-                        </h3>
-                      </div>
-                      <p className="text-xs text-zinc-500 mt-0.5">{chapter.subtitle}</p>
-                      <p className="text-xs text-zinc-600 mt-1">{chapter.description}</p>
-                    </div>
-                    <ChevronRight className={cn(
-                      "w-4 h-4 transition-all",
-                      isActive 
-                        ? "text-orange-500 translate-x-0" 
-                        : "text-zinc-600 -translate-x-1 group-hover:translate-x-0 group-hover:text-zinc-400"
-                    )} />
+                {/* Active indicator */}
+                {isActive && (
+                  <motion.div
+                    layoutId="activeNav"
+                    className="absolute inset-0 rounded-xl border border-[#627eea]/30 bg-gradient-to-r from-[#627eea]/10 to-[#a16ae8]/10"
+                    transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
+                  />
+                )}
+
+                {/* Icon with gradient background */}
+                <div className={cn(
+                  "relative w-10 h-10 rounded-lg bg-gradient-to-br flex items-center justify-center transition-transform duration-300",
+                  item.gradient,
+                  isActive ? "scale-110 shadow-lg" : "group-hover:scale-105 opacity-80 group-hover:opacity-100"
+                )}>
+                  <Icon className="w-5 h-5 text-white" />
+                  {isActive && (
+                    <motion.div
+                      className="absolute inset-0 rounded-lg bg-white/20"
+                      animate={{ scale: [1, 1.2, 1] }}
+                      transition={{ duration: 2, repeat: Infinity }}
+                    />
+                  )}
+                </div>
+
+                {/* Text content */}
+                <div className="flex-1 relative z-10">
+                  <div className={cn(
+                    "font-medium transition-colors",
+                    isActive ? "text-white" : "text-zinc-300 group-hover:text-white"
+                  )}>
+                    {item.label}
+                  </div>
+                  <div className={cn(
+                    "text-xs transition-colors",
+                    isActive ? "text-zinc-300" : "text-zinc-500 group-hover:text-zinc-400"
+                  )}>
+                    {item.description}
                   </div>
                 </div>
+
+                {/* Arrow indicator */}
+                <ChevronRight className={cn(
+                  "w-4 h-4 transition-all duration-300",
+                  isActive 
+                    ? "text-[#627eea] translate-x-0 opacity-100" 
+                    : "text-zinc-600 -translate-x-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100"
+                )} />
               </Link>
-            )
-          })}
+            </motion.div>
+          )
+        })}
+      </div>
+
+      {/* Progress indicator */}
+      <div className="px-6 py-4">
+        <div className="flex items-center justify-between text-xs text-zinc-500 mb-2">
+          <span>Progress</span>
+          <span>3/6 Chapters</span>
+        </div>
+        <div className="w-full h-1 bg-zinc-800 rounded-full overflow-hidden">
+          <motion.div 
+            className="h-full bg-gradient-to-r from-[#627eea] to-[#a16ae8]"
+            initial={{ width: 0 }}
+            animate={{ width: "50%" }}
+            transition={{ duration: 1, ease: "easeOut" }}
+          />
         </div>
       </div>
 
-      <div className="p-4 border-t border-zinc-800">
-        <div className="text-xs text-zinc-500 space-y-1">
-          <p>Built for Reth Contributors</p>
-          <p className="font-mono text-zinc-600">v1.0.0</p>
+      {/* Footer */}
+      <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-white/5">
+        <div className="flex items-center gap-2 text-xs text-zinc-500 mb-2">
+          <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+          <span>System Online</span>
         </div>
+        <p className="text-xs text-zinc-600">
+          Built with ❤️ for the Reth community
+        </p>
       </div>
     </nav>
   )

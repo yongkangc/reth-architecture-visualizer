@@ -1,8 +1,8 @@
 "use client"
 
 import { useState } from "react"
-import { motion } from "framer-motion"
-import { Play, Pause, RotateCcw, CheckCircle, XCircle, AlertCircle } from "lucide-react"
+import { motion, AnimatePresence } from "framer-motion"
+import { Play, Pause, RotateCcw, CheckCircle, XCircle, AlertCircle, Zap, Clock, Activity, Cpu } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 type PayloadStatus = "idle" | "validating" | "executing" | "computing" | "success" | "invalid"
@@ -13,17 +13,18 @@ interface ValidationStep {
   description: string
   status: "pending" | "active" | "success" | "error"
   duration: number
+  icon: any
 }
 
 const initialSteps: ValidationStep[] = [
-  { id: "receive", name: "Receive Payload", description: "Engine API receives newPayloadV4 from CL", status: "pending", duration: 500 },
-  { id: "decode", name: "Decode & Parse", description: "Parse execution payload and extract block data", status: "pending", duration: 300 },
-  { id: "validate-header", name: "Validate Header", description: "Check block header fields and parent hash", status: "pending", duration: 400 },
-  { id: "validate-body", name: "Validate Body", description: "Verify transactions and withdrawals", status: "pending", duration: 600 },
-  { id: "execute", name: "Execute Transactions", description: "Run EVM on all transactions sequentially", status: "pending", duration: 1500 },
-  { id: "state-root", name: "Calculate State Root", description: "Compute Merkle Patricia Trie root", status: "pending", duration: 1200 },
-  { id: "compare", name: "Compare Roots", description: "Verify calculated root matches header", status: "pending", duration: 300 },
-  { id: "respond", name: "Send Response", description: "Return VALID/INVALID/SYNCING status", status: "pending", duration: 200 },
+  { id: "receive", name: "Receive Payload", description: "Engine API receives newPayloadV4 from CL", status: "pending", duration: 500, icon: Activity },
+  { id: "decode", name: "Decode & Parse", description: "Parse execution payload and extract block data", status: "pending", duration: 300, icon: Cpu },
+  { id: "validate-header", name: "Validate Header", description: "Check block header fields and parent hash", status: "pending", duration: 400, icon: CheckCircle },
+  { id: "validate-body", name: "Validate Body", description: "Verify transactions and withdrawals", status: "pending", duration: 600, icon: CheckCircle },
+  { id: "execute", name: "Execute Transactions", description: "Run EVM on all transactions sequentially", status: "pending", duration: 1500, icon: Zap },
+  { id: "state-root", name: "Calculate State Root", description: "Compute Merkle Patricia Trie root", status: "pending", duration: 1200, icon: Activity },
+  { id: "compare", name: "Compare Roots", description: "Verify calculated root matches header", status: "pending", duration: 300, icon: CheckCircle },
+  { id: "respond", name: "Send Response", description: "Return VALID/INVALID/SYNCING status", status: "pending", duration: 200, icon: Activity },
 ]
 
 export default function EngineAPIPage() {
@@ -76,31 +77,37 @@ export default function EngineAPIPage() {
     setIsPlaying(false)
   }
 
-  const getStatusColor = () => {
+  const getStatusGradient = () => {
     switch (status) {
-      case "idle": return "text-zinc-500"
-      case "validating": return "text-yellow-500"
-      case "executing": return "text-blue-500"
-      case "computing": return "text-purple-500"
-      case "success": return "text-green-500"
-      case "invalid": return "text-red-500"
-      default: return "text-zinc-500"
+      case "validating": return "from-yellow-500 to-orange-500"
+      case "executing": return "from-blue-500 to-purple-500"
+      case "computing": return "from-purple-500 to-pink-500"
+      case "success": return "from-green-500 to-emerald-500"
+      case "invalid": return "from-red-500 to-pink-500"
+      default: return "from-zinc-600 to-zinc-700"
     }
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black via-zinc-900 to-black p-8">
+    <div className="min-h-screen relative p-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-8"
+          className="mb-12"
         >
-          <h1 className="text-4xl font-bold mb-2">Engine API Flow</h1>
-          <p className="text-zinc-400">
-            Understanding how Reth processes blocks through the Engine API
-          </p>
+          <div className="flex items-center gap-3 mb-4">
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+              <Cpu className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h1 className="text-4xl font-bold gradient-text">Engine API Flow</h1>
+              <p className="text-zinc-400">
+                Understanding how Reth processes blocks through the Engine API
+              </p>
+            </div>
+          </div>
         </motion.div>
 
         {/* Main Content */}
@@ -109,109 +116,145 @@ export default function EngineAPIPage() {
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="bg-zinc-950 rounded-xl border border-zinc-800 p-6"
+            className="relative"
           >
-            <h2 className="text-lg font-semibold mb-4">Payload Processing Pipeline</h2>
-            
-            {/* Status Display */}
-            <div className="mb-6 p-4 bg-black rounded-lg border border-zinc-800">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-zinc-500">Current Status</span>
-                <span className={cn("font-mono text-sm uppercase", getStatusColor())}>
-                  {status}
-                </span>
-              </div>
-              <div className="w-full bg-zinc-800 rounded-full h-2">
-                <motion.div
-                  className="h-full rounded-full bg-gradient-to-r from-orange-500 to-red-600"
-                  initial={{ width: "0%" }}
-                  animate={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
-                  transition={{ duration: 0.3 }}
-                />
-              </div>
-            </div>
-
-            {/* Steps */}
-            <div className="space-y-3">
-              {steps.map((step, index) => (
-                <motion.div
-                  key={step.id}
-                  initial={{ opacity: 0, x: -20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: index * 0.05 }}
-                  className={cn(
-                    "p-3 rounded-lg border transition-all",
-                    step.status === "active" 
-                      ? "bg-zinc-900 border-orange-500 shadow-lg shadow-orange-500/20"
-                      : step.status === "success"
-                      ? "bg-zinc-950/50 border-green-900"
-                      : "bg-zinc-950/50 border-zinc-800"
-                  )}
-                >
-                  <div className="flex items-start gap-3">
-                    <div className="mt-0.5">
-                      {step.status === "success" ? (
-                        <CheckCircle className="w-5 h-5 text-green-500" />
-                      ) : step.status === "active" ? (
-                        <motion.div
-                          animate={{ rotate: 360 }}
-                          transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                        >
-                          <AlertCircle className="w-5 h-5 text-orange-500" />
-                        </motion.div>
-                      ) : step.status === "error" ? (
-                        <XCircle className="w-5 h-5 text-red-500" />
-                      ) : (
-                        <div className="w-5 h-5 rounded-full border-2 border-zinc-700" />
-                      )}
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-2">
-                        <h3 className={cn(
-                          "font-medium",
-                          step.status === "active" ? "text-white" : "text-zinc-400"
-                        )}>
-                          {step.name}
-                        </h3>
-                        <span className="text-xs font-mono text-zinc-600">
-                          {step.duration}ms
-                        </span>
-                      </div>
-                      <p className="text-xs text-zinc-500 mt-0.5">{step.description}</p>
+            <div className="absolute inset-0 bg-gradient-to-br from-[#627eea]/10 to-[#a16ae8]/10 rounded-2xl blur-xl" />
+            <div className="relative bg-zinc-900/90 backdrop-blur-sm rounded-2xl border border-zinc-800 p-6">
+              <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
+                <Activity className="w-5 h-5 text-[#627eea]" />
+                Payload Processing Pipeline
+              </h2>
+              
+              {/* Status Display */}
+              <div className="mb-8">
+                <div className="p-4 rounded-xl bg-gradient-to-br from-zinc-950/50 to-zinc-900/50 border border-zinc-800">
+                  <div className="flex items-center justify-between mb-3">
+                    <span className="text-sm text-zinc-400">Current Status</span>
+                    <div className="flex items-center gap-2">
+                      <div className={cn(
+                        "w-2 h-2 rounded-full animate-pulse",
+                        status === "idle" ? "bg-zinc-500" : "bg-gradient-to-r " + getStatusGradient()
+                      )} />
+                      <span className={cn(
+                        "font-mono text-sm uppercase font-semibold",
+                        "bg-gradient-to-r bg-clip-text text-transparent",
+                        getStatusGradient()
+                      )}>
+                        {status}
+                      </span>
                     </div>
                   </div>
-                </motion.div>
-              ))}
-            </div>
+                  <div className="w-full bg-zinc-800/50 rounded-full h-3 overflow-hidden">
+                    <motion.div
+                      className={cn("h-full rounded-full bg-gradient-to-r", getStatusGradient())}
+                      initial={{ width: "0%" }}
+                      animate={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
+                      transition={{ duration: 0.5, ease: "easeOut" }}
+                    />
+                  </div>
+                </div>
+              </div>
 
-            {/* Controls */}
-            <div className="mt-6 flex items-center gap-3">
-              <button
-                onClick={isPlaying ? () => setIsPlaying(false) : startSimulation}
-                disabled={status === "success"}
-                className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-orange-500 to-red-600 rounded-lg font-medium hover:shadow-lg hover:shadow-orange-500/25 transition-all disabled:opacity-50"
-              >
-                {isPlaying ? <Pause className="w-4 h-4" /> : <Play className="w-4 h-4" />}
-                {isPlaying ? "Pause" : "Start"}
-              </button>
-              <button
-                onClick={resetSimulation}
-                className="flex items-center gap-2 px-4 py-2 bg-zinc-800 rounded-lg font-medium hover:bg-zinc-700 transition-colors"
-              >
-                <RotateCcw className="w-4 h-4" />
-                Reset
-              </button>
-              <div className="flex-1" />
-              <select
-                value={simulationSpeed}
-                onChange={(e) => setSimulationSpeed(Number(e.target.value))}
-                className="px-3 py-2 bg-zinc-900 border border-zinc-800 rounded-lg text-sm"
-              >
-                <option value={0.5}>0.5x Speed</option>
-                <option value={1}>1x Speed</option>
-                <option value={2}>2x Speed</option>
-                <option value={4}>4x Speed</option>
-              </select>
+              {/* Steps */}
+              <div className="space-y-3">
+                <AnimatePresence>
+                  {steps.map((step, index) => {
+                    const Icon = step.icon
+                    return (
+                      <motion.div
+                        key={step.id}
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: index * 0.05 }}
+                        className={cn(
+                          "relative p-4 rounded-xl transition-all duration-300",
+                          step.status === "active" 
+                            ? "bg-gradient-to-r from-[#627eea]/20 to-[#a16ae8]/20 border border-[#627eea]/50 shadow-lg shadow-[#627eea]/20"
+                            : step.status === "success"
+                            ? "bg-zinc-900/50 border border-green-900/50"
+                            : "bg-zinc-950/50 border border-zinc-800 opacity-60"
+                        )}
+                      >
+                        <div className="flex items-start gap-3">
+                          <div className="mt-0.5">
+                            {step.status === "success" ? (
+                              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
+                                <CheckCircle className="w-4 h-4 text-white" />
+                              </div>
+                            ) : step.status === "active" ? (
+                              <motion.div
+                                className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#627eea] to-[#a16ae8] flex items-center justify-center"
+                                animate={{ rotate: 360 }}
+                                transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                              >
+                                <Icon className="w-4 h-4 text-white" />
+                              </motion.div>
+                            ) : (
+                              <div className="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center">
+                                <Icon className="w-4 h-4 text-zinc-600" />
+                              </div>
+                            )}
+                          </div>
+                          <div className="flex-1">
+                            <div className="flex items-center gap-2">
+                              <h3 className={cn(
+                                "font-semibold",
+                                step.status === "active" ? "text-white" : "text-zinc-400"
+                              )}>
+                                {step.name}
+                              </h3>
+                              <span className="text-xs font-mono text-zinc-600 flex items-center gap-1">
+                                <Clock className="w-3 h-3" />
+                                {step.duration}ms
+                              </span>
+                            </div>
+                            <p className="text-xs text-zinc-500 mt-1">{step.description}</p>
+                          </div>
+                        </div>
+                      </motion.div>
+                    )
+                  })}
+                </AnimatePresence>
+              </div>
+
+              {/* Controls */}
+              <div className="mt-8 flex items-center gap-3">
+                <button
+                  onClick={isPlaying ? () => setIsPlaying(false) : startSimulation}
+                  disabled={status === "success"}
+                  className={cn(
+                    "group relative inline-flex items-center gap-2 px-6 py-3 rounded-xl font-semibold text-white overflow-hidden transition-all duration-300",
+                    "disabled:opacity-50 disabled:cursor-not-allowed",
+                    !isPlaying && status !== "success" && "hover:scale-105"
+                  )}
+                >
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#627eea] to-[#a16ae8]" />
+                  <div className="absolute inset-0 bg-gradient-to-r from-[#a16ae8] to-[#ff8867] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  {isPlaying ? <Pause className="relative w-4 h-4" /> : <Play className="relative w-4 h-4" />}
+                  <span className="relative">{isPlaying ? "Pause" : "Start Simulation"}</span>
+                </button>
+                
+                <button
+                  onClick={resetSimulation}
+                  className="flex items-center gap-2 px-4 py-3 rounded-xl font-medium border border-zinc-700 text-zinc-300 hover:bg-white/5 hover:border-zinc-600 transition-all duration-300"
+                >
+                  <RotateCcw className="w-4 h-4" />
+                  Reset
+                </button>
+                
+                <div className="flex-1" />
+                
+                <select
+                  value={simulationSpeed}
+                  onChange={(e) => setSimulationSpeed(Number(e.target.value))}
+                  className="px-4 py-2 bg-zinc-900/50 border border-zinc-800 rounded-xl text-sm backdrop-blur-sm"
+                >
+                  <option value={0.5}>0.5x</option>
+                  <option value={1}>1x</option>
+                  <option value={2}>2x</option>
+                  <option value={4}>4x</option>
+                </select>
+              </div>
             </div>
           </motion.div>
 
@@ -219,15 +262,15 @@ export default function EngineAPIPage() {
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
-            className="bg-zinc-950 rounded-xl border border-zinc-800 p-6"
+            className="space-y-6"
           >
-            <h2 className="text-lg font-semibold mb-4">Implementation Details</h2>
-            
-            <div className="space-y-4">
-              {/* Code Example */}
-              <div className="bg-black rounded-lg border border-zinc-800 p-4">
-                <div className="text-xs font-mono text-zinc-500 mb-2">{`// Engine API Handler`}</div>
-                <pre className="text-xs font-mono text-zinc-300 overflow-x-auto">
+            {/* Code Example */}
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-br from-[#627eea]/5 to-[#a16ae8]/5 rounded-2xl blur-xl" />
+              <div className="relative bg-zinc-900/90 backdrop-blur-sm rounded-2xl border border-zinc-800 p-6">
+                <h2 className="text-lg font-semibold mb-4">Implementation</h2>
+                <div className="bg-black/50 rounded-xl border border-zinc-800 p-4 overflow-x-auto">
+                  <pre className="text-xs font-mono text-zinc-300">
 {`impl EngineApi {
     async fn new_payload_v4(
         &self,
@@ -253,58 +296,40 @@ export default function EngineAPIPage() {
         PayloadStatus::Valid
     }
 }`}</pre>
-              </div>
-
-              {/* Key Concepts */}
-              <div className="space-y-3">
-                <h3 className="font-medium text-sm">Key Concepts</h3>
-                
-                <div className="space-y-2">
-                  <div className="p-3 bg-zinc-900 rounded-lg">
-                    <h4 className="text-sm font-medium mb-1">Payload Validation</h4>
-                    <p className="text-xs text-zinc-500">
-                      Ensures block follows consensus rules and parent exists
-                    </p>
-                  </div>
-                  
-                  <div className="p-3 bg-zinc-900 rounded-lg">
-                    <h4 className="text-sm font-medium mb-1">Transaction Execution</h4>
-                    <p className="text-xs text-zinc-500">
-                      Sequentially processes transactions using EVM
-                    </p>
-                  </div>
-                  
-                  <div className="p-3 bg-zinc-900 rounded-lg">
-                    <h4 className="text-sm font-medium mb-1">State Root Verification</h4>
-                    <p className="text-xs text-zinc-500">
-                      Confirms computed state matches block header
-                    </p>
-                  </div>
                 </div>
               </div>
+            </div>
 
-              {/* Performance Metrics */}
-              <div className="p-4 bg-zinc-900 rounded-lg">
-                <h3 className="font-medium text-sm mb-3">Typical Performance</h3>
-                <div className="space-y-2 text-xs">
-                  <div className="flex justify-between">
-                    <span className="text-zinc-500">Block Validation</span>
-                    <span className="font-mono">~5-10ms</span>
+            {/* Performance Metrics */}
+            <div className="grid grid-cols-2 gap-4">
+              {[
+                { label: "Block Validation", value: "5-10", unit: "ms", color: "from-green-500 to-emerald-500" },
+                { label: "TX Execution", value: "50-200", unit: "ms", color: "from-blue-500 to-purple-500" },
+                { label: "State Root", value: "30-100", unit: "ms", color: "from-purple-500 to-pink-500" },
+                { label: "Total Time", value: "85-310", unit: "ms", color: "from-orange-500 to-red-500" },
+              ].map((metric, i) => (
+                <motion.div
+                  key={metric.label}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1 + i * 0.05 }}
+                  className="relative group"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-br from-zinc-900/50 to-zinc-800/30 rounded-xl blur-xl group-hover:blur-2xl transition-all duration-300" />
+                  <div className="relative p-4 rounded-xl bg-gradient-to-b from-zinc-900/50 to-zinc-900/30 border border-zinc-800 backdrop-blur-sm">
+                    <p className="text-xs text-zinc-500 mb-1">{metric.label}</p>
+                    <div className="flex items-baseline gap-1">
+                      <span className={cn(
+                        "text-2xl font-bold bg-gradient-to-r bg-clip-text text-transparent",
+                        metric.color
+                      )}>
+                        {metric.value}
+                      </span>
+                      <span className="text-sm text-zinc-400">{metric.unit}</span>
+                    </div>
                   </div>
-                  <div className="flex justify-between">
-                    <span className="text-zinc-500">Transaction Execution</span>
-                    <span className="font-mono">~50-200ms</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span className="text-zinc-500">State Root Calculation</span>
-                    <span className="font-mono">~30-100ms</span>
-                  </div>
-                  <div className="border-t border-zinc-800 pt-2 flex justify-between font-medium">
-                    <span className="text-zinc-400">Total Processing Time</span>
-                    <span className="font-mono text-orange-500">~85-310ms</span>
-                  </div>
-                </div>
-              </div>
+                </motion.div>
+              ))}
             </div>
           </motion.div>
         </div>

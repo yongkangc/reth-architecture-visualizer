@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/layouts/Navigation";
+import AnimatedBackground from "@/components/ui/AnimatedBackground";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -16,6 +17,14 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "Reth Architecture Interactive Guide",
   description: "Interactive visualization for understanding Reth's architecture and systems",
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico' }
+    ],
+    shortcut: '/favicon.ico',
+    apple: '/favicon.svg',
+  },
 };
 
 export default function RootLayout({
@@ -26,11 +35,12 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased bg-black text-white`}
+        className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased bg-[#141414] text-white`}
       >
-        <div className="flex h-screen overflow-hidden">
+        <AnimatedBackground />
+        <div className="relative flex h-screen overflow-hidden">
           <Navigation />
-          <main className="flex-1 overflow-y-auto">
+          <main className="flex-1 overflow-y-auto ml-72">
             {children}
           </main>
         </div>

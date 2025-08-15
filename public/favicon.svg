@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <!-- Dark background with rounded corners -->
+  <rect width="32" height="32" fill="#0a0b0d" rx="6"/>
+  
+  <!-- Gradient definition for the crab -->
+  <defs>
+    <linearGradient id="crabGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ff6b6b;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ee5a24;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Crab emoji centered and larger -->
+  <text x="16" y="23" font-size="22" text-anchor="middle" font-family="system-ui, -apple-system, sans-serif">🦀</text>
+</svg>
