@@ -11,7 +11,7 @@ export default function PageContainer({
 }: PageContainerProps) {
   return (
     <div className={cn(
-      "min-h-screen w-full",
+      "w-full",
       "px-4 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-12",
       className
     )}>

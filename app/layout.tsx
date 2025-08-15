@@ -39,8 +39,10 @@ export default function RootLayout({
       >
         <AnimatedBackground />
         <Navigation />
-        <main className="min-h-screen pt-16 lg:pt-0 lg:pl-72">
-          {children}
+        <main className="relative min-h-screen">
+          <div className="pt-16 lg:pt-0 lg:ml-72">
+            {children}
+          </div>
         </main>
       </body>
     </html>

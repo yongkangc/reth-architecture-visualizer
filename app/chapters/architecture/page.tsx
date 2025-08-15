@@ -206,7 +206,7 @@ export default function ArchitecturePage() {
   }
 
   return (
-    <div className="min-h-screen relative p-8">
+    <div className="w-full p-4 sm:p-6 lg:p-8">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <motion.div

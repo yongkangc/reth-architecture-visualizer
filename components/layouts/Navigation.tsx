@@ -94,7 +94,7 @@ export default function Navigation() {
   return (
     <>
       {/* Mobile Header - Fixed at top */}
-      <header className="lg:hidden fixed top-0 left-0 right-0 h-16 z-50 bg-[#1a1a1a]/95 backdrop-blur-xl border-b border-white/5">
+      <header className="lg:hidden fixed top-0 left-0 right-0 h-16 z-[99] bg-[#1a1a1a] backdrop-blur-xl border-b border-white/5">
         <div className="flex items-center justify-between h-full px-4">
           <div className="flex items-center gap-3">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-[#627eea] to-[#a16ae8] flex items-center justify-center">
@@ -127,7 +127,7 @@ export default function Navigation() {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              className="lg:hidden fixed inset-0 z-40 bg-black/50 backdrop-blur-sm"
+              className="lg:hidden fixed inset-0 z-[100] bg-black/50 backdrop-blur-sm"
               onClick={() => setMobileMenuOpen(false)}
             />
             <motion.nav
@@ -135,7 +135,7 @@ export default function Navigation() {
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
               transition={{ type: "spring", damping: 20 }}
-              className="lg:hidden fixed left-0 top-0 bottom-0 w-80 z-50 bg-[#1a1a1a]/95 backdrop-blur-xl border-r border-white/5 overflow-y-auto"
+              className="lg:hidden fixed left-0 top-0 bottom-0 w-[280px] sm:w-[320px] z-[101] bg-[#1a1a1a] backdrop-blur-xl border-r border-white/5 overflow-y-auto shadow-2xl"
             >
               <div className="p-6 border-b border-white/5">
                 <div className="flex items-center justify-between">
@@ -168,7 +168,7 @@ export default function Navigation() {
       </AnimatePresence>
 
       {/* Desktop Sidebar - Fixed on left */}
-      <aside className="hidden lg:block fixed left-0 top-0 bottom-0 w-72 bg-[#1a1a1a]/95 backdrop-blur-xl border-r border-white/5 overflow-y-auto">
+      <aside className="hidden lg:block fixed left-0 top-0 bottom-0 w-72 bg-[#1a1a1a] backdrop-blur-xl border-r border-white/5 overflow-y-auto z-40">
         <div className="p-6 border-b border-white/5">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#627eea] to-[#a16ae8] flex items-center justify-center shadow-lg shadow-[#627eea]/20">
