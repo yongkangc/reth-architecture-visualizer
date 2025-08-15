@@ -8,13 +8,16 @@ import {
   FileCode, Activity,
   Play, Pause, RotateCcw, Info, Factory,
   Clock, Box, Component, CircuitBoard,
-  Hammer, AlertCircle, Timer,
+  Hammer, AlertCircle, Timer, Database,
+  ShieldCheck, TrendingUp, Gauge, Hash,
+  ArrowDown,
   type LucideIcon
 } from "lucide-react"
 import { cn } from "@/lib/utils"
+import RustCodeBlock from "@/components/RustCodeBlock"
 
-type ViewMode = "architecture" | "execution" | "traits" | "timing"
-type ExecutionPhase = "idle" | "pre-execution" | "executing" | "post-execution" | "complete"
+type ViewMode = "architecture" | "execution" | "traits" | "timing" | "validation"
+type ExecutionPhase = "idle" | "pre-execution" | "executing" | "post-execution" | "validation" | "complete"
 type TraitLayer = "ConfigureEvm" | "BlockExecutorFactory" | "EvmFactory" | "Evm"
 
 interface TraitInterface {
@@ -135,10 +138,16 @@ const executionStages: ExecutionStage[] = [
   },
   {
     id: "execute-txs",
-    name: "Execute Transactions",
+    name: "Execute All Transactions",
     phase: "executing",
-    description: "Process all transactions sequentially",
+    description: "Process all transactions sequentially, updating state after each",
     icon: Activity,
+    systemCalls: [
+      "for tx in block.transactions:",
+      "  evm.transact(tx) -> ExecutionResult",
+      "  state.apply_changeset(result.state)",
+      "  receipts.push(result.receipt)"
+    ],
     gasEstimate: 15000000,
     timing: "~50-200ms"
   },
@@ -155,41 +164,87 @@ const executionStages: ExecutionStage[] = [
     ],
     gasEstimate: 0,
     timing: "~3ms"
+  },
+  {
+    id: "get-output",
+    name: "Get Execution Output",
+    phase: "validation",
+    description: "Collect execution results: state root, receipts root, gas used",
+    icon: Database,
+    systemCalls: [
+      "state_root = calculate_state_root()",
+      "receipts_root = calculate_receipts_root()",
+      "logs_bloom = aggregate_logs_bloom()",
+      "gas_used = sum(receipt.gas_used)"
+    ],
+    gasEstimate: 0,
+    timing: "~100-300ms"
+  },
+  {
+    id: "validate-header",
+    name: "Validate Against Block Header",
+    phase: "validation",
+    description: "Verify execution output matches the block header commitments",
+    icon: ShieldCheck,
+    systemCalls: [
+      "assert(header.state_root == state_root)",
+      "assert(header.receipts_root == receipts_root)",
+      "assert(header.logs_bloom == logs_bloom)",
+      "assert(header.gas_used == gas_used)"
+    ],
+    gasEstimate: 0,
+    timing: "~1ms"
   }
 ]
 
 const timingConsiderations: TimingConsideration[] = [
   {
-    id: "mev-deadline",
-    name: "MEV Builder Deadline",
-    description: "Builders need time to bundle transactions optimally",
+    id: "mev-window",
+    name: "4s MEV Building Window",
+    description: "Builders compete in auctions, bundle transactions for maximum profit, and pay validators bribes to include their blocks",
     impact: "critical",
-    latency: "< 4s total",
+    latency: "0-4s",
+    icon: TrendingUp
+  },
+  {
+    id: "mev-deadline",
+    name: "Builder Submission Deadline",
+    description: "Builders submit final bid to relay. Delayed submission captures more MEV but risks missing slot",
+    impact: "critical",
+    latency: "4s deadline",
     icon: Timer
   },
   {
-    id: "attestation",
-    name: "Validator Attestation",
-    description: "Validators must attest by slot 8s mark",
+    id: "payload-validation",
+    name: "Fast Payload Validation",
+    description: "Execution layer must validate payload quickly so validator can attest at 8s mark",
     impact: "critical",
-    latency: "< 8s validation",
+    latency: "4-8s window",
+    icon: Gauge
+  },
+  {
+    id: "attestation",
+    name: "8s Attestation Deadline",
+    description: "Validators must attest to block. Cannot attest until execution layer validates payload",
+    impact: "critical",
+    latency: "8s hard deadline",
     icon: Clock
   },
   {
     id: "state-root",
     name: "State Root Calculation",
-    description: "Parallel trie computation for merkle root",
+    description: "Parallel trie computation is critical bottleneck - must be fast for validation",
     impact: "high",
     latency: "~100-300ms",
     icon: GitBranch
   },
   {
-    id: "payload-building",
-    name: "Payload Building",
-    description: "Time to assemble and validate new block",
+    id: "execution-speed",
+    name: "Transaction Execution Speed",
+    description: "Faster execution = more time for MEV extraction and building",
     impact: "high",
-    latency: "~50-100ms",
-    icon: Package
+    latency: "~50-200ms",
+    icon: Zap
   }
 ]
 
@@ -289,6 +344,7 @@ export default function EVMPage() {
             {[
               { id: "architecture" as ViewMode, label: "Architecture", icon: Layers },
               { id: "execution" as ViewMode, label: "Block Execution", icon: Activity },
+              { id: "validation" as ViewMode, label: "Validation Flow", icon: ShieldCheck },
               { id: "traits" as ViewMode, label: "Trait Interfaces", icon: Code2 },
               { id: "timing" as ViewMode, label: "MEV & Timing", icon: Clock }
             ].map(mode => (
@@ -423,10 +479,9 @@ export default function EVMPage() {
                     </a>
                   </div>
                   
-                  <div className="bg-black/50 rounded-xl border border-zinc-800 p-4 overflow-x-auto">
-                    <pre className="text-xs font-mono text-zinc-300">
-{`// crates/ethereum/evm/src/lib.rs:88-120
-impl ConfigureEvm for EthEvmConfig {
+                  <RustCodeBlock
+                    filename="crates/ethereum/evm/src/lib.rs:88-120"
+                    code={`impl ConfigureEvm for EthEvmConfig {
     type Primitives = EthPrimitives;
     type BlockExecutorFactory = EthBlockExecutorFactory;
     type BlockAssembler = EthBlockAssembler;
@@ -467,8 +522,8 @@ impl ConfigureEvm for EthEvmConfig {
         
         Ok(self.create_block_builder(evm, parent, ctx))
     }
-}`}</pre>
-                  </div>
+}`}
+                  />
                 </div>
               </div>
             </motion.div>
@@ -645,6 +700,215 @@ impl ConfigureEvm for EthEvmConfig {
                       </label>
                     </div>
                   </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {/* Validation Flow View */}
+          {viewMode === "validation" && (
+            <motion.div
+              key="validation"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="space-y-8"
+            >
+              {/* Validation Process Visualization */}
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 to-emerald-500/10 rounded-2xl blur-xl" />
+                <div className="relative bg-zinc-900/90 backdrop-blur-sm rounded-2xl border border-zinc-800 p-6">
+                  <h2 className="text-lg font-semibold mb-6 flex items-center gap-2">
+                    <ShieldCheck className="w-5 h-5 text-green-500" />
+                    Execution Output Validation Flow
+                  </h2>
+
+                  {/* Flow Diagram */}
+                  <div className="space-y-6">
+                    {/* Execute Transactions */}
+                    <div className="bg-zinc-950/50 rounded-xl border border-zinc-800 p-4">
+                      <div className="flex items-start gap-3">
+                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
+                          <Activity className="w-5 h-5 text-white" />
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="font-semibold text-white mb-2">1. Execute All Transactions</h3>
+                          <RustCodeBlock
+                            code={`// Execute transactions and collect results
+let mut receipts = Vec::new();
+let mut cumulative_gas_used = 0;
+
+for transaction in block.transactions {
+    // Execute transaction in EVM
+    let result = evm.transact(transaction)?;
+    
+    // Apply state changes immediately
+    state.apply_changeset(result.state)?;
+    
+    // Collect receipt
+    cumulative_gas_used += result.gas_used;
+    receipts.push(Receipt {
+        status: result.is_success(),
+        gas_used: result.gas_used,
+        logs: result.logs,
+        cumulative_gas_used,
+    });
+}`}
+                            showLineNumbers={false}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Arrow */}
+                    <div className="flex justify-center">
+                      <ArrowDown className="w-6 h-6 text-zinc-500" />
+                    </div>
+
+                    {/* Get Execution Output */}
+                    <div className="bg-zinc-950/50 rounded-xl border border-zinc-800 p-4">
+                      <div className="flex items-start gap-3">
+                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex items-center justify-center">
+                          <Database className="w-5 h-5 text-white" />
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="font-semibold text-white mb-2">2. Get Execution Output</h3>
+                          <RustCodeBlock
+                            code={`// Calculate execution output from final state
+let execution_output = ExecutionOutput {
+    // Compute state root from all state changes
+    state_root: state.calculate_state_root_parallel()?,
+    
+    // Calculate receipts root from all receipts
+    receipts_root: calculate_receipts_root(&receipts)?,
+    
+    // Aggregate logs bloom from all receipts
+    logs_bloom: receipts.iter()
+        .fold(Bloom::default(), |bloom, receipt| {
+            bloom | receipt.logs_bloom
+        }),
+    
+    // Total gas used in block
+    gas_used: cumulative_gas_used,
+    
+    // Withdrawals root if present
+    withdrawals_root: block.withdrawals
+        .as_ref()
+        .map(calculate_withdrawals_root),
+};`}
+                            showLineNumbers={false}
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Arrow */}
+                    <div className="flex justify-center">
+                      <ArrowDown className="w-6 h-6 text-zinc-500" />
+                    </div>
+
+                    {/* Validate Against Header */}
+                    <div className="bg-zinc-950/50 rounded-xl border border-zinc-800 p-4">
+                      <div className="flex items-start gap-3">
+                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center">
+                          <ShieldCheck className="w-5 h-5 text-white" />
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="font-semibold text-white mb-2">3. Validate Against Block Header</h3>
+                          <RustCodeBlock
+                            code={`// Validate execution output matches block header
+fn validate_block_execution(
+    header: &Header,
+    output: &ExecutionOutput,
+) -> Result<(), ValidationError> {
+    // State root must match
+    if header.state_root != output.state_root {
+        return Err(ValidationError::StateRootMismatch {
+            expected: header.state_root,
+            actual: output.state_root,
+        });
+    }
+    
+    // Receipts root must match
+    if header.receipts_root != output.receipts_root {
+        return Err(ValidationError::ReceiptsRootMismatch);
+    }
+    
+    // Gas used must match
+    if header.gas_used != output.gas_used {
+        return Err(ValidationError::GasUsedMismatch);
+    }
+    
+    // Logs bloom must match
+    if header.logs_bloom != output.logs_bloom {
+        return Err(ValidationError::LogsBloomMismatch);
+    }
+    
+    Ok(()) // Block is valid!
+}`}
+                            showLineNumbers={false}
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Key Insight Box */}
+                  <div className="mt-6 p-4 rounded-xl bg-gradient-to-r from-[#627eea]/10 to-[#a16ae8]/10 border border-[#627eea]/30">
+                    <div className="flex items-start gap-3">
+                      <Zap className="w-5 h-5 text-[#627eea] mt-0.5" />
+                      <div>
+                        <h4 className="font-semibold text-white mb-1">Why Speed Matters</h4>
+                        <p className="text-sm text-zinc-400">
+                          The faster we can execute transactions and validate the output, the quicker we can:
+                        </p>
+                        <ul className="mt-2 space-y-1 text-sm text-zinc-400">
+                          <li className="flex items-start gap-2">
+                            <span className="text-[#627eea]">•</span>
+                            <span>Accept or reject invalid blocks (protect the network)</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-[#627eea]">•</span>
+                            <span>Attest to valid blocks at the 8s deadline</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-[#627eea]">•</span>
+                            <span>Start building the next block with more time for MEV</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Performance Metrics */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div className="bg-zinc-900/90 backdrop-blur-sm rounded-xl border border-zinc-800 p-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Hash className="w-4 h-4 text-purple-500" />
+                    <span className="text-sm font-semibold text-zinc-300">State Root Calculation</span>
+                  </div>
+                  <div className="text-2xl font-bold text-purple-500 mb-1">~200ms</div>
+                  <p className="text-xs text-zinc-400">Parallel trie computation across 16 cores</p>
+                </div>
+                
+                <div className="bg-zinc-900/90 backdrop-blur-sm rounded-xl border border-zinc-800 p-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <Database className="w-4 h-4 text-blue-500" />
+                    <span className="text-sm font-semibold text-zinc-300">Transaction Execution</span>
+                  </div>
+                  <div className="text-2xl font-bold text-blue-500 mb-1">~100ms</div>
+                  <p className="text-xs text-zinc-400">Process ~300 transactions</p>
+                </div>
+                
+                <div className="bg-zinc-900/90 backdrop-blur-sm rounded-xl border border-zinc-800 p-4">
+                  <div className="flex items-center gap-2 mb-3">
+                    <ShieldCheck className="w-4 h-4 text-green-500" />
+                    <span className="text-sm font-semibold text-zinc-300">Header Validation</span>
+                  </div>
+                  <div className="text-2xl font-bold text-green-500 mb-1">< 1ms</div>
+                  <p className="text-xs text-zinc-400">Simple hash comparisons</p>
                 </div>
               </div>
             </motion.div>
@@ -882,18 +1146,45 @@ impl ConfigureEvm for EthEvmConfig {
                 })}
               </div>
 
-              {/* MEV Workflow */}
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-2xl blur-xl" />
-                <div className="relative bg-zinc-900/90 backdrop-blur-sm rounded-2xl border border-zinc-800 p-6">
-                  <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
-                    <AlertCircle className="w-5 h-5 text-purple-500" />
-                    MEV Block Building Workflow
-                  </h2>
-                  
-                  <div className="bg-black/50 rounded-xl border border-zinc-800 p-4 overflow-x-auto">
-                    <pre className="text-xs font-mono text-zinc-300">
-{`// MEV-optimized block building timeline
+              {/* MEV Auction Process */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/10 to-orange-500/10 rounded-2xl blur-xl" />
+                  <div className="relative bg-zinc-900/90 backdrop-blur-sm rounded-2xl border border-zinc-800 p-6">
+                    <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                      <TrendingUp className="w-5 h-5 text-yellow-500" />
+                      MEV Builder Auction
+                    </h3>
+                    
+                    <div className="space-y-4">
+                      <div className="p-3 rounded-lg bg-yellow-500/10 border border-yellow-500/20">
+                        <h4 className="text-sm font-semibold text-yellow-400 mb-2">Bundle Competition</h4>
+                        <p className="text-xs text-zinc-400">Builders compete to create the most profitable block by bundling transactions and paying validators bribes</p>
+                      </div>
+                      
+                      <div className="p-3 rounded-lg bg-orange-500/10 border border-orange-500/20">
+                        <h4 className="text-sm font-semibold text-orange-400 mb-2">Timing Strategy</h4>
+                        <p className="text-xs text-zinc-400">Late submission captures more MEV opportunities but risks missing the 4s deadline</p>
+                      </div>
+                      
+                      <div className="p-3 rounded-lg bg-red-500/10 border border-red-500/20">
+                        <h4 className="text-sm font-semibold text-red-400 mb-2">Validation Pressure</h4>
+                        <p className="text-xs text-zinc-400">Execution layer must validate quickly for 8s attestation deadline</p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-purple-500/10 to-pink-500/10 rounded-2xl blur-xl" />
+                  <div className="relative bg-zinc-900/90 backdrop-blur-sm rounded-2xl border border-zinc-800 p-6">
+                    <h3 className="text-lg font-semibold mb-4 flex items-center gap-2">
+                      <AlertCircle className="w-5 h-5 text-purple-500" />
+                      MEV Block Building
+                    </h3>
+                    
+                    <RustCodeBlock
+                      code={`// MEV-optimized block building timeline
 async fn build_mev_block(builder: &mut BlockBuilder) -> Result<Block> {
     // T+0ms: Start building
     let start = Instant::now();
@@ -923,7 +1214,9 @@ async fn build_mev_block(builder: &mut BlockBuilder) -> Result<Block> {
     // Block must be validated by this point
     
     Ok(block)
-}`}</pre>
+}`}
+                      showLineNumbers={false}
+                    />
                   </div>
                 </div>
               </div>
@@ -957,10 +1250,9 @@ async fn build_mev_block(builder: &mut BlockBuilder) -> Result<Block> {
                   View on GitHub
                 </a>
               </div>
-              <div className="bg-black/50 rounded-xl border border-zinc-800 p-4 overflow-x-auto">
-                <pre className="text-xs font-mono text-zinc-300">
-{`// crates/evm/evm/src/execute.rs:31-132
-impl<DB: Database> BlockExecutor for BasicBlockExecutor<DB> {
+              <RustCodeBlock
+                filename="crates/evm/evm/src/execute.rs:31-132"
+                code={`impl<DB: Database> BlockExecutor for BasicBlockExecutor<DB> {
     fn apply_pre_execution_changes(&mut self) -> Result<()> {
         // System calls before transactions
         self.apply_beacon_root_contract_call()?;
@@ -995,8 +1287,8 @@ impl<DB: Database> BlockExecutor for BasicBlockExecutor<DB> {
         
         Ok(())
     }
-}`}</pre>
-              </div>
+}`}
+              />
             </div>
           </div>
 
@@ -1019,10 +1311,9 @@ impl<DB: Database> BlockExecutor for BasicBlockExecutor<DB> {
                   View system_calls module
                 </a>
               </div>
-              <div className="bg-black/50 rounded-xl border border-zinc-800 p-4 overflow-x-auto">
-                <pre className="text-xs font-mono text-zinc-300">
-{`// System calls are imported from alloy_evm::block::system_calls
-// EIP-4788: Beacon block root in EVM
+              <RustCodeBlock
+                filename="System calls from alloy_evm::block::system_calls"
+                code={`// EIP-4788: Beacon block root in EVM
 fn apply_beacon_root_contract_call(
     &mut self,
     parent_beacon_block_root: B256,
@@ -1064,8 +1355,8 @@ fn apply_blockhashes_contract_call(
     )?;
     
     Ok(())
-}`}</pre>
-              </div>
+}`}
+              />
             </div>
           </div>
         </motion.div>
