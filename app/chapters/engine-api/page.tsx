@@ -13,7 +13,7 @@ interface ValidationStep {
   description: string
   status: "pending" | "active" | "success" | "error"
   duration: number
-  icon: any
+  icon: React.ComponentType
 }
 
 const initialSteps: ValidationStep[] = [

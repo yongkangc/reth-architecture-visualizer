@@ -88,7 +88,7 @@ export default function OverviewPage() {
           <h2 className="text-2xl font-bold mb-4">What is Reth?</h2>
           <p className="text-gray-300 mb-4">
             Reth (Rust Ethereum) is a new Ethereum full node implementation focused on being user-friendly, 
-            highly modular, and blazing fast. It's an Execution Layer (EL) client compatible with all 
+            highly modular, and blazing fast. It&apos;s an Execution Layer (EL) client compatible with all 
             Ethereum Consensus Layer (CL) implementations that support the Engine API.
           </p>
           <p className="text-gray-300">
