@@ -477,6 +477,8 @@ export default function ArchitecturePage() {
   const [scenarioStep, setScenarioStep] = useState(0)
   const [showAllConnections, setShowAllConnections] = useState(false)
   const [selectedLayer, setSelectedLayer] = useState<string | null>(null)
+  const [persistentActiveComponent, setPersistentActiveComponent] = useState<ComponentType | null>(null)
+  const [showExitButton, setShowExitButton] = useState(false)
   const scenarioTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   // Run scenario animation
@@ -804,9 +806,18 @@ export default function ArchitecturePage() {
                         transition={{ duration: 0.3 }}
                       >
                         <div
-                          onClick={() => setActiveComponent(activeComponent === component.id ? null : component.id)}
-                          onMouseEnter={() => !isAnimating && setActiveComponent(component.id)}
-                          onMouseLeave={() => !isAnimating && !currentScenario && setActiveComponent(null)}
+                          onClick={() => {
+                            if (persistentActiveComponent === component.id) {
+                              setPersistentActiveComponent(null)
+                              setShowExitButton(false)
+                            } else {
+                              setPersistentActiveComponent(component.id)
+                              setShowExitButton(true)
+                            }
+                            setActiveComponent(component.id)
+                          }}
+                          onMouseEnter={() => !isAnimating && !persistentActiveComponent && setActiveComponent(component.id)}
+                          onMouseLeave={() => !isAnimating && !currentScenario && !persistentActiveComponent && setActiveComponent(null)}
                           className="relative group cursor-pointer"
                         >
                           {/* Pulse effect for active component */}
