@@ -447,7 +447,10 @@ export default function StateRootPage() {
                       "w-12 h-12 rounded-xl bg-gradient-to-br flex items-center justify-center",
                       strategyInfo[activeStrategy].color
                     )}>
-                      <strategyInfo[activeStrategy].icon className="w-6 h-6 text-white" />
+                      {(() => {
+                        const Icon = strategyInfo[activeStrategy].icon
+                        return <Icon className="w-6 h-6 text-white" />
+                      })()}
                     </div>
                     <div className="flex-1">
                       <h3 className="text-xl font-bold text-white mb-2">

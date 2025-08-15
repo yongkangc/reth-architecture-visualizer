@@ -478,7 +478,6 @@ export default function ArchitecturePage() {
   const [showAllConnections, setShowAllConnections] = useState(false)
   const [selectedLayer, setSelectedLayer] = useState<string | null>(null)
   const [persistentActiveComponent, setPersistentActiveComponent] = useState<ComponentType | null>(null)
-  const [showExitButton, setShowExitButton] = useState(false)
   const scenarioTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   // Run scenario animation
@@ -809,10 +808,8 @@ export default function ArchitecturePage() {
                           onClick={() => {
                             if (persistentActiveComponent === component.id) {
                               setPersistentActiveComponent(null)
-                              setShowExitButton(false)
                             } else {
                               setPersistentActiveComponent(component.id)
-                              setShowExitButton(true)
                             }
                             setActiveComponent(component.id)
                           }}
@@ -893,7 +890,6 @@ export default function ArchitecturePage() {
                                     onClick={(e) => {
                                       e.stopPropagation()
                                       setPersistentActiveComponent(null)
-                                      setShowExitButton(false)
                                       setActiveComponent(null)
                                     }}
                                     className="absolute top-2 right-2 text-zinc-400 hover:text-white transition-colors"
@@ -1246,7 +1242,6 @@ export default function ArchitecturePage() {
                             <button
                               onClick={() => {
                                 setPersistentActiveComponent(null)
-                                setShowExitButton(false)
                                 setActiveComponent(null)
                               }}
                               className="text-zinc-400 hover:text-white transition-colors"
