@@ -8,7 +8,7 @@ An interactive learning platform for understanding [Reth](https://github.com/par
 
 ## 🚀 Live Demo
 
-🌐 **[View Live Demo](https://visualizations-hltxwcm38-chiayongtcac-gmailcoms-projects.vercel.app)**
+🌐 **[View Live Demo](https://reth.chiayong.com)**
 
 ## 🎯 Overview
 
