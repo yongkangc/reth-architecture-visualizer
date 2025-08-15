@@ -494,7 +494,7 @@ export default function BlockLifecyclePage() {
           {["timeline", "flow", "metrics"].map((mode) => (
             <button
               key={mode}
-              onClick={() => setViewMode(mode as any)}
+              onClick={() => setViewMode(mode as "timeline" | "flow" | "metrics")}
               className={cn(
                 "px-4 py-2 rounded-lg transition-all capitalize",
                 viewMode === mode
@@ -863,7 +863,7 @@ export default function BlockLifecyclePage() {
                 <div className="p-4 rounded-lg bg-zinc-800/50">
                   <h4 className="text-blue-400 font-medium mb-2">Parallel Execution</h4>
                   <p className="text-zinc-400 text-sm">
-                    Execute independent transactions concurrently using REVM's parallel mode
+                    Execute independent transactions concurrently using REVM&apos;s parallel mode
                   </p>
                 </div>
                 <div className="p-4 rounded-lg bg-zinc-800/50">

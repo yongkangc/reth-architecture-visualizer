@@ -907,7 +907,7 @@ fn validate_block_execution(
                     <ShieldCheck className="w-4 h-4 text-green-500" />
                     <span className="text-sm font-semibold text-zinc-300">Header Validation</span>
                   </div>
-                  <div className="text-2xl font-bold text-green-500 mb-1">< 1ms</div>
+                  <div className="text-2xl font-bold text-green-500 mb-1">&lt;1ms</div>
                   <p className="text-xs text-zinc-400">Simple hash comparisons</p>
                 </div>
               </div>

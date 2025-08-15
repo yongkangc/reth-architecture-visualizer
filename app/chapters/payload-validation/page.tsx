@@ -795,7 +795,7 @@ export default function PayloadValidationPage() {
           {["flow", "errors", "performance"].map((mode) => (
             <button
               key={mode}
-              onClick={() => setViewMode(mode as any)}
+              onClick={() => setViewMode(mode as "flow" | "errors" | "performance")}
               className={cn(
                 "px-4 py-2 rounded-lg transition-all capitalize",
                 viewMode === mode
