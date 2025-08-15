@@ -4,78 +4,17 @@
   --font-inter: 'Inter', system-ui, -apple-system, sans-serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
   
-  /* Ethereum.org exact color palette */
-  --primary-base: #1c1c1c;
-  --primary-light: #222222;
-  --primary-dark: #141414;
-  --primary-contrast: #ffffff;
-  
-  --body-base: #f2f2f2;
-  --body-light: #fafafa;
-  --body-dark: #e7e7e7;
-  --body-medium: #d4d4d4;
-  
-  --neutral: #b9b9b9;
+  /* Simple dark theme */
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #141414;
+  --bg-tertiary: #1a1a1a;
   
   /* Brand colors */
   --primary: #627eea;
   --primary-hover: #7e95f4;
-  --primary-light-hover: #98abf8;
-  --primary-dark: #4c64d5;
   
-  --success: #10b981;
-  --success-light: #d1fae5;
-  --success-dark: #065f46;
-  
-  --error: #ef4444;
-  --error-light: #fee2e2;
-  --error-dark: #991b1b;
-  
-  --warning: #f59e0b;
-  --warning-light: #fef3c7;
-  --warning-dark: #92400e;
-  
-  --info: #3b82f6;
-  --info-light: #dbeafe;
-  --info-dark: #1e40af;
-  
-  /* Gradients matching ethereum.org */
+  /* Simplified gradients */
   --gradient-main: linear-gradient(102.7deg, #627eea 0%, #a16ae8 50%, #ff8867 100%);
-  --gradient-hero: radial-gradient(46.28% 66.31% at 66.95% 58.35%, #a16ae8 0%, #627eea 50%, #222222 100%);
-  --gradient-card: linear-gradient(49.21deg, rgba(127, 127, 213, 0.2) 19.87%, rgba(134, 168, 231, 0.2) 58.46%, rgba(145, 234, 228, 0.2) 97.05%);
-  --gradient-blue: linear-gradient(310.28deg, #1b75bc 0%, #37cdbe 100%);
-  
-  /* Shadows */
-  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  --shadow-base: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
-  --shadow-eth: 0 0 40px rgba(98, 126, 234, 0.3);
-  
-  /* Border radius */
-  --radius-sm: 4px;
-  --radius-base: 8px;
-  --radius-lg: 12px;
-  --radius-xl: 16px;
-  --radius-2xl: 24px;
-  --radius-full: 9999px;
-}
-
-.dark {
-  --background: #222222;
-  --foreground: #f2f2f2;
-  --surface: #2b2b2b;
-  --surface-light: #333333;
-  --surface-hover: #3a3a3a;
-  --border: #404040;
-  --border-light: #4a4a4a;
-}
-
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
 }
 
 html,
@@ -83,6 +22,7 @@ body {
   max-width: 100vw;
   overflow-x: hidden;
   font-family: var(--font-inter);
+  background: var(--bg-primary);
 }
 
 /* Custom scrollbar */
@@ -104,176 +44,18 @@ body {
   background: rgb(82 82 91);
 }
 
-/* Modern animations */
-@keyframes fadeInUp {
-  from { 
-    opacity: 0; 
-    transform: translate3d(0, 30px, 0);
-  }
-  to { 
-    opacity: 1; 
-    transform: translate3d(0, 0, 0);
-  }
+/* Simple animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
 }
 
-@keyframes shimmer {
-  0% { background-position: -1000px 0; }
-  100% { background-position: 1000px 0; }
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: .5; }
 }
 
-@keyframes float {
-  0%, 100% { 
-    transform: translate3d(0, 0, 0) rotate(0.001deg);
-  }
-  33% { 
-    transform: translate3d(30px, -30px, 0) rotate(0.001deg);
-  }
-  66% { 
-    transform: translate3d(-20px, 20px, 0) rotate(0.001deg);
-  }
-}
-
-@keyframes glow-pulse {
-  0%, 100% { 
-    box-shadow: 0 0 20px rgba(98, 126, 234, 0.5),
-                0 0 40px rgba(98, 126, 234, 0.3),
-                0 0 60px rgba(98, 126, 234, 0.1);
-  }
-  50% { 
-    box-shadow: 0 0 30px rgba(98, 126, 234, 0.8),
-                0 0 60px rgba(98, 126, 234, 0.5),
-                0 0 80px rgba(98, 126, 234, 0.3);
-  }
-}
-
-@keyframes gradient-flow {
-  0% { 
-    background-position: 0% 50%;
-    filter: hue-rotate(0deg);
-  }
-  50% { 
-    background-position: 100% 50%;
-    filter: hue-rotate(20deg);
-  }
-  100% { 
-    background-position: 0% 50%;
-    filter: hue-rotate(0deg);
-  }
-}
-
-@keyframes morph {
-  0%, 100% {
-    border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%;
-  }
-  50% {
-    border-radius: 30% 60% 70% 40% / 50% 60% 30% 60%;
-  }
-}
-
-/* Animation utilities */
-.animate-fade-in-up {
-  animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.animate-shimmer {
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.08), transparent);
-  background-size: 1000px 100%;
-  animation: shimmer 2s infinite;
-}
-
-.animate-float {
-  animation: float 20s ease-in-out infinite;
-}
-
-.animate-glow-pulse {
-  animation: glow-pulse 3s ease-in-out infinite;
-}
-
-.animate-gradient-flow {
-  background-size: 300% 300%;
-  animation: gradient-flow 8s ease infinite;
-}
-
-.animate-morph {
-  animation: morph 8s ease-in-out infinite;
-}
-
-/* Modern card styles */
-.card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-xl);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.card-gradient {
-  background: var(--gradient-card);
-  backdrop-filter: blur(40px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-xl);
-}
-
-.card-hover {
-  position: relative;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.card-hover::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: var(--gradient-main);
-  opacity: 0;
-  transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-  z-index: -1;
-}
-
-.card-hover:hover {
-  transform: translateY(-8px);
-  box-shadow: var(--shadow-eth);
-}
-
-.card-hover:hover::before {
-  opacity: 0.1;
-}
-
-/* Button styles */
-.btn-primary {
-  background: var(--gradient-main);
-  color: white;
-  padding: 12px 24px;
-  border-radius: var(--radius-full);
-  font-weight: 600;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
-}
-
-.btn-primary::before {
-  content: '';
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 0;
-  height: 0;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.5);
-  transform: translate(-50%, -50%);
-  transition: width 0.6s, height 0.6s;
-}
-
-.btn-primary:hover::before {
-  width: 300px;
-  height: 300px;
-}
-
-.btn-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 20px rgba(98, 126, 234, 0.3);
-}
-
-/* Text effects */
+/* Text gradient effect */
 .gradient-text {
   background: var(--gradient-main);
   -webkit-background-clip: text;
@@ -282,61 +64,15 @@ body {
   display: inline-block;
 }
 
-.glow-text {
-  text-shadow: 0 0 20px rgba(98, 126, 234, 0.5);
+/* Container utilities */
+.container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
 }
 
-/* Backdrop blur */
-.backdrop-blur {
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
-.backdrop-blur-heavy {
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-}
-
-/* Ethereum.org style sections */
-.section-gradient {
-  position: relative;
-  background: var(--background);
-}
-
-.section-gradient::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: var(--gradient-hero);
-  opacity: 0.4;
-  pointer-events: none;
-}
-
-/* Floating orbs */
-.orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(40px);
-  opacity: 0.4;
-  animation: float 20s ease-in-out infinite;
-}
-
-.orb-purple {
-  background: #627eea;
-  width: 400px;
-  height: 400px;
-}
-
-.orb-pink {
-  background: #a16ae8;
-  width: 300px;
-  height: 300px;
-  animation-delay: -5s;
-}
-
-.orb-orange {
-  background: #ff8867;
-  width: 350px;
-  height: 350px;
-  animation-delay: -10s;
+@media (min-width: 1536px) {
+  .container {
+    max-width: 1536px;
+  }
 }

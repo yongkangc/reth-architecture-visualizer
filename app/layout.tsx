@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import Navigation from "@/components/layouts/Navigation";
-import AnimatedBackground from "@/components/ui/AnimatedBackground";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -35,9 +34,8 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased bg-[#141414] text-white`}
+        className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased bg-[#0a0a0a] text-white`}
       >
-        <AnimatedBackground />
         <Navigation />
         <main className="relative min-h-screen">
           <div className="pt-16 lg:pt-0 lg:ml-72">
