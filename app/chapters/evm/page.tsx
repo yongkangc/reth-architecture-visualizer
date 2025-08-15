@@ -4,8 +4,8 @@ import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { 
   Settings, Cpu, Layers, GitBranch, Zap, Code2, 
-  Package, Database, ArrowRight, CheckCircle, 
-  FileCode, Wrench, Activity, MemoryStick,
+  Package, ArrowRight, CheckCircle, 
+  FileCode, Activity,
   Play, Pause, RotateCcw, Info, Factory,
   Clock, Box, Component, CircuitBoard,
   Hammer, AlertCircle, Timer,
@@ -234,8 +234,9 @@ export default function EVMPage() {
       setCurrentStage(stageIndex)
       setExecutionPhase(stage.phase)
       
-      if (stage.gasEstimate) {
-        setTotalGasUsed(prev => prev + stage.gasEstimate)
+      const gasEstimate = stage.gasEstimate
+      if (gasEstimate !== undefined && gasEstimate > 0) {
+        setTotalGasUsed(prev => prev + gasEstimate)
       }
 
       setTimeout(() => {

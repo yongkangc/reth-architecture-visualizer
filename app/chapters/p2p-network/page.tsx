@@ -3,17 +3,14 @@
 import { useState, useEffect, useRef, useMemo } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { 
-  Network, Shield, Users, Activity, Zap, Globe, 
-  ArrowRight, ArrowLeft, ArrowUpDown, Info, Play, Pause,
-  HardDrive, Cloud, Terminal, Blocks, ChevronRight,
-  Eye, EyeOff, HelpCircle, BookOpen, Route,
-  CheckCircle, Circle, AlertCircle, XCircle,
-  FileCode, Package, Settings, Sparkles,
-  Wifi, WifiOff, Search, UserPlus, UserMinus,
-  MessageSquare, Lock, Unlock, Hash, Timer,
-  TrendingUp, TrendingDown, Award, Ban,
-  Gauge, Server, Radio, Radar, Link2,
-  AlertTriangle, CheckCircle2, Clock
+  Network, Shield, Users, 
+  ArrowRight, Info, Play, Pause,
+  Eye, EyeOff,
+  UserPlus,
+  MessageSquare, Lock,
+  Award, Ban,
+  Server, Radar,
+  ArrowDown, ArrowUp, Layers
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -53,7 +50,7 @@ interface NetworkMessage {
   from: NodeId
   to: NodeId
   type: MessageType
-  data?: any
+  data?: unknown
   timestamp: number
 }
 
@@ -83,7 +80,7 @@ const MAX_PEERS = 50
 const MAX_OUTBOUND = 30
 const MAX_INBOUND = 20
 const BUCKET_SIZE = 16 // K-bucket size
-const BUCKET_COUNT = 256 // Number of K-buckets
+// const BUCKET_COUNT = 256 // Number of K-buckets (unused for now)
 const BASE_REPUTATION = 100
 const MAX_REPUTATION = 150
 const MIN_REPUTATION = -100
@@ -225,7 +222,7 @@ export default function P2PNetworkPage() {
   const [connectedPeers, setConnectedPeers] = useState(0)
   const [inboundPeers, setInboundPeers] = useState(0)
   const [outboundPeers, setOutboundPeers] = useState(0)
-  const discoveryIntervalRef = useRef<NodeJS.Timeout>()
+  const discoveryIntervalRef = useRef<NodeJS.Timeout | null>(null)
 
   // Calculate connection stats
   useEffect(() => {

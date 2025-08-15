@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Play, Pause, RotateCcw, CheckCircle, XCircle, AlertCircle, Zap, Clock, Activity, Cpu, type LucideIcon } from "lucide-react"
+import { Play, Pause, RotateCcw, CheckCircle, Zap, Clock, Activity, Cpu, type LucideIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 import PageContainer from "@/components/ui/PageContainer"
 

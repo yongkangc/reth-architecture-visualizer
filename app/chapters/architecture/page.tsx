@@ -1,15 +1,14 @@
 "use client"
 
-import { useState, useEffect, useRef } from "react"
+import { useState, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { 
-  Server, Database, Network, Shield, Cpu, GitBranch,
-  Activity, Layers, Zap, Globe, Box, ArrowRight,
-  ArrowUpRight, ArrowDownRight, Info, Play, Pause,
-  HardDrive, Cloud, Terminal, Blocks, ChevronRight,
+  Database, Network, Shield, Cpu, GitBranch,
+  Activity, Zap, ArrowRight,
+  HardDrive, Terminal, Blocks,
   Eye, EyeOff, HelpCircle, BookOpen, Route,
-  CheckCircle, Circle, AlertCircle, Users,
-  FileCode, Package, Settings, Sparkles
+  CheckCircle, Circle, Users,
+  Settings, Sparkles
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -478,7 +477,7 @@ export default function ArchitecturePage() {
   const [scenarioStep, setScenarioStep] = useState(0)
   const [showAllConnections, setShowAllConnections] = useState(false)
   const [selectedLayer, setSelectedLayer] = useState<string | null>(null)
-  const scenarioTimeoutRef = useRef<NodeJS.Timeout>()
+  const scenarioTimeoutRef = useRef<NodeJS.Timeout | null>(null)
 
   // Run scenario animation
   const runScenario = (scenarioId: ScenarioType) => {

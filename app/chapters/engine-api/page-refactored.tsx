@@ -2,7 +2,6 @@
 
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { Activity } from "lucide-react"
 import GlassCard from "@/components/ui/cards/GlassCard"
 import SimulationControls from "@/components/ui/buttons/SimulationControls"
 import ValidationPipeline from "@/components/visualizations/engine-api/ValidationPipeline"
