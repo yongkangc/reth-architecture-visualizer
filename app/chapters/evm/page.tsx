@@ -6,7 +6,8 @@ import {
   Settings, Cpu, Layers, GitBranch, Zap, Code2, 
   Package, Database, ArrowRight, CheckCircle, 
   FileCode, Wrench, Activity, MemoryStick,
-  Play, Pause, RotateCcw, Info
+  Play, Pause, RotateCcw, Info,
+  type LucideIcon
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -18,7 +19,7 @@ interface EVMComponent {
   name: string
   layer: EVMLayer
   description: string
-  icon: any
+  icon: LucideIcon
   color: string
   features: string[]
 }
