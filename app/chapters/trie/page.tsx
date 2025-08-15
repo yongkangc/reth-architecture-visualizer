@@ -238,7 +238,7 @@ export default function TriePage() {
         prefix.startsWith(node.nibbles) || node.nibbles.startsWith(prefix)
       )
       
-      newState.canSkipCurrent = !hasChangesInSubtree && node.inDatabase
+      newState.canSkipCurrent = !hasChangesInSubtree && (node.inDatabase === true)
 
       if (node.type === "hash") {
         // Hash nodes represent already-processed subtrees
@@ -248,7 +248,7 @@ export default function TriePage() {
         newState.stats.cacheHits++
         newState.stack.pop()
         
-      } else if (newState.canSkipCurrent && node.inDatabase) {
+      } else if (newState.canSkipCurrent && node.inDatabase === true) {
         // Skip nodes that haven't changed
         newState.decision = `✓ Node ${node.nibbles} unchanged - using cached value`
         newState.skippedNodes.add(node.id)
@@ -376,6 +376,7 @@ export default function TriePage() {
       
       return () => clearInterval(interval)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isWalking, walkSpeed])
 
   const stopWalking = () => {
