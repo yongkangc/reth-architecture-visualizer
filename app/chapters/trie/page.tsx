@@ -6,7 +6,8 @@ import {
   TreePine, ChevronRight, ChevronDown, Hash, 
   SkipForward, Play, Pause, RotateCcw, Layers,
   Database, Cpu, Zap, Info, Search, Archive,
-  ArrowRight, ArrowDown, CheckCircle, XCircle
+  ArrowRight, ArrowDown, CheckCircle, XCircle,
+  AlertTriangle, FileCode, Gauge
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
@@ -178,6 +179,7 @@ interface DatabaseEntry {
 }
 
 export default function TriePage() {
+  const [showWhySection, setShowWhySection] = useState(true)
   const [trie, setTrie] = useState<TrieNode>(sampleTrie)
   const [walkerState, setWalkerState] = useState<WalkerState>({
     stack: [],
@@ -511,6 +513,191 @@ export default function TriePage() {
             </div>
           </div>
         </motion.div>
+
+        {/* Why Trie Walkers Section */}
+        <AnimatePresence>
+          {showWhySection && (
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="mb-8"
+            >
+              <div className="bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border border-yellow-500/20 rounded-2xl p-6">
+                <div className="flex items-start justify-between mb-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-lg bg-yellow-500/20 flex items-center justify-center">
+                      <Info className="w-5 h-5 text-yellow-400" />
+                    </div>
+                    <div>
+                      <h2 className="text-xl font-bold text-yellow-300">Why Do We Need Trie Walkers?</h2>
+                      <p className="text-sm text-zinc-400">The performance optimization that makes Ethereum state roots feasible</p>
+                    </div>
+                  </div>
+                  <button
+                    onClick={() => setShowWhySection(false)}
+                    className="p-2 hover:bg-zinc-800 rounded-lg transition-colors"
+                  >
+                    <XCircle className="w-5 h-5 text-zinc-400" />
+                  </button>
+                </div>
+                
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <div className="space-y-4">
+                    <div>
+                      <h3 className="font-semibold text-yellow-200 mb-2 flex items-center gap-2">
+                        <AlertTriangle className="w-4 h-4" />
+                        The Problem: Massive State Size
+                      </h3>
+                      <ul className="space-y-2 text-sm text-zinc-300">
+                        <li className="flex items-start gap-2">
+                          <span className="text-red-400 mt-1">•</span>
+                          <span>Ethereum has <strong>~200M accounts</strong> in the state trie</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-red-400 mt-1">•</span>
+                          <span>Full trie traversal would read <strong>~200M database entries</strong></span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-red-400 mt-1">•</span>
+                          <span>At 1ms per DB read = <strong>200+ seconds</strong> just for I/O</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-red-400 mt-1">•</span>
+                          <span>Block validation must complete in <strong>&lt;200ms</strong> for MEV timing</span>
+                        </li>
+                      </ul>
+                    </div>
+                    
+                    <div>
+                      <h3 className="font-semibold text-green-200 mb-2 flex items-center gap-2">
+                        <Zap className="w-4 h-4" />
+                        The Solution: Skip Unchanged Subtrees
+                      </h3>
+                      <ul className="space-y-2 text-sm text-zinc-300">
+                        <li className="flex items-start gap-2">
+                          <span className="text-green-400 mt-1">•</span>
+                          <span>Only traverse paths with <strong>actual state changes</strong></span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-green-400 mt-1">•</span>
+                          <span>Skip subtrees with <strong>existing hash references</strong></span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-green-400 mt-1">•</span>
+                          <span>Typical block: <strong>~100 changed accounts</strong> vs 200M total</span>
+                        </li>
+                        <li className="flex items-start gap-2">
+                          <span className="text-green-400 mt-1">•</span>
+                          <span>Reduces work by <strong>99.99%</strong> - from 200M to ~1000 nodes</span>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  
+                  <div className="space-y-4">
+                    <div>
+                      <h3 className="font-semibold text-blue-200 mb-2 flex items-center gap-2">
+                        <FileCode className="w-4 h-4" />
+                        Reth Implementation Links
+                      </h3>
+                      <div className="space-y-2 text-sm">
+                        <a 
+                          href="https://github.com/paradigmxyz/reth/blob/main/crates/trie/trie/src/walker.rs#L13-L33"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block p-2 bg-zinc-800/50 rounded-lg hover:bg-zinc-800 transition-colors"
+                        >
+                          <div className="font-mono text-blue-400">walker.rs:13-33</div>
+                          <div className="text-zinc-400">Core TrieWalker struct with skip optimization</div>
+                        </a>
+                        <a 
+                          href="https://github.com/paradigmxyz/reth/blob/main/crates/trie/trie/src/walker.rs#L150-L164"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block p-2 bg-zinc-800/50 rounded-lg hover:bg-zinc-800 transition-colors"
+                        >
+                          <div className="font-mono text-blue-400">walker.rs:150-164</div>
+                          <div className="text-zinc-400">update_skip_node() - skip logic implementation</div>
+                        </a>
+                        <a 
+                          href="https://github.com/paradigmxyz/reth/blob/main/crates/trie/trie/src/trie.rs#L29-L45"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block p-2 bg-zinc-800/50 rounded-lg hover:bg-zinc-800 transition-colors"
+                        >
+                          <div className="font-mono text-blue-400">trie.rs:29-45</div>
+                          <div className="text-zinc-400">StateRoot struct using prefix sets for changes</div>
+                        </a>
+                        <a 
+                          href="https://github.com/paradigmxyz/reth/blob/main/crates/trie/parallel/src/root.rs"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="block p-2 bg-zinc-800/50 rounded-lg hover:bg-zinc-800 transition-colors"
+                        >
+                          <div className="font-mono text-blue-400">parallel/root.rs</div>
+                          <div className="text-zinc-400">Parallel trie computation with walker coordination</div>
+                        </a>
+                      </div>
+                    </div>
+                    
+                    <div className="p-4 bg-zinc-900/50 rounded-lg border border-zinc-700">
+                      <h4 className="font-semibold text-zinc-200 mb-2 flex items-center gap-2">
+                        <Gauge className="w-4 h-4" />
+                        Performance Impact
+                      </h4>
+                      <div className="grid grid-cols-2 gap-4 text-sm">
+                        <div>
+                          <div className="text-zinc-400">Without Walker:</div>
+                          <div className="text-red-400 font-mono">~200,000ms</div>
+                        </div>
+                        <div>
+                          <div className="text-zinc-400">With Walker:</div>
+                          <div className="text-green-400 font-mono">~100-300ms</div>
+                        </div>
+                      </div>
+                      <div className="mt-2 text-xs text-zinc-500">
+                        Enables real-time block validation within MEV timing constraints
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div className="mt-6 p-4 bg-zinc-900/30 rounded-lg border-l-4 border-yellow-500">
+                  <div className="flex items-start gap-3">
+                    <div className="w-5 h-5 rounded-full bg-yellow-500/20 flex items-center justify-center flex-shrink-0 mt-0.5">
+                      <span className="text-yellow-400 text-xs font-bold">!</span>
+                    </div>
+                    <div>
+                      <div className="font-semibold text-yellow-200 mb-1">Critical for Consensus</div>
+                      <div className="text-sm text-zinc-300">
+                        Without trie walkers, state root computation would take too long for block validation, 
+                        breaking consensus timing requirements. This optimization is <strong>essential</strong> for 
+                        Ethereum&apos;s 12-second block times and 4-second MEV building windows.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
+        {showWhySection === false && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            className="mb-6"
+          >
+            <button
+              onClick={() => setShowWhySection(true)}
+              className="flex items-center gap-2 px-4 py-2 bg-yellow-500/10 hover:bg-yellow-500/20 border border-yellow-500/30 rounded-lg transition-colors"
+            >
+              <Info className="w-4 h-4 text-yellow-400" />
+              <span className="text-yellow-300">Show why trie walkers are needed</span>
+            </button>
+          </motion.div>
+        )}
 
         <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
           {/* Trie Visualization */}
