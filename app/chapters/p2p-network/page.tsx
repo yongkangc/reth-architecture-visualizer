@@ -11,12 +11,12 @@ import {
   Award, Ban,
   Server, Radar,
   ArrowDown, ArrowUp, Layers,
-  Clock, Zap, Check, X,
-  AlertCircle, BookOpen,
-  ChevronRight, Globe,
+  Clock, Zap, Check,
+  BookOpen,
+  Globe,
   Wifi, WifiOff, Radio,
-  Search, Hash, Key,
-  Binary, Package, GitBranch,
+  Search, Key,
+  Package, GitBranch,
   RotateCcw
 } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -728,7 +728,7 @@ export default function P2PNetworkPage() {
   }
 
   // Get node position for topology view (improved circular layout)
-  const getNodePosition = (node: NetworkNode, index: number, total: number) => {
+  const getNodePosition = (node: NetworkNode) => {
     if (node.id === "self") {
       return { x: 50, y: 50 }
     }
@@ -797,11 +797,13 @@ export default function P2PNetworkPage() {
   // Cleanup animation frames on unmount
   useEffect(() => {
     return () => {
-      if (animationFrameRef.current) {
-        cancelAnimationFrame(animationFrameRef.current)
+      const animFrame = animationFrameRef.current
+      const discInterval = discoveryIntervalRef.current
+      if (animFrame) {
+        cancelAnimationFrame(animFrame)
       }
-      if (discoveryIntervalRef.current) {
-        clearTimeout(discoveryIntervalRef.current)
+      if (discInterval) {
+        clearTimeout(discInterval)
       }
     }
   }, [])

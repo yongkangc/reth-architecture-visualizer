@@ -1,14 +1,12 @@
 "use client"
 
-import { useState, useRef } from "react"
-import { motion, AnimatePresence } from "framer-motion"
+import { useState } from "react"
+import { motion } from "framer-motion"
 import { 
   Database, Network, Shield, Cpu, GitBranch,
-  Activity, Zap, ArrowRight, ArrowDown,
-  HardDrive, Terminal, Blocks, Layers,
-  Eye, EyeOff, HelpCircle, BookOpen, Route,
-  CheckCircle, Circle, Users, Globe,
-  Settings, Sparkles, X, Play, Pause,
+  Activity, Zap,
+  HardDrive, Layers,
+  Globe,
   RefreshCw, Server
 } from "lucide-react"
 import { cn } from "@/lib/utils"

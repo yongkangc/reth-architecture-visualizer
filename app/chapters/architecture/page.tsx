@@ -1,15 +1,15 @@
 "use client"
 
-import { useState, useRef } from "react"
+import { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import Link from "next/link"
 import { 
   Database, Network, Shield, Cpu, GitBranch,
-  Activity, Zap, ArrowRight, ArrowDown,
-  HardDrive, Terminal, Blocks, Layers,
-  Eye, EyeOff, HelpCircle, BookOpen, Route,
-  CheckCircle, Circle, Users, Globe,
-  Settings, Sparkles, X, Play, Pause,
+  Activity, Zap,
+  HardDrive, Layers,
+  BookOpen, Route,
+  Globe,
+  Sparkles, X,
   RefreshCw, Server, ExternalLink, ChevronRight,
   Info, Code, FileCode, Package
 } from "lucide-react"
@@ -521,24 +521,24 @@ export default function ImprovedArchitecturePage() {
   const [selectedComponent, setSelectedComponent] = useState<SystemComponent | null>(null)
   const [selectedFlowType, setSelectedFlowType] = useState<FlowType | null>(null)
   const [showFlow, setShowFlow] = useState(false)
-  const [animationPhase, setAnimationPhase] = useState(0)
-  const [viewMode, setViewMode] = useState<"desktop" | "mobile">("desktop")
+  // const [animationPhase, setAnimationPhase] = useState(0)
+  // const [viewMode, setViewMode] = useState<"desktop" | "mobile">("desktop")
 
   const startFlowAnimation = (flowType: FlowType) => {
     setSelectedFlowType(flowType)
     setShowFlow(true)
-    setAnimationPhase(0)
+    // setAnimationPhase(0)
     
     // Animate flow in phases
-    const timer = setInterval(() => {
-      setAnimationPhase(prev => prev + 1)
-    }, 1000)
+    // const timer = setInterval(() => {
+    //   setAnimationPhase(prev => prev + 1)
+    // }, 1000)
     
     setTimeout(() => {
-      clearInterval(timer)
+      // clearInterval(timer)
       setShowFlow(false)
       setSelectedFlowType(null)
-      setAnimationPhase(0)
+      // setAnimationPhase(0)
     }, 8000)
   }
 
@@ -609,7 +609,7 @@ export default function ImprovedArchitecturePage() {
 
   const ComponentCard = ({ component }: { component: SystemComponent }) => {
     const Icon = component.icon
-    const isActive = activeComponent === component.id
+    // const isActive = activeComponent === component.id
     const isSelected = selectedComponent?.id === component.id
     
     return (

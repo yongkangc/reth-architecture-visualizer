@@ -5,8 +5,8 @@ import { motion, AnimatePresence } from "framer-motion"
 import { 
   Cpu, Zap, Package, Clock,
   Play, Pause, RotateCcw, Database,
-  Binary, Hash,
-  Shield, CheckCircle, Gauge,
+  Binary,
+  Shield,
   TreePine, FlameIcon, type LucideIcon
 } from "lucide-react"
 import { cn } from "@/lib/utils"

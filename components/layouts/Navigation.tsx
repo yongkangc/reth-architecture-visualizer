@@ -241,7 +241,7 @@ export default function Navigation() {
         </div>
 
         {/* Footer */}
-        <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-zinc-800">
+        <div className="absolute bottom-0 left-0 right-0 p-6 border-t border-zinc-800 bg-[#0a0a0a]">
           <div className="flex items-center gap-2 text-xs text-zinc-500 mb-2">
             <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
             <span>System Online</span>

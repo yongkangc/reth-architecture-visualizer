@@ -3,10 +3,10 @@
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { 
-  Play, Pause, RotateCcw, ChevronRight, Clock, Activity, 
+  Play, Pause, RotateCcw, Clock, 
   Package, Check, AlertCircle, Zap, Network, Database,
-  GitBranch, Upload, Download, Shield, Cpu, HardDrive,
-  ArrowRight, ExternalLink
+  GitBranch, Shield, Cpu,
+  ArrowRight
 } from "lucide-react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"

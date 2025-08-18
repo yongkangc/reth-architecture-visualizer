@@ -86,10 +86,12 @@ export default function HomePage() {
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.2 }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[#627eea]/20 to-[#a16ae8]/20 border border-[#627eea]/30 mb-6"
+          className="inline-flex flex-wrap items-center justify-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-[#627eea]/20 to-[#a16ae8]/20 border border-[#627eea]/30 mb-6"
         >
-          <Sparkles className="w-4 h-4 text-[#a16ae8]" />
-          <span className="text-sm font-medium text-zinc-300">Interactive Learning Platform</span>
+          <div className="flex items-center gap-2">
+            <Sparkles className="w-4 h-4 text-[#a16ae8]" />
+            <span className="text-sm font-medium text-zinc-300">Interactive Learning Platform</span>
+          </div>
           <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-green-500/10 border border-green-500/20">
             <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
             <span className="text-xs font-medium text-green-400">Systems Online</span>

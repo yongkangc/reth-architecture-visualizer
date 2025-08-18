@@ -437,7 +437,7 @@ export default function PrewarmingDeepDivePage() {
                 With prewarming: <span className="text-green-400 font-mono">Execute with warm caches</span> (350ms, everything else parallel)
               </p>
               <p className="text-zinc-400 text-xs mt-2">
-                Key insight: 80%+ of transactions don't conflict, so we can execute them out-of-order to populate caches
+                Key insight: 80%+ of transactions don&apos;t conflict, so we can execute them out-of-order to populate caches
               </p>
             </div>
           </div>
