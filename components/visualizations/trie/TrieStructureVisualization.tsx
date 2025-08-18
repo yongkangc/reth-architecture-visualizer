@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import React, { useState } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { 
   TreePine, Hash, Database, Cpu, Zap, Info, 
@@ -83,7 +83,7 @@ export default function TrieStructureVisualization() {
     ]
   }
 
-  const renderNode = (node: TrieNodeType | null, depth: number = 0, nibbleIndex: number = 0): JSX.Element | null => {
+  const renderNode = (node: TrieNodeType | null, depth: number = 0, nibbleIndex: number = 0): React.JSX.Element | null => {
     if (!node) return null
 
     const isSelected = selectedNode === node.id

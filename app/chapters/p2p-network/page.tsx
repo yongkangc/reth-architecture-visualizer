@@ -1022,7 +1022,7 @@ export default function P2PNetworkPage() {
                     {/* Connection lines */}
                     <svg className="absolute inset-0 w-full h-full" style={{ zIndex: 1 }}>
                       {nodes.filter(n => n.id !== "self" && n.connectionState !== "disconnected").map((node, i) => {
-                        const nodePos = getNodePosition(node, i, nodes.length - 1)
+                        const nodePos = getNodePosition(node)
                         const selfPos = { x: 50, y: 50 }
                         const connectionKey = `connection-${node.id}`
                         
@@ -1093,7 +1093,7 @@ export default function P2PNetworkPage() {
 
                     {/* Nodes */}
                     {nodes.map((node, i) => {
-                      const pos = getNodePosition(node, i, nodes.length - 1)
+                      const pos = getNodePosition(node)
                       const isSelected = selectedNode?.id === node.id
                       const nodeKey = `node-${node.id}`
                       

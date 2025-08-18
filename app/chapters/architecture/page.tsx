@@ -522,7 +522,7 @@ export default function ImprovedArchitecturePage() {
   const [selectedFlowType, setSelectedFlowType] = useState<FlowType | null>(null)
   const [showFlow, setShowFlow] = useState(false)
   // const [animationPhase, setAnimationPhase] = useState(0)
-  // const [viewMode, setViewMode] = useState<"desktop" | "mobile">("desktop")
+  const [viewMode] = useState<"desktop" | "mobile">("desktop")
 
   const startFlowAnimation = (flowType: FlowType) => {
     setSelectedFlowType(flowType)
