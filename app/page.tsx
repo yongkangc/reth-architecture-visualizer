@@ -90,6 +90,10 @@ export default function HomePage() {
         >
           <Sparkles className="w-4 h-4 text-[#a16ae8]" />
           <span className="text-sm font-medium text-zinc-300">Interactive Learning Platform</span>
+          <span className="flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-green-500/10 border border-green-500/20">
+            <span className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+            <span className="text-xs font-medium text-green-400">Systems Online</span>
+          </span>
         </motion.div>
 
         {/* Main title */}
@@ -234,11 +238,17 @@ export default function HomePage() {
       </motion.section>
 
       {/* Footer */}
-      <footer className="mt-24 pt-8 border-t border-zinc-800">
+      <footer className="mt-24 pt-8 pb-8 border-t border-zinc-800">
         <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-sm text-zinc-500">
-            Built for the Reth community • Open source on GitHub
-          </p>
+          <div className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4">
+            <p className="text-sm text-zinc-400 font-medium">
+              Built for the Reth community
+            </p>
+            <span className="hidden sm:inline text-zinc-600">•</span>
+            <p className="text-sm text-zinc-500">
+              Open source on GitHub
+            </p>
+          </div>
           <div className="flex items-center gap-6">
             <a href="https://paradigm.xyz" target="_blank" rel="noopener noreferrer" className="text-sm text-zinc-500 hover:text-zinc-300 transition-colors">
               Paradigm
