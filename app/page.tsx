@@ -239,7 +239,16 @@ export default function HomePage() {
       <footer className="mt-24 pt-8 pb-8 border-t border-zinc-800">
         <div className="flex flex-col sm:flex-row items-center justify-center gap-2 text-center">
           <p className="text-sm text-zinc-400">
-            Built with <span className="text-red-500">❤️</span> for the Reth community by
+            Built with <span className="text-red-500">❤️</span> for the{" "}
+            <a 
+              href="https://github.com/paradigmxyz/reth" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="text-zinc-300 hover:text-white transition-colors underline underline-offset-4"
+            >
+              Reth community
+            </a>{" "}
+            by
           </p>
           <a 
             href="https://github.com/yongkangc" 
