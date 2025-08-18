@@ -42,7 +42,13 @@ const ProofCalculation = dynamic(
   { ssr: false }
 )
 
-type TabType = "overview" | "structure" | "simulation" | "walker" | "performance" | "proof" | "code"
+// Import the sparse trie visualization
+const SparseTrieVisualization = dynamic(
+  () => import("@/components/visualizations/trie/SparseTrieVisualization"),
+  { ssr: false }
+)
+
+type TabType = "overview" | "structure" | "simulation" | "sparse" | "walker" | "performance" | "proof" | "code"
 
 export default function EnhancedTriePage() {
   const [activeTab, setActiveTab] = useState<TabType>("overview")
@@ -51,6 +57,7 @@ export default function EnhancedTriePage() {
     { id: "overview" as TabType, label: "Overview", icon: BookOpen },
     { id: "structure" as TabType, label: "Structure", icon: Layers },
     { id: "simulation" as TabType, label: "Simulation", icon: TreePine },
+    { id: "sparse" as TabType, label: "Sparse Trie", icon: Zap },
     { id: "walker" as TabType, label: "Walker", icon: TreePine },
     { id: "performance" as TabType, label: "Performance", icon: Zap },
     { id: "proof" as TabType, label: "Proof", icon: Code2 },
@@ -319,6 +326,8 @@ export default function EnhancedTriePage() {
           {activeTab === "structure" && <TrieStructureVisualization />}
           
           {activeTab === "simulation" && <TrieSimulation />}
+          
+          {activeTab === "sparse" && <SparseTrieVisualization />}
           
           {activeTab === "walker" && <TrieWalkerVisualization />}
           
