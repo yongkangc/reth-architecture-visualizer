@@ -48,7 +48,13 @@ const SparseTrieVisualization = dynamic(
   { ssr: false }
 )
 
-type TabType = "overview" | "structure" | "simulation" | "sparse" | "walker" | "performance" | "proof" | "code"
+// Import the RLP encoding visualization
+const RLPEncodingVisualization = dynamic(
+  () => import("@/components/visualizations/trie/RLPEncodingVisualization"),
+  { ssr: false }
+)
+
+type TabType = "overview" | "structure" | "simulation" | "sparse" | "walker" | "performance" | "proof" | "rlp" | "code"
 
 export default function EnhancedTriePage() {
   const [activeTab, setActiveTab] = useState<TabType>("overview")
@@ -61,6 +67,7 @@ export default function EnhancedTriePage() {
     { id: "walker" as TabType, label: "Walker", icon: TreePine },
     { id: "performance" as TabType, label: "Performance", icon: Zap },
     { id: "proof" as TabType, label: "Proof", icon: Code2 },
+    { id: "rlp" as TabType, label: "RLP", icon: Code2 },
     { id: "code" as TabType, label: "Code", icon: Code2 }
   ]
 
@@ -334,6 +341,8 @@ export default function EnhancedTriePage() {
           {activeTab === "performance" && <TriePerformanceComparison />}
           
           {activeTab === "proof" && <ProofCalculation />}
+          
+          {activeTab === "rlp" && <RLPEncodingVisualization />}
           
           {activeTab === "code" && <TrieCodeExamples />}
         </motion.div>

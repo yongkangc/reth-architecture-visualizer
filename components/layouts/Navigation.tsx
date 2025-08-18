@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
@@ -129,6 +129,35 @@ const navItems = [
 export default function Navigation() {
   const pathname = usePathname()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const [visitedChapters, setVisitedChapters] = useState<Set<string>>(new Set())
+
+  // Track visited chapters
+  useEffect(() => {
+    // Load visited chapters from localStorage
+    const stored = localStorage.getItem('visitedChapters')
+    if (stored) {
+      setVisitedChapters(new Set(JSON.parse(stored)))
+    }
+  }, [])
+
+  useEffect(() => {
+    // Track current chapter as visited
+    if (pathname && pathname !== '/') {
+      setVisitedChapters(prev => {
+        const updated = new Set(prev)
+        updated.add(pathname)
+        // Save to localStorage
+        localStorage.setItem('visitedChapters', JSON.stringify(Array.from(updated)))
+        return updated
+      })
+    }
+  }, [pathname])
+
+  // Calculate progress (excluding home page)
+  const chapterItems = navItems.filter(item => item.href !== '/')
+  const completedCount = chapterItems.filter(item => visitedChapters.has(item.href)).length
+  const totalChapters = chapterItems.length
+  const progressPercentage = totalChapters > 0 ? (completedCount / totalChapters) * 100 : 0
 
   return (
     <>
@@ -228,16 +257,25 @@ export default function Navigation() {
         <div className="px-6 py-4">
           <div className="flex items-center justify-between text-xs text-zinc-500 mb-2">
             <span>Progress</span>
-            <span>14/14 Chapters</span>
+            <span>{completedCount}/{totalChapters} Chapters</span>
           </div>
           <div className="w-full h-1 bg-zinc-800 rounded-full overflow-hidden">
             <motion.div 
               className="h-full bg-gradient-to-r from-[#627eea] to-[#a16ae8]"
               initial={{ width: 0 }}
-              animate={{ width: "100%" }}
+              animate={{ width: `${progressPercentage}%` }}
               transition={{ duration: 1, ease: "easeOut" }}
             />
           </div>
+          {completedCount === totalChapters && (
+            <motion.p 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-xs text-green-400 mt-2 text-center"
+            >
+              🎉 All chapters completed!
+            </motion.p>
+          )}
         </div>
 
       </aside>
