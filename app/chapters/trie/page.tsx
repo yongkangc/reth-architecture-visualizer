@@ -30,7 +30,13 @@ const TrieWalkerVisualization = dynamic(
   { ssr: false }
 )
 
-type TabType = "overview" | "structure" | "walker" | "performance" | "code"
+// Import the new simulation component
+const TrieSimulation = dynamic(
+  () => import("@/components/visualizations/trie/TrieSimulation"),
+  { ssr: false }
+)
+
+type TabType = "overview" | "structure" | "simulation" | "walker" | "performance" | "code"
 
 export default function EnhancedTriePage() {
   const [activeTab, setActiveTab] = useState<TabType>("overview")
@@ -38,6 +44,7 @@ export default function EnhancedTriePage() {
   const tabs = [
     { id: "overview" as TabType, label: "Overview", icon: BookOpen },
     { id: "structure" as TabType, label: "Structure", icon: Layers },
+    { id: "simulation" as TabType, label: "Simulation", icon: TreePine },
     { id: "walker" as TabType, label: "Walker", icon: TreePine },
     { id: "performance" as TabType, label: "Performance", icon: Zap },
     { id: "code" as TabType, label: "Code", icon: Code2 }
@@ -227,6 +234,24 @@ export default function EnhancedTriePage() {
                   </button>
                   
                   <button
+                    onClick={() => setActiveTab("simulation")}
+                    className="w-full p-4 bg-zinc-950/50 rounded-xl hover:bg-zinc-800/50 transition-colors text-left group"
+                  >
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-lg bg-purple-500/20 flex items-center justify-center">
+                          <TreePine className="w-5 h-5 text-purple-400" />
+                        </div>
+                        <div>
+                          <h4 className="font-semibold text-white">2. Interactive Simulation</h4>
+                          <p className="text-sm text-zinc-400">Try insert, search, and delete operations</p>
+                        </div>
+                      </div>
+                      <ArrowRight className="w-5 h-5 text-zinc-600 group-hover:text-zinc-400 transition-colors" />
+                    </div>
+                  </button>
+                  
+                  <button
                     onClick={() => setActiveTab("walker")}
                     className="w-full p-4 bg-zinc-950/50 rounded-xl hover:bg-zinc-800/50 transition-colors text-left group"
                   >
@@ -236,7 +261,7 @@ export default function EnhancedTriePage() {
                           <TreePine className="w-5 h-5 text-teal-400" />
                         </div>
                         <div>
-                          <h4 className="font-semibold text-white">2. Explore Walker Algorithm</h4>
+                          <h4 className="font-semibold text-white">3. Explore Walker Algorithm</h4>
                           <p className="text-sm text-zinc-400">See the skip optimization in action</p>
                         </div>
                       </div>
@@ -254,7 +279,7 @@ export default function EnhancedTriePage() {
                           <Zap className="w-5 h-5 text-yellow-400" />
                         </div>
                         <div>
-                          <h4 className="font-semibold text-white">3. Analyze Performance Impact</h4>
+                          <h4 className="font-semibold text-white">4. Analyze Performance Impact</h4>
                           <p className="text-sm text-zinc-400">Compare with and without optimization</p>
                         </div>
                       </div>
@@ -285,6 +310,8 @@ export default function EnhancedTriePage() {
           )}
 
           {activeTab === "structure" && <TrieStructureVisualization />}
+          
+          {activeTab === "simulation" && <TrieSimulation />}
           
           {activeTab === "walker" && <TrieWalkerVisualization />}
           
