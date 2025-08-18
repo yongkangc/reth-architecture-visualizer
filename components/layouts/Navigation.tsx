@@ -89,11 +89,18 @@ const navItems = [
     description: "Parallel optimization",
     gradient: "from-orange-500 to-red-500"
   },
+  {
+    href: "/chapters/prewarming-deep-dive",
+    label: "Prewarming Deep Dive",
+    icon: Zap,
+    description: "59% performance boost",
+    gradient: "from-orange-600 to-red-600"
+  },
   { 
     href: "/chapters/trie", 
-    label: "Trie Walker", 
+    label: "Trie Architecture", 
     icon: TreePine,
-    description: "Navigation & caching",
+    description: "Deep dive & optimization",
     gradient: "from-teal-500 to-cyan-500"
   },
   { 
@@ -221,13 +228,13 @@ export default function Navigation() {
         <div className="px-6 py-4">
           <div className="flex items-center justify-between text-xs text-zinc-500 mb-2">
             <span>Progress</span>
-            <span>8/10 Chapters</span>
+            <span>14/14 Chapters</span>
           </div>
           <div className="w-full h-1 bg-zinc-800 rounded-full overflow-hidden">
             <motion.div 
               className="h-full bg-gradient-to-r from-[#627eea] to-[#a16ae8]"
               initial={{ width: 0 }}
-              animate={{ width: "80%" }}
+              animate={{ width: "100%" }}
               transition={{ duration: 1, ease: "easeOut" }}
             />
           </div>
