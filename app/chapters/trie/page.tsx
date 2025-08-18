@@ -36,7 +36,13 @@ const TrieSimulation = dynamic(
   { ssr: false }
 )
 
-type TabType = "overview" | "structure" | "simulation" | "walker" | "performance" | "code"
+// Import the proof calculation component
+const ProofCalculation = dynamic(
+  () => import("@/components/visualizations/trie/ProofCalculation"),
+  { ssr: false }
+)
+
+type TabType = "overview" | "structure" | "simulation" | "walker" | "performance" | "proof" | "code"
 
 export default function EnhancedTriePage() {
   const [activeTab, setActiveTab] = useState<TabType>("overview")
@@ -47,6 +53,7 @@ export default function EnhancedTriePage() {
     { id: "simulation" as TabType, label: "Simulation", icon: TreePine },
     { id: "walker" as TabType, label: "Walker", icon: TreePine },
     { id: "performance" as TabType, label: "Performance", icon: Zap },
+    { id: "proof" as TabType, label: "Proof", icon: Code2 },
     { id: "code" as TabType, label: "Code", icon: Code2 }
   ]
 
@@ -316,6 +323,8 @@ export default function EnhancedTriePage() {
           {activeTab === "walker" && <TrieWalkerVisualization />}
           
           {activeTab === "performance" && <TriePerformanceComparison />}
+          
+          {activeTab === "proof" && <ProofCalculation />}
           
           {activeTab === "code" && <TrieCodeExamples />}
         </motion.div>
