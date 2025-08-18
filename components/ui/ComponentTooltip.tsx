@@ -1,6 +1,6 @@
 import React from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, ArrowRight, CheckCircle, Circle } from 'lucide-react'
+import { X, ArrowRight, CheckCircle } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
 export interface TooltipProps {

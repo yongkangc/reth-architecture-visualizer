@@ -1,15 +1,14 @@
 "use client"
 
-import { useState, useEffect, useRef, useCallback } from "react"
-import { motion, AnimatePresence, useMotionValue, useTransform } from "framer-motion"
+import { useState, useEffect, useRef } from "react"
+import { motion, AnimatePresence } from "framer-motion"
 import { 
-  Cpu, Zap, Package, Clock, Server, Activity,
-  Play, Pause, RotateCcw, Database, ChevronRight,
-  Binary, Hash, Code, FileCode, GitBranch,
-  Shield, CheckCircle, Gauge, AlertCircle, Info,
-  TreePine, FlameIcon, ArrowRight, Layers,
-  Timer, Settings, BarChart, TrendingUp,
-  HardDrive, Network, Maximize2, type LucideIcon
+  Cpu, Zap, Package, Server, Activity,
+  Play, Pause, RotateCcw, ChevronRight,
+  Binary, Code, FileCode, GitBranch,
+  Shield, CheckCircle, Gauge, AlertCircle,
+  TreePine, FlameIcon, Hash,
+  Timer, type LucideIcon
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import PageContainer from "@/components/ui/PageContainer"
@@ -47,13 +46,13 @@ interface Transaction {
 }
 
 // Cache entry types
-interface CacheEntry {
-  key: string
-  type: "account" | "storage" | "bytecode"
-  size: number
-  hits: number
-  lastAccess: number
-}
+// interface CacheEntry {
+//   key: string
+//   type: "account" | "storage" | "bytecode"
+//   size: number
+//   hits: number
+//   lastAccess: number
+// }
 
 const executionPhases: ExecutionPhase[] = [
   {
@@ -1320,7 +1319,7 @@ pub struct PrewarmConfig {
                   <h4 className="text-purple-400 font-medium mb-2">Future Optimizations</h4>
                   <p className="text-zinc-400 text-sm">
                     Active research into caching transaction outputs for true parallel EVM. 
-                    If transactions don't conflict (80%+ case), we can reuse prewarmed results 
+                    If transactions don&apos;t conflict (80%+ case), we can reuse prewarmed results 
                     directly. See <a href="https://github.com/paradigmxyz/reth/issues/17833" target="_blank" rel="noopener noreferrer" className="text-purple-400 hover:text-purple-300">issue #17833</a> for BlockSTM experiments.
                   </p>
                 </div>

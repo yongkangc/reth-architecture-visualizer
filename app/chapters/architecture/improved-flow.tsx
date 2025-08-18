@@ -228,9 +228,10 @@ export default function ImprovedArchitecturePage() {
     }, 8000)
   }
 
-  const getConnectionsForFlow = (flowType: FlowType) => {
-    return componentConnections.filter(conn => conn.flowType === flowType)
-  }
+  // Unused function - kept for potential future use
+  // const getConnectionsForFlow = (flowType: FlowType) => {
+  //   return componentConnections.filter(conn => conn.flowType === flowType)
+  // }
 
   const renderConnection = (connection: Connection) => {
     const fromComp = systemComponents.find(c => c.id === connection.from)

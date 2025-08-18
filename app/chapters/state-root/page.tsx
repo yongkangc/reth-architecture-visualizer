@@ -3,11 +3,11 @@
 import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { 
-  GitBranch, Play, Pause, RotateCcw, Info, AlertTriangle,
-  Hash, Database, Cpu, Clock, Zap, CheckCircle, XCircle,
-  Activity, Layers, Binary, HardDrive, ArrowRight, ArrowDown,
-  Package, Shield, ChevronRight, Gauge, Network, FileCode,
-  BarChart3, TreePine, type LucideIcon
+  GitBranch, Play, Pause, RotateCcw, AlertTriangle,
+  Hash, Database, Cpu, Zap, CheckCircle,
+  Activity, HardDrive, 
+  Package, Shield, Gauge, Network,
+  TreePine, type LucideIcon
 } from "lucide-react"
 import { cn } from "@/lib/utils"
 import PageContainer from "@/components/ui/PageContainer"
@@ -27,14 +27,14 @@ interface TrieNode {
   isComputed?: boolean
 }
 
-// State change types
-interface StateChange {
-  address: string
-  field: "balance" | "nonce" | "code" | "storage"
-  oldValue: string
-  newValue: string
-  trieImpact: "leaf" | "branch" | "multiple"
-}
+// State change types (kept for future use)
+// interface StateChange {
+//   address: string
+//   field: "balance" | "nonce" | "code" | "storage"
+//   oldValue: string
+//   newValue: string
+//   trieImpact: "leaf" | "branch" | "multiple"
+// }
 
 // Computation phase
 interface ComputationPhase {
@@ -504,7 +504,7 @@ export default function StateRootPage() {
   const [viewMode, setViewMode] = useState<"overview" | "computation" | "performance" | "why">("overview")
   const [selectedNode, setSelectedNode] = useState<string | null>(null)
   const [computedNodes, setComputedNodes] = useState<Set<string>>(new Set())
-  const [modifiedNodes, setModifiedNodes] = useState<Set<string>>(new Set(["leaf1", "leaf3"]))
+  const [modifiedNodes] = useState<Set<string>>(new Set(["leaf1", "leaf3"]))
   const svgRef = useRef<SVGSVGElement>(null)
 
   // Animation control

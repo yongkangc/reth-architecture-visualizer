@@ -1,126 +1,145 @@
-# Reth Architecture Interactive Visualizer
+# Reth Architecture Visualizer
 
-An interactive learning platform for understanding [Reth](https://github.com/paradigmxyz/reth)'s architecture and internal systems. Built with Next.js, TypeScript, and Framer Motion with an Ethereum.org-inspired design.
+Interactive learning platform for understanding [Reth](https://github.com/paradigmxyz/reth)'s internals through animated visualizations and real code examples.
 
-![Reth Architecture](https://img.shields.io/badge/Reth-Architecture-orange)
-![Next.js](https://img.shields.io/badge/Next.js-14-black)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)
+[![Live Demo](https://img.shields.io/badge/Demo-Live-green)](https://reth.chiayong.com)
+[![Reth](https://img.shields.io/badge/Reth-Architecture-orange)](https://github.com/paradigmxyz/reth)
+[![Next.js](https://img.shields.io/badge/Next.js-15-black)](https://nextjs.org)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)](https://www.typescriptlang.org)
 
-## 🚀 Live Demo
+## 🌐 Live Demo
 
-🌐 **[View Live Demo](https://reth.chiayong.com)**
+**[reth.chiayong.com](https://reth.chiayong.com)**
 
-## 🎯 Overview
+## ✨ Features
 
-This visualization tool helps engineers understand Reth's complex architecture through interactive simulations, animations, and step-by-step explanations of core systems. Based on deep analysis of Reth's codebase and comprehensive gists documenting internal architectures.
+- **Interactive Simulations** - Step through Engine API flows, state root computation, and trie navigation in real-time
+- **Performance Visualizations** - See how Reth achieves 59% speedup through transaction prewarming
+- **Real Code Examples** - Actual Rust implementations from Reth's codebase with explanations
+- **Progressive Learning** - 14 chapters from high-level architecture to deep implementation details
 
-### ✨ Features
+## 📚 Available Chapters
 
-- **🎮 Interactive Simulations**: Real-time visualization of Engine API flow, state root computation strategies, and trie navigation
-- **📚 Progressive Learning**: Five chapters covering everything from basics to advanced optimization strategies
-- **🎨 Beautiful UI**: Ethereum.org-inspired design with gradients, glassmorphism, and smooth animations
-- **💻 Code Examples**: Actual Rust implementation snippets with syntax highlighting
-- **📊 Performance Metrics**: Live metrics showing execution times, cache hits, and resource usage
-- **🔄 Real-time State**: Watch how Reth processes blocks and manages state in real-time
+### Core Architecture
+- **Overview** - Ethereum execution client fundamentals
+- **High-Level Architecture** - Reth's modular component design
+- **Staged Sync** - Pipeline architecture for blockchain synchronization
 
-## 📚 Chapters
+### Consensus & Execution
+- **Engine API** - Block processing via newPayload and forkchoiceUpdated
+- **Block Lifecycle** - End-to-end flow from proposal to finalization
+- **Payload Validation** - Deep dive into block validation pipeline
+- **Engine Tree Prewarming** - Parallel optimization achieving 59% performance boost
+- **Prewarming Deep Dive** - Transaction cache warming implementation details
 
-1. **Overview**: The big picture of Ethereum execution architecture
-2. **Engine API**: Understanding newPayload and forkchoiceUpdated flows
-3. **State Root Computation**: Sparse, Parallel, and Sequential strategies (Coming Soon)
-4. **Trie Architecture**: TrieWalker, caching, and optimization techniques (Coming Soon)
-5. **Transaction Journey**: From mempool to finalized block (Coming Soon)
+### State Management
+- **State Root** - Three-tier computation strategy (Sparse, Parallel, Sequential)
+- **Trie Architecture** - Merkle Patricia Trie with TrieWalker optimization
 
-## 🛠️ Installation
+### Stack Components
+- **EVM Stack** - Revm integration and Alloy framework
+- **P2P Network** - DevP2P protocol and peer discovery
+- **Transactions** - Journey from mempool to finalized block
+
+## 🚀 Quick Start
 
 ```bash
-# Clone the repository
-git clone https://github.com/yourusername/reth-visualizations.git
+# Clone repository
+git clone https://github.com/yongkangc/reth-architecture-visualizer.git
 cd visualizations
 
 # Install dependencies
 npm install
 
-# Run development server
+# Start development server
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to view the application.
+Open [http://localhost:3000](http://localhost:3000)
 
-## 🏗️ Project Structure (Refactored)
+## 🏗️ Project Structure
 
 ```
 visualizations/
-├── app/                        # Next.js app directory
-│   ├── chapters/              # Chapter pages
-│   │   ├── engine-api/        # Engine API visualization
-│   │   ├── state-root/        # State root computation
-│   │   ├── trie/              # Trie architecture
-│   │   └── transaction/       # Transaction flow
-│   └── page.tsx               # Home page
-├── components/                # Modular React components
-│   ├── visualizations/        # Feature-specific components
-│   │   ├── engine-api/       # Engine API components
-│   │   ├── state-root/       # State root components
-│   │   └── trie/             # Trie visualization components
-│   ├── ui/                   # Reusable UI components
-│   │   ├── buttons/          # Button components
-│   │   ├── cards/            # Card components
-│   │   └── metrics/          # Metric display components
-│   └── layouts/              # Layout components
-└── lib/                       # Core utilities
-    ├── types/                # TypeScript type definitions
-    ├── constants/            # Shared constants
-    ├── hooks/                # Custom React hooks
-    └── utils.ts              # Utility functions
+├── app/                          # Next.js 15 app router
+│   ├── chapters/                 # Chapter pages
+│   │   ├── overview/            # Fundamentals
+│   │   ├── architecture/        # High-level design
+│   │   ├── engine-api/          # Consensus integration
+│   │   ├── state-root/          # State computation
+│   │   ├── trie/                # Trie deep dive
+│   │   └── ...                  # 9 more chapters
+│   └── page.tsx                 # Landing page
+├── components/                   
+│   ├── visualizations/          # Interactive animations
+│   │   ├── engine-api/         # Engine flow diagrams
+│   │   ├── state-root/         # Computation strategies
+│   │   ├── trie/               # Walker visualization
+│   │   └── prewarming/         # Performance metrics
+│   ├── ui/                     # Reusable UI components
+│   └── layouts/                # Navigation & layout
+└── lib/                        # Utilities & hooks
 ```
 
-### 📦 Component Architecture
+## 🛠️ Tech Stack
 
-The codebase has been refactored for maintainability:
-
-- **Small, focused components**: Each component has a single responsibility
-- **Shared types and constants**: Centralized in `/lib` for consistency
-- **Reusable UI components**: Common UI patterns extracted for reuse
-- **Custom hooks**: Simulation logic abstracted into hooks
-- **Feature-based organization**: Components grouped by feature area
-
-## 🎨 Technology Stack
-
-- **Framework**: Next.js 14 with App Router
-- **Language**: TypeScript
+- **Framework**: Next.js 15 (App Router + Turbopack)
+- **Language**: TypeScript 5.0
 - **Styling**: Tailwind CSS
 - **Animations**: Framer Motion
-- **Visualizations**: React Flow, Custom Canvas
-- **State Management**: Zustand
-- **Code Display**: Monaco Editor
+- **Visualizations**: Custom Canvas + SVG animations
+- **Code Display**: Syntax highlighting with Prism
+
+## 🎨 Key Visualizations
+
+### Engine API Flow
+Interactive simulation of block processing showing:
+- Payload arrival and validation
+- Fork choice state transitions
+- Canonical chain updates
+
+### State Root Computation
+Three-tier strategy visualization:
+- Sparse trie for recent state
+- Parallel computation for subtries
+- Sequential fallback for conflicts
+
+### Trie Walker
+Step-by-step navigation showing:
+- Skip optimization (99.99% node reduction)
+- PrefixSet change tracking
+- Cache hit visualization
+
+### Transaction Prewarming
+Performance optimization showing:
+- Parallel sender recovery
+- Out-of-order cache warming
+- 59% execution time reduction
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+Contributions welcome! Please:
 
-### Development Guidelines
-
-1. Follow the existing code structure
-2. Use TypeScript for all new components
-3. Add animations for better user experience
-4. Keep visualizations simple and focused
-5. Include code examples where relevant
+1. Follow existing component patterns
+2. Use TypeScript with proper types
+3. Add smooth animations for UX
+4. Include real Reth code examples
+5. Test on mobile devices
 
 ## 📖 Resources
 
-- [Reth Documentation](https://paradigmxyz.github.io/reth/)
-- [Engine API Specification](https://github.com/ethereum/execution-apis)
-- [Ethereum Yellow Paper](https://ethereum.github.io/yellowpaper/paper.pdf)
+- [Reth Book](https://paradigmxyz.github.io/reth/)
+- [Engine API Spec](https://github.com/ethereum/execution-apis)
+- [Reth GitHub](https://github.com/paradigmxyz/reth)
 
 ## 📝 License
 
-MIT License - see LICENSE file for details
+MIT License - see [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-Built for the Reth community to improve developer onboarding and understanding of the codebase.
+Built with ❤️ for the Reth community to accelerate developer onboarding and understanding.
 
 ---
 
-**Note**: This is an educational tool. For production Reth usage, refer to the official documentation.
+**Note**: This is an educational visualization tool. For production usage, refer to [official Reth documentation](https://paradigmxyz.github.io/reth/).

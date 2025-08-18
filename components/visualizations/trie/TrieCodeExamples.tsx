@@ -301,7 +301,7 @@ const DEFAULT_INTERMEDIATE_THRESHOLD: u64 = 100_000;`
             <h4 className="font-semibold text-purple-400 mb-2">CursorSubNode</h4>
             <p className="text-sm text-zinc-400 mb-2">
               Represents a position in the trie during traversal. Maintains the full key path 
-              and metadata about the node's state.
+              and metadata about the node&apos;s state.
             </p>
             <div className="p-2 bg-zinc-900 rounded text-xs font-mono text-zinc-500">
               stack: Vec&lt;CursorSubNode&gt;

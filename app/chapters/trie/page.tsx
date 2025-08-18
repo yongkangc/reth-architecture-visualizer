@@ -61,7 +61,7 @@ export default function EnhancedTriePage() {
                 Merkle Patricia Trie Deep Dive
               </h1>
               <p className="text-zinc-400">
-                Understanding Reth's trie implementation and optimizations
+                Understanding Reth&apos;s trie implementation and optimizations
               </p>
             </div>
           </div>
@@ -149,7 +149,7 @@ export default function EnhancedTriePage() {
                   </div>
                   
                   <div>
-                    <h3 className="font-semibold text-cyan-300 mb-3">Reth's Solution</h3>
+                    <h3 className="font-semibold text-cyan-300 mb-3">Reth&apos;s Solution</h3>
                     <ul className="space-y-2 text-zinc-300">
                       <li className="flex items-start gap-2">
                         <span className="text-green-400 mt-1">•</span>

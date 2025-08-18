@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useState } from 'react';
-import { ArrowRight, CheckCircle, Clock, Send, Package, Shield, Database, Zap } from 'lucide-react';
+import { ArrowRight, CheckCircle, Send, Package, Shield, Database, Zap } from 'lucide-react';
 import PageContainer from '@/components/ui/PageContainer';
 
 interface TransactionStage {

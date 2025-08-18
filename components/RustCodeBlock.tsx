@@ -1,7 +1,6 @@
 "use client"
 
 import { Highlight, themes } from 'prism-react-renderer'
-import { motion } from 'framer-motion'
 import { Copy, Check } from 'lucide-react'
 import { useState } from 'react'
 

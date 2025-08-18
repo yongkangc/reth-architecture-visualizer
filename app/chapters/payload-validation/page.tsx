@@ -3,10 +3,10 @@
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { 
-  Shield, AlertTriangle, CheckCircle2, XCircle, Clock, Zap,
+  Shield, AlertTriangle, CheckCircle2, Clock, Zap,
   FileCode, Database, GitBranch, Hash, Lock, Package,
-  Activity, Cpu, HardDrive, Network, Play, Pause, RotateCcw,
-  ChevronRight, Info, AlertCircle, Layers, Binary, ArrowRight
+  Activity, Cpu, Play, Pause, RotateCcw,
+  Info, AlertCircle, Layers, Binary, ArrowRight
 } from "lucide-react"
 import Link from "next/link"
 import { cn } from "@/lib/utils"

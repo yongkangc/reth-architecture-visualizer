@@ -3,10 +3,10 @@
 import { useState, useEffect, useRef } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { 
-  TreePine, ChevronRight, ChevronDown, Hash, 
+  TreePine, ChevronRight,
   SkipForward, Play, Pause, RotateCcw, Layers,
-  Database, Cpu, Zap, Info, Search, Archive,
-  ArrowRight, ArrowDown, CheckCircle, XCircle,
+  Database, Cpu, Zap, Info, Archive,
+  XCircle,
   AlertTriangle, FileCode, Gauge
 } from "lucide-react"
 import { cn } from "@/lib/utils"
@@ -180,7 +180,7 @@ interface DatabaseEntry {
 
 export default function TriePage() {
   const [showWhySection, setShowWhySection] = useState(true)
-  const [trie, setTrie] = useState<TrieNode>(sampleTrie)
+  const [trie] = useState<TrieNode>(sampleTrie)
   const [walkerState, setWalkerState] = useState<WalkerState>({
     stack: [],
     currentNode: null,
